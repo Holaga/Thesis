@@ -7,16 +7,25 @@
         
     \subsection{Server at the University of Bergen}
         things
+        Restricted creating new data and downloading new, overload of users, hyperparameter search
         
     
 
 \section{My solution}
     \subsection{Pseudo labels} \label{Pseudo label}
-        Due to the bitmap errors mentioned in \ref{bitmap_error} I did not have access to the same labels that were used in the original work \ref{unet_paper_acoustic} and so had to find an alternate solution. This came to be based on what is called pseudo labels. In meetings with the \gls{imr} we came up with the idea to use the output of the model used in \ref{unet_paper_acoustic} as my labels. This was based on the fact that the models' performance were assessed to be sufficient for my task. I was then able to create as much data with corresponding pseudo labels as I deemed necessary.
+        Due to the bitmap errors mentioned in \ref{bitmap_error} I did not have access to the same labels that were used in the original work \ref{unet_paper_acoustic} and had to find an alternate solution. This came to be based on what is called pseudo labels. In meetings with the \gls{imr} we came up with the idea to use the output of the model used in \ref{unet_paper_acoustic} as my labels. This was based on the fact that the models' performance were assessed to be sufficient for my task. I was then able to create as much data with corresponding pseudo labels as I deemed necessary.
         
-        This would mean that the labels would consist of labels produced from the four frequencies used in article \ref{unet_paper_acoustic}, namely; 18kHz,38kHz,120kHz and 200kHz. My data contained the additional 70kHz and 333kHz frequencies and this may lead to a bad results for these two respectively as, the pseudo labels may be biased towards the original four frequencies. This is an observation I will return to in the discussion. 
+        This would mean that the labels would consist of predictions produced from the four frequencies used in article \ref{unet_paper_acoustic}, namely; 18kHz,38kHz,120kHz and 200kHz. These values were still in the range 0..1, and so I applied a threshold of 0.8 to convert the values below to 0 and above to 1. Hence, producing a mask for each class \textit{sandeel}, \textit{other} and \textit{background}. Due to the weighted cross-entropy loss used to train the model in section \ref{unet_paper_acoustic} the background class were usually noisy. This was because the weighting caused the model to care less about classifying the background correctly, two samples are illustrated in figure \ref{data sample fig} to illustrate this.
         
-        REF TIL DER DET TAS OPP
+        \clearpage
+        \begin{figure}[H]
+            \centering
+            \includegraphics[scale=0.32]{figures/data_sample.png}
+          	\includegraphics[scale=0.32]{figures/data_sample_noisy.png}
+            \caption{Two examples of pseudo labels by row. Purple is values 0 zero and yellow is 1. The upper row illustrates a low noise sample, while the sample in the lower row contains more noise, especially in the background annotations.}
+            \label{data sample fig}
+        \end{figure}        
+        
         
     \subsection{The final dataset}
         With the pseudo labels from section \ref{Pseudo label} I possessed all the components I needed to create my own dataset. Here I will go through my implementation of preprocessing the ".RAW" into a dataset able to be quickly loaded into a deep learning algorithm.
@@ -28,11 +37,11 @@
           	\medskip 
             \label{data_generation_flowchart_fig}
         \end{figure}
-        The entire process is illustrated in figure \ref{data_generation_flowchart_fig} and starts with the utilization of \gls{crimac} preprocessor module as described in \ref{CRIMAC-pipeline}. This takes in the .RAW data and outputs the \gls{sv} data in the ".ZARR" format. From the \gls{sv} data, a crop is then extracted and was checked for any missing values or being located entirely below the seafloor. This was repeated until the algorithm found a crop that was that did not trigger any of the previous two statements.
+        The entire process is illustrated in figure \ref{data_generation_flowchart_fig} and starts with the utilization of \gls{crimac} preprocessor module as described in \ref{CRIMAC-pipeline}. This takes in the \textit{.RAW} data and outputs the \gls{sv} data in the \textit{.ZARR} format. From the \gls{sv} data, a crop is then extracted and was checked for any missing values or being located entirely below the seafloor. This was repeated until the algorithm found a crop that did not trigger any of the previous two statements.
         
-        In figure \ref{data_generation_flowchart_fig} the  \gls{sv} data were also sent to both the pretrained Unet and bottom detection modules from the \gls{crimac} pipeline. The Unet outputs the pseudo labels and the bottom detection outputs a mask of the seafloor. Then, using the vertical and horizontal coordinates from the \gls{sv} data, a corresponding crop from both the seafloor mask and the pseudo labels were extracted. The two new crops are used together to remove predictions appearing under the seafloor. The steps explained in this paragraph are also visualized in figure \ref{crop_extract_fig}.
+        In figure \ref{data_generation_flowchart_fig} the \gls{sv} data were also sent to both the pretrained Unet and bottom detection modules from the \gls{crimac} pipeline. The Unet outputs the pseudo labels and the bottom detection outputs a mask of the seafloor. Then, using the vertical and horizontal coordinates from the \gls{sv} data, a corresponding crop from both the seafloor mask and the pseudo labels were extracted. The two new crops were then used together to remove predictions that appeared under the seafloor, thus cleaning the pseudo labels. The steps explained in this paragraph are also visualized in figure \ref{crop_extract_fig}.
         \clearpage
-        \begin{figure}[H]]
+        \begin{figure}[H]
             \centering
             \includegraphics[scale=0.5]{figures/crop_extract_illustration.png}
             \caption{Example of how the data, pseudo labels and bottom crops would look during data generation. For the pseudo label, purple is values of 0 and yellow value of 1. Some predictions under the seafloor are removed.  Size is shown to make it clear that it is a crop of the same size from the same location.}.
@@ -52,9 +61,9 @@
             \label{data_hierarchy_fig}
         \end{figure}
         
-        The criterions were based on those stated in the \ref{unet_paper_acoustic} article and can be seen in figure \ref{data_generation_flowchart_fig}. In the previously mentioned article, they had the real annotations to know if there was "sandeel" or instances of the "other" class in a crop. I had to rely on the pseudo labels for the same task, and as these were noisy, I had to counteract this. Hence, I set a filter where 100 of the pixels in the crop had to belong to a single class to satisfy my criteria. If there were not enough pixels of either class, the crop would be set to be "valid" with or without bottom. To mitigate duplicate samples, the criteria would be checked from the top to the bottom and of the criterion list and store the crop to disk depending on the first criterion hit.
+        The criterions were based on those stated in the \ref{unet_paper_acoustic} article and can be seen in figure \ref{data_generation_flowchart_fig}. In the previously mentioned article, they had the real annotations to know if there was \textit{sandeel} or instances of the \textit{other} class in a crop. I had to rely on the pseudo labels for the same task, and as these were noisy, I had to counteract this. Hence, I set a filter where 100 of the pixels in the crop had to belong to a single class to satisfy my criteria. If there were not enough pixels of either class, the crop would be set to be "valid" with or without bottom. To mitigate duplicate samples, the criteria would be checked from the top to the bottom of the criterion list and store the crop to disk depending on the first criterion hit.
         
-        The process of generating data from a single year took around 1 to 3 days. This made me decide to not use all the data, but two years was sufficient for my initial experiment. In dialogue with the \gls{imr} I chose the year 2018 and 2019 as these were recommended. This was because they had few errors associated with them. The final data distribution can be seen in table \ref{data_distribution_table}.
+        The process of generating data from a single year took around 1 to 3 days. This made me decide to not use all the data, but two years was sufficient for my experiment. In dialogue with the \gls{imr} I chose the year 2018 and 2019 as these were recommended. This was because they had few errors associated with them. The final data distribution can be seen in table \ref{data_distribution_table}.
         
         \clearpage
         \begin{table}[H]
@@ -73,14 +82,12 @@
         \label{data_distribution_table}
         \end{table}
         
-        From the table \ref{data_distribution_table} I observed that the as in article \ref{unet_paper_acoustic} most of the data will contain no data, here represented as "valid". 
+        From the table \ref{data_distribution_table} I observed that as in article \ref{unet_paper_acoustic} most of the data will contain no fish, here represented as "valid".
         
 \section{Experiments}
-    The experiments revolved around manipulating the amount of frequencies given as input to the model. To be able to judge the future model's performance, I had to establish a baseline. Hence, I trained a model on all the 6 available frequencies to establish a baseline model. This was done by using the 
+    The experiments revolved around manipulating the amount of frequencies given as input to the model. In this section, I will describe how my experiments were performed and my thought process around evaluation performance. 
     
-    \subsection{Experiment settings}
-        SKRIV OM HVORFOR DU IKKE BRUKER 5 PROSENT STØY I PIKSLER I DISKUSJON
-        
+    \subsection{Experiment settings} \label{Experiment settings}
         All models are based on the one created in article \ref{unet_paper_acoustic}. This means the architecture, hyperparameters and the way the data is loaded into the model. A summary can be seen in table \ref{experiment_settings_table}.
         
         \clearpage
@@ -103,16 +110,27 @@
         \end{tabular}
         \end{table}
         
-        The only change to the model was the number of channels in the input layer called "input image" in figure \ref{unet_fig}. This 
+        For all experiments, the model architecture was based on the one described in section \ref{unet_paper_acoustic}. The only change to the model was the number of channels in the input layer called "input image" with a value of 4 in figure \ref{unet_fig}. This would range from 1 to 6 to accommodate the tests.
         
+        The data for all models would be identical. This meant the training, validation and test data would all be presented to the models in the same sequence with the same augmentations. This was to establish reproducibility and easier comparison between models as I could judge their performance on the same samples.
+        
+        To evaluate the performance of the models, I utilized the F1 score mentioned in section \ref{f1_score}. I also included the precision and recall, as these are interesting values to discuss. Performance will hence forth be listed as three values in this manner:
+            \begin{equation} \label{performance_metric}
+                (Precision, Recall, F1-score)
+            \end{equation}
+        
+    \subsection{Experiment: Training on pseudo labels}
+      This was a preliminary test to establish that training a model on pseudo labels was possible and would achieve acceptable performance. All frequencies would be included, and this would then produce a baseline performance for the later experiments. 
     
-    \subsection{Greedy-search frequencies - Decreasing amount}
-        This experiment will look into the performance of a model that both trains and predicts on data containing sequentially fewer frequencies. Using the F1 score described in section \ref{f1_score} as a performance metric,  I trained 
+    \subsection{Experiment: Exhaustive frequency search}
+        This experiment would see all combinations of all frequencies being tested. 
+
+
+    \subsection{Experiment: Greedy-search frequencies - Decreasing amount}
+        This experiment will look into the performance of a model that both trains and predicts on data containing sequentially fewer frequencies. 
         
-    \subsubsection{Results}
         
-    \subsection{Greedy-search frequencies - Increasing amount}
+    \subsection{Experiment: Greedy-search frequencies - Increasing amount}
     
-    \subsubsection{Results}
         
 
