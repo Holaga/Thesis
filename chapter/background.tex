@@ -38,7 +38,7 @@
         things
 
 \section{Artificial Neural Networks} \label{neural networks}
-    \citeauthor{Goodfellow-et-al-2016_NN} \cite{Goodfellow-et-al-2016_NN} describes \gls{ann} as a unknown function \textit{\^{f}} that maps an input \textit{x} to an output \textit{y}. The goal is then to approximate some optimal function \textit{f} through learning from examples. In this section, I will explain the basics of \gls{ann}s.
+    \citeauthor{Goodfellow-et-al-2016_NN} \cite{Goodfellow-et-al-2016_NN} describes \gls{ann} as an unknown function \textit{\^{f}} that maps an input \textit{x} to an output \textit{y}. The goal is then to approximate some optimal function \textit{f} through learning from examples. In this section, I will explain the basics of \gls{ann}s.
 
     \subsection{Perceptron} \label{perceptron}
         The \gls{ann}s fundamental building block is called an artificial neuron or perceptron. It is formulated in the following way\cite{razavi2021deep_exp_per}:
@@ -46,7 +46,7 @@
                 y = \sigma(\sum_{i=1}^{D}w_ix_i + b)
             \end{equation}
             
-        where D is the number dimension of the input space, x is the input vector and w is a set of weights that is of the same size as x, b is the bias and {\textsigma} is a nonlinear activation function which will be explained later in \ref{activation function}. In short the equation inside the activation functions is a linear regression. The perceptron is illustrated in figure \ref{Perceptron / MLP}.
+        where D is the number dimension of the input space, x is the input vector and w is a set of weights that is of the same size as x, b is the bias and {\textsigma} is a nonlinear activation function which will be explained later in \ref{activation function}. In short, the equation inside the activation functions is a linear regression. The perceptron is illustrated in figure \ref{Perceptron / MLP}.
     
     \subsection{Multi-layered perceptron} \label{MLP}
         The neurons presented in section \ref{perceptron} are then piled together in layers to form a \gls{ann}, which in turn forms what is called a \gls{mlp} \cite{razavi2021deep_exp_per}. All the neurons in each layer are connected to every neuron in the next layer, as depicted in figure \ref{Perceptron / MLP}.
@@ -54,7 +54,7 @@
             \begin{figure}[H]
                 \centering
                 \includegraphics[scale=0.5]{figures/perceptron.png}
-                \caption{(a) A perceptron and (b) a multi-layer perceptron with four inputs in the input-layer(arrows to the left), two hidden layers(green), and three outputs in the output-layer(red).}
+                \caption[The perceptron and multi-layer perceptron]{(a) A perceptron and (b) a multi-layer perceptron with four inputs in the input-layer(arrows to the left), two hidden layers(green), and three outputs in the output-layer(red).}
               	\medskip 
                 \hspace*{15pt}\hbox{\scriptsize Credit: \citeauthor{razavi2021deep_exp_DL}\cite{razavi2021deep_exp_DL}}
                 \label{Perceptron / MLP}
@@ -77,7 +77,7 @@
             \begin{figure}[H]
                 \centering
                 \includegraphics[scale=0.5]{figures/activation.png}
-                \caption{A ReLU function (blue) and a sigmoid function (red)}.
+                \caption[ReLu and sigmoid]{A ReLU function (blue) and a sigmoid function (red)}.
               	\medskip 
                 \label{activation_fig}
             \end{figure}
@@ -97,88 +97,114 @@
 \subsection{Data-Augmentation}
     things
 
+\clearpage
 \section{Computer vision}
-    things
-\subsection{Convolutional neural network}
-    \gls{cnn} are a type of \gls{ann}s that are primarily used in machine learning tasks concerning images\cite{o2015introduction_convolutions}. The \gls{cnn} is built around an operation called convolutions that \textit{convolutes} over its input, hence the name. Unlike the regular neurons that has a connection to every neuron in the previous layer, in the convolution operation, every neuron consists of a weight matrix of three dimensions; \textit{height}, \textit{width} and \textit{depth}. The depth is the size of the third dimension of the input, like the three colors in standard images. This creates what is called a \textit{filter} which is applied to the input in what is defined as \textit{strides}, and calculates the scalar product between the weights and the connected area of the input. The complete convolutional operations then consist of applying this filter to the entire input. This reduces the dimension of the input to a 2D output, but you may apply several filters to increase the dimensions, as each will create a new 2D channel in the output. Reductions in the height and width will normally occur with the standard convolutions, and this type is called \textit{valid convolutions}. Later in this section \textit{same convolutions} will be described which conserves the input dimensions. The high level convolutional operation is illustrated in figure \ref{convolutional_filters_fig}. A more detailed example can be found in figure \ref{convolutional_fig} which looks at how a convolution is applied to 2D input. 
+    \textbf{Computer vision} is a very popular field of research within deep learning\cite{voulodimos2018deep_computer_vision}. This is because it has mainly focused around tasks we humans do naturally, while computers would struggle. This could be facial recognition, object detection and many more. Some work also went beyond human capability, like \citeauthor{davis2014visual_deep_video_audio}s\cite{davis2014visual_deep_video_audio} work, where he recovered sounds from the vibrations they induced in objects captured on video. There are many methods in the field of computer vision, but I will focus on the \gls{cnn}.
     
+    
+    
+\subsection{Convolutional neural network} \label{cnn}
+    The \textbf{\gls{cnn}} are a type of \gls{ann}s that are primarily used in machine learning tasks concerning images\cite{o2015introduction_convolutions}.The need for the convolutional operation stemmed from the fact that images input to a regular \gls{ann} produces a large amount of learnable parameters. An example 512x512 low resolution image with a first layer of 1 neuron would have $1*512*512 = 262144$ weights alone.  To solve this issue and have fewer learnable parameters, the \gls{cnn} is built around 3 main components\cite{o2015introduction_convolutions}:
+    
+    \begin{itemize}
+        \item A \textbf{convolutional operation} that in \textit{strides} applies the same operation to different regions of the input through the use of a \textit{kernel} and a \textit{receptive field}.
+        \item A \textbf{pooling operation} that reduces spatial dimensions.
+        \item A \textbf{fully-connected layer} that is similar to a layer in a regular \gls{ann} described in section \ref{Perceptron / MLP} and its task is to calculate class scores.
+     \end{itemize}
+     
     \begin{figure}[H]
         \centering
-        \includegraphics[scale=0.5]{figures/convolution.png}
-        \caption{The yellow outline in the input illustrated where the filter is applied. This produces a single value. More filters could be added to increase the dimension of the output.}
+        \includegraphics[scale=0.4]{figures/convolution.png}
+        \caption[Convolutional operation example]{The example input is an image with the color channels red, green and blue. The kernel is of height 3 and width 3, with a depth of 3 to correspond with the input number of channels. The yellow outlined area in the input illustrates the receptive field of the kernel, which produces an example output of 42. More kernels could be applied to increase the dimension of the output(orange). With only the yellow filter, this model would have; $3*3*3$ weights $+ 1$ bias $= 28$ learnable parameters, independent of input image height and width.}
       	\medskip 
-        \label{convolutional_filters_fig}
+        \label{convolutional_high_level_fig}
     \end{figure}
     
+    
+     \citeauthor{o2015introduction_convolutions}\cite{o2015introduction_convolutions} describes that the convolutional operation in a \gls{cnn} consists of a weight matrix of three dimensions; \textit{height}, \textit{width} and \textit{depth} written as: height x width x depth. From now, this matrix will be called the kernel. The height and the width of the kernel are parameters defined by the user, but the depth will always equal the number of channels in the input. This results in kernels being written only as: height x width.  The kernel is iteratively applied to different locations of the input, called the current \textit{receptive field}. When applied, it calculates the scalar product between the current receptive field and the kernel, producing a single scalar value called the \textit{activation}. The next receptive field is then located by moving the receptive field by a value defined as the \textit{stride} in the horizontal direction. If this is not possible due to a part of the  receptive field being outside the input, the receptive field will move one row down and begin anew. The high level convolutional operation is illustrated in figure \ref{convolutional_high_level_fig}.
 
+    The complete \textit{convolutional operation} performed by a convolutional layer consists of applying this kernel to the entire input. Producing activations for different regions of the input. This reduces the dimension of the input to a 2D activation output, but you may apply several kernels to increase the channels, as each will create a new 2D channel in the activations. A convolutional operation is often followed up with an element wise nonlinear activation function to its activations, like a ReLu. The kernels will through training learn to detect different features in the input, and so in a \gls{cnn} the first layers will often detect simple features like edges. Later layers will then detect more complex features like cars and houses, combining the activations from different earlier layers. The last layer consists of a \textit{fully connected} layer of regular neurons to determine the output, but implementations of networks with only convolutional operations exists like U-Net which will be described\cite{unet_ronneberger2015} in section \ref{unet} utilizing 1x1 convolutions. A more detailed example can be found in figure \ref{convolutional_fig} which looks at how a convolution with a horizontal edge detecting kernel is applied to a single channel or an equivalent 2D input. 
     
     \begin{figure}[H]
         \centering
-        \includegraphics[scale=0.5]{figures/convolutions.png}
-        \caption{Illustration of a \textit{valid} convolutional operation. The filter is applied repeatedly across the input. If the input had more channels, the filter would likewise have the equal depth. The size of input is 6x6, filter size is 3x3 and stride = 1. Resulting in the size of output being 4x4..}
+        \includegraphics[scale=0.4]{figures/convolutions.png}
+        \caption[Horizontal edge detector example]{Illustration of a \textit{valid} convolutional operation. The kernel is applied repeatedly across the input. The size of input is 6x6, kernel size is 3x3 and stride = 1, resulting in overlapping operations. Resulting in the size of output being 4x4. The figures to the right show the colors for input, kernel and output(activation), where the color gets darker if the values are low. This example is a horizontal edge detector, and the result is large activations along the border between the values of 0 and 10 in the input, which could have been colors in a picture. }
       	\medskip 
         \label{convolutional_fig}
     \end{figure}
     
+    Reductions in the dimensions\cite{o2015introduction_convolutions} will normally occur with the standard convolutions, and this type is called \textit{valid convolutions}. By applying a padding with zeros around the input, you can retain the dimensions of the input. The effect is that more convolutional operations fits in the new padded input, hence larger output size. This is called a \textit{same convolution}. Illustrated in figure \ref{same_convolutional_fig}.
+    
     \begin{figure}[H]
         \centering
         \includegraphics[scale=0.5]{figures/same_convolutions.png}
-        \caption{Illustration of a \textit{same} convolutional operation. The size of the input is 3x3, but after padding the size is 5x5, filter size is 3x3 and stride is 1. Resulting in the size of output being 3x3, hence conserving the input size.}
+        \caption[Same convolution example]{Illustration of a \textit{same} convolutional operation. The size of the input is 3x3, but after padding with zeros the size is 5x5, kernel size is 3x3 and stride is 1. Resulting in the size of the output being 3x3, hence conserving the input size.}
       	\medskip 
         \label{same_convolutional_fig}
     \end{figure}
     
-
-\subsection{Transpose convolutions}
-    things
     
-\subsection{Max-pool}
+    
+\subsection{Max pool}
+    As mentioned in the start of this chapter, the \textbf{max pool} operation reduces the size of its input\cite{o2015introduction_convolutions}. Like a convolutional operation, the max pool looks at a region of the input, but then instead applies a \textit{max} operation. The kernel size is given in \textit{height} x \textit{width}, and is applied individually to each dimension of the input.This reduces the height and width, but not the channels. The most common setting is 2x2 with a stride = 2, which results in decreasing the size to 25\%.
+
     \begin{figure}[H]
         \centering
         \includegraphics[scale=0.5]{figures/max_pool.png}
-        \caption{Illustration of the max-pool operation with size = 2 and stride = 2.}
+        \caption[The max pool operation]{Illustration of the max pool operation with size = 2x2 and stride = 2.}
       	\medskip 
         \label{maxpool_fig}
     \end{figure}
     
+\subsection{Transposed convolutions}
+    A transposed convolution is an operation performing the opposite operation compared to a regular convolution. This means taking an input and with a similar \textit{kernel} as described earlier in \ref{cnn} and mapping this to a higher spatial size. In example figure \ref{transposed_conv_fig} a 2D 2x2 input is fed to a transposed convolutional layer with kernel size 2x2. The whole kernel is multiplied element wise to the input and proceeds to produce values in a temporary matrix initialized with zeros(empty cells in the figure). The calculated values in the temporary matrix are situated correctly relative to the input. These temporary matrices are then summed over, producing the output. This operation is repeated for all channels, retaining the channels in the input.
     
-\subsection{Convolutions through volumes}
-    things
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.5]{figures/transpose_convolution.png}
+        \caption[Transposed convolution]{Illustration of the transposed convolution operation with kernel size 2x2 and stride = 1. The green color shows one of the intermediate computations. The center value of each crop is outlined to illustrate the summation step as these overlaps.}
+      	\medskip 
+        \label{transposed_conv_fig}
+    \end{figure}
+    
+\subsection{Advantages of the convolutional neural network}
+    To sum up the advantages of the \gls{cnn}\cite{o2015introduction_convolutions}, they have, compared to regular \gls{ann}s, very few learnable parameters. It is only the kernels weights that are the parameters learned, and so share their parameters across all regions of the input, thus greatly reducing the amount. The max pool operation reduces the dimensions, hence reducing the size of the following convolutional layers, and does not have any learnable parameters itself. Since the same kernel is applied across the input, the position of what the kernel detects is also not relevant.
+    
     
 \subsection{Segmentation}
-    Segmentation is a machine learning task where the objective is to assign one or several classification masks to the input\cite{He_2017_ICCV_segmentation}. This is again split into two different categories; \textit{semantic} and \textit{instance} segmentation. In semantic segmentation, you assign each pixel in the input to predefined classes. While in instance segmentation, you increase the complexity by applying semantic segmentation and thereafter assigning a bounding box to each individual object. Semantic segmentation is the variant used in this thesis, and an example can be viewed in figure \ref{segmentation_fig}.
+    Segmentation is a computer vision task where the objective is to assign one or several classification masks to the input\cite{He_2017_ICCV_segmentation}. This is again split into two different categories; \textit{semantic} and \textit{instance} segmentation. In semantic segmentation, you assign each pixel in the input to predefined classes. While in instance segmentation, you increase the complexity by applying semantic segmentation and in parallel assigning a bounding box to each individual object. Semantic segmentation is the variant used in this thesis, and examples of both can be viewed in figure \ref{segmentation_fig}.
     
     \begin{figure}[H]
         \centering
         \includegraphics[scale=0.4]{figures/segmentation.png}
-        \caption{Illustration of the difference between semantic and instance segmentation.}
+        \caption[Difference between semantic and instance segmentation]{Illustration of the difference between semantic and instance segmentation.}
       	\medskip 
         \label{segmentation_fig}
     \end{figure}
     
     
 
-\section{U-Net}
-    In this part I introduce the architecture of the deep learning \gls{ann} used in this thesis called U-Net. This is a fully convolutional state-of-the-art\cite{rajak2021segmentation} semantic segmentation \gls{ann} and was initially developed for biomedical use by \citeauthor{unet_ronneberger2015}\cite{unet_ronneberger2015}. The \gls{crimac} used this model in their project (described in \ref{unet_paper_acoustic}) and had to do some small modifications to the network to fit their task. This modified U-Net is the one presented in this section, as this is the one used in the experiments. The core functionality of the network stays true to the original Unet and the alterations done will be explained later in this section.
+\section{U-Net} \label{unet}
+    In this part I introduce the architecture of the deep learning \gls{ann} used in this thesis called U-Net. This is a fully convolutional state-of-the-art\cite{rajak2021segmentation} semantic segmentation \gls{ann} and was initially developed for biomedical use by \citeauthor{unet_ronneberger2015}\cite{unet_ronneberger2015}. The \gls{crimac} used this model in their project (described in \ref{unet_paper_acoustic}) and had to do some small modifications to the network to fit their task. This modified U-Net is the one presented in this section, as this is the one used in the experiments. The core functionality of the network stays true to the original Unet and the alterations done to the original will be explained later in this section.
     
     \begin{figure}[H]
         \centering
         \includegraphics[scale=0.5]{figures/unet_arrows.png}
-        \caption{U-Net architecture, the downwards facing arrow illustrates the contracting path and the one facing upwards is the expanding path.}
+        \caption[U-Net architecture]{U-Net architecture, the downwards facing arrow illustrates the contracting path and the one facing upwards is the expanding path.}
       	\medskip 
         \label{unet_fig}
         \hspace*{15pt}\hbox{\scriptsize Credit: \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic}}
     \end{figure}
     
-    Unet utilized what \citeauthor{unet_ronneberger2015}\cite{unet_ronneberger2015} called a contracting path to identify what was in a picture, while an expanding path to localize where it was. These two branches were symmetrical, and together they formed a U-shape, giving the network its name. The contracting path can be looked at as five different stages of processing, from top to bottom, in figure \ref{unet_fig}. Each stage applied the same operations to its given input. For each stage, this consisted first of two 3x3 same convolutions with their individual ReLu activation functions. Initially, the feature channels would be increased to 64, and later doubled for each contracting stage. The convolutions were followed by a 2x2 max pooling operation with stride 2 to decrease the resolution of the output from the convolutional operations, and then send this feature map down to the next stage. At the bottom stage, the only things that changed was the use of transpose convolutions instead of max pooling to now increase the resolution. At each subsequent stage going back up the expanding path, the number of feature channels were halved. To aid the localization, the output of the previous stage would be concatenated with the output feature map of a stage from the contracting path with the same size. At the last stage, when the resolution had reached it original size, a 1x1 convolution was applied instead of increasing the resolution. The 1x1 convolution mapped the 64 feature channels to the 3 classes. The softmax was then calculated between these classes, giving each pixel a value between [0,1], summarized over all classes to 1. Hence, giving you a segmentation map of each class with the same size as the input. In this thesis, this will be a semantic segmentation of the classes \textit{background}, \textit{other } and most importantly \textit{sandeel}.
+    Unet utilized what \citeauthor{unet_ronneberger2015}\cite{unet_ronneberger2015} called a contracting path to identify what was in a picture, while an expanding path to localize where it was. These two branches were symmetrical, and together they formed a U-shape, giving the network its name. The contracting path can be looked at as five different stages of processing, from top to bottom, in figure \ref{unet_fig}. Each stage applied the same operations to its given input. For each stage, this consisted first of two 3x3 same convolutions with their individual ReLu activation functions. Initially, the feature channels would be increased to 64, and later doubled for each contracting stage. The convolutions were followed by a 2x2 max pooling operation with stride 2 to decrease the resolution of the output from the convolutional operations, and then send this feature map down to the next stage. At the bottom stage, the only things that changed was the use of transpose convolutions instead of max pooling to now increase the resolution. At each subsequent stage going back up the expanding path, the number of feature channels were halved. To aid the localization, the output of the previous stage would be concatenated with the output feature map of a stage from the contracting path with the same size. At the last stage, when the resolution had reached it original size, a 1x1 convolution was applied instead of increasing the resolution. The 1x1 convolution mapped the 64 feature channels to the 3 classes. The softmax was then calculated between these classes, giving each pixel a value between [0,1], summarized over all classes to 1. Hence, giving you a segmentation map of each class with the same size as the input. 
     
-    Here I list the changes from \citeauthor{unet_ronneberger2015}s original U'net performed in article \ref{unet_paper_acoustic}. Firstly, minor changes were made to adapt U-net to the acoustic data, as the input now had the form 4 x 256 x 256. The four channels being the frequencies used. The convolutions were as mentioned in the previous paragraph set to \textit{same} instead of \textit{valid}, as were the original setting. This was done to make the size of the input and output match. Further, batch normalization was added to each convolution. 
+    %In this thesis, this will be a semantic segmentation of the classes \textit{background}, \textit{other } and most importantly \textit{sandeel}.
     
+    Minor changes were made to adapt\citeauthor{unet_ronneberger2015}s original U'net to the acoustic data used in \ref{unet_paper_acoustic}, as the input now had the form 4 x 256 x 256. The four channels being the frequencies used. The convolutions were as mentioned in the previous paragraph set to \textit{same} instead of \textit{valid}, as were the original setting. This was done to make the size of the input and output match. Further, batch normalization was added to each convolution. 
     
 
-
-
-
+% Unsure if this is to be here, in methodology or appendix.
+\clearpage
 \section{The data and tools}
     The data was provided by the \gls{imr} and I had access to a broad selection of yearly trawl cruises spanning from 2011 to 2020. In this chapter, I will delve into the data itself to give you a clearer picture of how it looked, how I acquired it and what tools I utilized.
     
