@@ -38,18 +38,18 @@
         things
 
 \section{Artificial Neural Networks} \label{neural networks}
-    \citeauthor{Goodfellow-et-al-2016_NN} \cite{Goodfellow-et-al-2016_NN} describes \gls{ann} as an unknown function \textit{\^{f}} that maps an input \textit{x} to an output \textit{y}. The goal is then to approximate some optimal function \textit{f} through learning from examples. In this section, I will explain the basics of \gls{ann}s.
+    In this section, I will introduce the basic components of an \gls{ann} and how these are combined to create a complete network.
 
     \subsection{Perceptron} \label{perceptron}
-        The \gls{ann}s fundamental building block is called an artificial neuron or perceptron. It is formulated in the following way\cite{razavi2021deep_exp_per}:
+        The \gls{ann}s fundamental building block is called an artificial \textit{neuron} or perceptron. It is formulated in the following way\cite{razavi2021deep_exp_per}:
             \begin{equation} \label{eq_perceptron}
                 y = \sigma(\sum_{i=1}^{D}w_ix_i + b)
             \end{equation}
             
-        where D is the number dimension of the input space, x is the input vector and w is a set of weights that is of the same size as x, b is the bias and {\textsigma} is a nonlinear activation function which will be explained later in \ref{activation function}. In short, the equation inside the activation functions is a linear regression. The perceptron is illustrated in figure \ref{Perceptron / MLP}.
+        where D is the number dimension of the input space, x is the input vector and w is a set of weights that is of the same size as x, b is the bias and {\textsigma} is a nonlinear activation function which will be explained later in \ref{activation function}. In short, the equation inside the activation functions is a linear regression with the tunable parameters w and b. The perceptron is illustrated in figure \ref{Perceptron / MLP}.
     
     \subsection{Multi-layered perceptron} \label{MLP}
-        The neurons presented in section \ref{perceptron} are then piled together in layers to form a \gls{ann}, which in turn forms what is called a \gls{mlp} \cite{razavi2021deep_exp_per}. All the neurons in each layer are connected to every neuron in the next layer, as depicted in figure \ref{Perceptron / MLP}.
+        The neurons presented in section \ref{perceptron} are then copied and sorted together in layers to form a \gls{ann}, which in turn forms what is called a \gls{mlp} \cite{razavi2021deep_exp_per}. All the neurons in each layer are connected to every neuron in the next layer, as depicted in figure \ref{Perceptron / MLP}.
         
             \begin{figure}[H]
                 \centering
@@ -60,7 +60,7 @@
                 \label{Perceptron / MLP}
             \end{figure}
         
-        The architecture of the \gls{ann} consist of an input layer, a user defined number of hidden layers and finally an output layer. A \gls{mlp} is a type of network called feed-forward \gls{ann} because the data flows from the input to the output layer. The parameters that are adjusted through training (explained in section XXX) are all the weights between every neuron in the network and the individual biases. The intuition for the MLP depicted in \ref{Perceptron / MLP} is that different neurons will fire with varying strengths depending on the input, resulting in different outputs.
+        The architecture of the \gls{ann} consist of an input layer, a user defined number of \textit{hidden layers} and finally an output layer. A \gls{mlp} is a type of network called \textit{feed-forward} \gls{ann} because the data flows from the input to the output layer. The parameters that are adjusted through training (explained in section XXX) are all the weights between every neuron in the network and the individual biases. The intuition for the MLP depicted in \ref{Perceptron / MLP} is that different neurons will fire with varying strengths depending on the input, resulting in different outputs.
         
     \subsection{Activation function} \label{activation function}
         The activations function is what enables the \gls{ann} to learn non-linear features \cite{razavi2021deep_exp_per}. The reason you need it is that a network consisting of only linear layers will just be the same as a single linear layer \cite{razavi2021deep_exp_per}. The activation function used in this thesis was the ReLU which stands for rectified as described in \cite{sharma2019new_activation_func}. The formula for it is as follows:
@@ -83,11 +83,17 @@
             \end{figure}
 
 \section{Training Neural Networks} \label{training neural networks}
-    thing
-\subsection{Backpropagation}
-    things
-\subsection{Gradient Decent}
-    things
+    \citeauthor{Goodfellow-et-al-2016_NN}\cite{Goodfellow-et-al-2016_NN} describes \gls{ann} as an unknown function \textit{\^{f}} that maps an input \textit{x} to an output \textit{y}. The goal is then to approximate some optimal function \textit{f} through learning from examples. In supervised tasks, these examples instructs the output layer exactly how it should perform and what \textbf{y} should look like. Although, the example does not instruct the individual \textit{hidden layers} how to perform to produce this value. When the examples flow through the network, it produces an output \textbf{\^{y}} and is called the \textit{forward-propagation step}. By using an operation called a \textit{loss function} comparing the true \textbf{y} value to \textbf{\^{y}} you get a measurement of the current performance. Using this performance, you step back through the network in a process called \textit{back-propagation} and calculate how each weight and bias in the hidden layers should be adjusted, so the output layer will reproduce the value \textbf{y} of the current example. The value calculated for each parameter is called the gradient. An optimizing algorithm is then applied to adjust all the individual parameters using this gradient, performing \textit{gradient descent}. A widely used algorithm is \textit{stochastic gradient descent}, which is also the one used is this thesis. In what magnitude a parameter is adjusted is tuned through a value called the learning rate, usually less than 1, which decreases the chances of numerical overflow\cite{Goodfellow-et-al-2016_learning_rate} and promotes generalization\cite{wilson2001need_learning_rate}. By repeatedly applying forward-propagation, back-propagation and some optimizing algorithm on new examples as stated by \citeauthor{Goodfellow-et-al-2016_NN}, you train a network to approximate the optimal function \textit{f}.
+    
+    \begin{quote}
+        "\textit{A recurring problem in machine learning is that large training sets are necessary for good generalization, but large training sets are also more computationally
+        expensive."} - (\citeauthor{Goodfellow-et-al-2016_SGD}\citeyear{Goodfellow-et-al-2016_SGD}, page 152)
+    \end{quote}
+    
+    As stated by \citeauthor{Goodfellow-et-al-2016_SGD} i
+    
+\subsection{Loss function}
+
 \subsection{Batch learning}
     things
 \subsection{Regularization}
@@ -184,7 +190,7 @@
     
     
 
-\section{U-Net} \label{unet}
+\subsection{U-Net} \label{unet}
     In this part I introduce the architecture of the deep learning \gls{ann} used in this thesis called U-Net. This is a fully convolutional state-of-the-art\cite{rajak2021segmentation} semantic segmentation \gls{ann} and was initially developed for biomedical use by \citeauthor{unet_ronneberger2015}\cite{unet_ronneberger2015}. The \gls{crimac} used this model in their project (described in \ref{unet_paper_acoustic}) and had to do some small modifications to the network to fit their task. This modified U-Net is the one presented in this section, as this is the one used in the experiments. The core functionality of the network stays true to the original Unet and the alterations done to the original will be explained later in this section.
     
     \begin{figure}[H]
