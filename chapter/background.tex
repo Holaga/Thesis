@@ -83,24 +83,27 @@
             \end{figure}
 
 \section{Training Neural Networks} \label{training neural networks}
-    \citeauthor{Goodfellow-et-al-2016_NN}\cite{Goodfellow-et-al-2016_NN} describes \gls{ann} as an unknown function \textit{\^{f}} that maps an input \textit{x} to an output \textit{y}. The goal is then to approximate some optimal function \textit{f} through learning from examples. In supervised tasks, these examples instructs the output layer exactly how it should perform and what \textbf{y} should look like. Although, the example does not instruct the individual \textit{hidden layers} how to perform to produce this value. When the examples flow through the network, it produces an output \textbf{\^{y}} and is called the \textit{forward-propagation step}. By using an operation called a \textit{loss function} comparing the true \textbf{y} value to \textbf{\^{y}} you get a measurement of the current performance. Using this performance, you step back through the network in a process called \textit{back-propagation} and calculate how each weight and bias in the hidden layers should be adjusted, so the output layer will reproduce the value \textbf{y} of the current example. The value calculated for each parameter is called the gradient. An optimizing algorithm is then applied to adjust all the individual parameters using this gradient, performing \textit{gradient descent}. A widely used algorithm is \textit{stochastic gradient descent}, which is also the one used is this thesis. In what magnitude a parameter is adjusted is tuned through a value called the learning rate, usually less than 1, which decreases the chances of numerical overflow\cite{Goodfellow-et-al-2016_learning_rate} and promotes generalization\cite{wilson2001need_learning_rate}. By repeatedly applying forward-propagation, back-propagation and some optimizing algorithm on new examples as stated by \citeauthor{Goodfellow-et-al-2016_NN}, you train a network to approximate the optimal function \textit{f}.
+    \citeauthor{Goodfellow-et-al-2016_NN}\cite{Goodfellow-et-al-2016_NN} describes \gls{ann} as an unknown function \textit{\^{f}} that maps an input \textit{x} to an output \textit{y}. The goal is then to approximate some optimal function \textit{f} through learning from examples. In supervised tasks, the data instructs the output layer exactly how it should perform and what \textbf{y} should look like. Although, the data does not instruct the individual \textit{hidden layers} how to perform to produce this desired output. When the data flow through the network, it produces outputs \textbf{\^{y}} and is called the \textit{forward-propagation step}. By using a \textit{loss function} comparing the true \textbf{y} values to the estimated values \textbf{\^{y}}, you get a measurement of the network's error. Using this error, you step back through the network in a process called \textit{back-propagation} and calculate a value called the \textit{gradient}. The gradient indicates how each weight and bias in the hidden layers should be adjusted to decrease the networks' error. Using the gradient, an optimizing algorithm (example in section \ref{batch learning}) is applied to adjust all the individual parameters, performing \textit{gradient descent}\cite{Goodfellow-et-al-2016_gradient_descent}. In what magnitude a parameter is adjusted by the optimizing algorithm is tuned through a value called the learning rate, usually less than 1, which decreases the chances of numerical overflow\cite{Goodfellow-et-al-2016_learning_rate} and promotes generalization\cite{wilson2001need_learning_rate}.
     
-    \begin{quote}
+    In classification tasks, the network is trained to output the probability of a class given an input. To do this, \citeauthor{zhou2019mpce_cross_entropy}\cite{zhou2019mpce_cross_entropy} describes that a \textit{soft max} function that calculates the probability of each class with a sum of 1 across all classes as the last layer of a classification \gls{ann}. This probability is then the input to a loss function called \textit{cross entropy}, which calculate a loss based on probabilities. A variant of this function is called weighted cross entropy\cite{ho2019real_weighted_cross_entropy}, and with this you can adjust the weighting different classes have on the calculated loss. It is often used when dealing with class imbalances, and hence in this thesis.
+    
+    %By repeatedly applying forward-propagation, back-propagation and some optimizing algorithm on new examples as stated by \citeauthor{Goodfellow-et-al-2016_NN}, you train a network to approximate the optimal function \textit{f}.
+    
+
+\subsection{Batch learning} \label{batch learning}
+        \begin{quote}
         "\textit{A recurring problem in machine learning is that large training sets are necessary for good generalization, but large training sets are also more computationally
         expensive."} - (\citeauthor{Goodfellow-et-al-2016_SGD}\citeyear{Goodfellow-et-al-2016_SGD}, page 152)
     \end{quote}
     
-    As stated by \citeauthor{Goodfellow-et-al-2016_SGD} i
+    The problem, described in the quote above, arises when you have a large dataset, and you would calculate the loss values of all samples before updating the parameters in your network\cite{Goodfellow-et-al-2016_SGD}. Depending on your hardware, this could lead to a crash or slow learning due to heavy memory demands. A solution is then to choose a number of uniformly chosen examples from the entire dataset forming a \textit{minibatch}, with the intent to approximately estimate the true gradient using this smaller fraction of the dataset. Then you would update the parameters of your network based on this and repeat on a new batch. When you have run this process on all your data, you say that an \textit{epoch} has passed. The size of this minibatch can vary from one example, to hundreds and the size chosen can heavily affect training and is very reliant on a fitting learning rate\cite{wilson2001need_learning_rate}. A widely used optimization algorithm is \textit{\gls{sgd}}\cite{Goodfellow-et-al-2016_SGD}, which utilizes this minibatch form of training. \gls{sgd} is the algorithm used is this thesis.
     
-\subsection{Loss function}
-
-\subsection{Batch learning}
-    things
 \subsection{Regularization}
-    things
-\subsection{Batch-Norm}
-    things
-\subsection{Data-Augmentation}
+    Regularization as described by \citeauthor{kukavcka2017_regularization}\cite{kukavcka2017_regularization} is a small alternation or technique added to the training process that has as goal to make the model generalize better on the validation and test data. This can be applied in different ways, and two used in this thesis will be described here; \textit{batch normalization} and \textit{data-augmentation}.
+    
+\subsubsection{Batch-Norm}
+
+\subsubsection{Data-Augmentation}
     things
 
 \clearpage
@@ -110,7 +113,7 @@
     
     
 \subsection{Convolutional neural network} \label{cnn}
-    The \textbf{\gls{cnn}} are a type of \gls{ann}s that are primarily used in machine learning tasks concerning images\cite{o2015introduction_convolutions}.The need for the convolutional operation stemmed from the fact that images input to a regular \gls{ann} produces a large amount of learnable parameters. An example 512x512 low resolution image with a first layer of 1 neuron would have $1*512*512 = 262144$ weights alone.  To solve this issue and have fewer learnable parameters, the \gls{cnn} is built around 3 main components\cite{o2015introduction_convolutions}:
+    The \textbf{\gls{cnn}} are a type of \gls{ann}s that are primarily used in machine learning tasks concerning images\cite{o2015introduction_convolutions}.The need for the convolutional operation stemmed from the fact that images input to a regular \gls{ann} produces a large amount of learnable parameters. An example 512×512 low resolution image with a first layer of 1 neuron would have $1*512*512 = 262144$ weights alone.  To solve this issue and have fewer learnable parameters, the \gls{cnn} is built around 3 main components\cite{o2015introduction_convolutions}:
     
     \begin{itemize}
         \item A \textbf{convolutional operation} that in \textit{strides} applies the same operation to different regions of the input through the use of a \textit{kernel} and a \textit{receptive field}.
@@ -121,7 +124,7 @@
     \begin{figure}[H]
         \centering
         \includegraphics[scale=0.4]{figures/convolution.png}
-        \caption[Convolutional operation example]{The example input is an image with the color channels red, green and blue. The kernel is of height 3 and width 3, with a depth of 3 to correspond with the input number of channels. The yellow outlined area in the input illustrates the receptive field of the kernel, which produces an example output of 42. More kernels could be applied to increase the dimension of the output(orange). With only the yellow filter, this model would have; $3*3*3$ weights $+ 1$ bias $= 28$ learnable parameters, independent of input image height and width.}
+        \caption[Convolutional operation example]{The example input is an image with the color channels red, green, and blue. The kernel is of height 3 and width 3, with a depth of 3 to correspond with the input number of channels. The yellow outlined area in the input illustrates the receptive field of the kernel, which produces an example output of 42. More kernels could be applied to increase the dimension of the output(orange). With only the yellow filter, this model would have; $3*3*3$ weights $+ 1$ bias $= 28$ learnable parameters, independent of input image height and width.}
       	\medskip 
         \label{convolutional_high_level_fig}
     \end{figure}
@@ -134,17 +137,17 @@
     \begin{figure}[H]
         \centering
         \includegraphics[scale=0.4]{figures/convolutions.png}
-        \caption[Horizontal edge detector example]{Illustration of a \textit{valid} convolutional operation. The kernel is applied repeatedly across the input. The size of input is 6x6, kernel size is 3x3 and stride = 1, resulting in overlapping operations. Resulting in the size of output being 4x4. The figures to the right show the colors for input, kernel and output(activation), where the color gets darker if the values are low. This example is a horizontal edge detector, and the result is large activations along the border between the values of 0 and 10 in the input, which could have been colors in a picture. }
+        \caption[Horizontal edge detector example]{Illustration of a \textit{valid} convolutional operation. The kernel is applied repeatedly across the input. The size of input is 6x6, kernel size is 3x3 and stride = 1, resulting in overlapping operations and output size being 4x4. The figures to the right show the input, kernel and output(activation) as color gradings, where the color gets darker if the values are low. This example is a horizontal edge detector, and the result is large activations in the output along the border between the values of 0 and 10 in the input, which could have been colors in a picture.}
       	\medskip 
         \label{convolutional_fig}
     \end{figure}
     
-    Reductions in the dimensions\cite{o2015introduction_convolutions} will normally occur with the standard convolutions, and this type is called \textit{valid convolutions}. By applying a padding with zeros around the input, you can retain the dimensions of the input. The effect is that more convolutional operations fits in the new padded input, hence larger output size. This is called a \textit{same convolution}. Illustrated in figure \ref{same_convolutional_fig}.
+    Reductions in the spatial size\cite{o2015introduction_convolutions} will normally occur with the standard convolutions, and this type is called \textit{valid convolutions}. By applying a padding with zeros around the input, you can retain the dimensions of the input. The effect is that more convolutional operations fits in the new padded input, hence larger output size. This is called a \textit{same convolution}. Illustrated in figure \ref{same_convolutional_fig}.
     
     \begin{figure}[H]
         \centering
         \includegraphics[scale=0.5]{figures/same_convolutions.png}
-        \caption[Same convolution example]{Illustration of a \textit{same} convolutional operation. The size of the input is 3x3, but after padding with zeros the size is 5x5, kernel size is 3x3 and stride is 1. Resulting in the size of the output being 3x3, hence conserving the input size.}
+        \caption[Same convolution example]{Illustration of a \textit{same} convolutional operation. The size of the input is 3×3, but after padding with zeros the size is 5×5, kernel size is 3×3 and stride is 1. Resulting in the size of the output being 3×3, hence conserving the input size.}
       	\medskip 
         \label{same_convolutional_fig}
     \end{figure}
@@ -163,12 +166,12 @@
     \end{figure}
     
 \subsection{Transposed convolutions}
-    A transposed convolution is an operation performing the opposite operation compared to a regular convolution. This means taking an input and with a similar \textit{kernel} as described earlier in \ref{cnn} and mapping this to a higher spatial size. In example figure \ref{transposed_conv_fig} a 2D 2x2 input is fed to a transposed convolutional layer with kernel size 2x2. The whole kernel is multiplied element wise to the input and proceeds to produce values in a temporary matrix initialized with zeros(empty cells in the figure). The calculated values in the temporary matrix are situated correctly relative to the input. These temporary matrices are then summed over, producing the output. This operation is repeated for all channels, retaining the channels in the input.
+    A transposed convolution is an operation performing the opposite operation compared to a regular convolution\cite{dumoulin2016guide_transposed_convolution}. This means taking an input and with a similar \textit{kernel} as described earlier in \ref{cnn} and now instead map this to a higher spatial size. In example figure \ref{transposed_conv_fig} a 2D 2×2 input is fed to a transposed convolutional layer with kernel size 2×2. The whole kernel is multiplied element wise to the input and proceeds to produce values in a temporary matrix initialized with zeros(empty cells in the figure). The calculated values in the temporary matrix are situated correctly relative to the input. These temporary matrices are then summed over, producing the output. This operation is repeated for all channels, retaining the channels in the input.
     
     \begin{figure}[H]
         \centering
         \includegraphics[scale=0.5]{figures/transpose_convolution.png}
-        \caption[Transposed convolution]{Illustration of the transposed convolution operation with kernel size 2x2 and stride = 1. The green color shows one of the intermediate computations. The center value of each crop is outlined to illustrate the summation step as these overlaps.}
+        \caption[Transposed convolution]{Illustration of the transposed convolution operation with kernel size 2×2 and stride = 1. The green color shows one of the intermediate computations. The center value of each crop is outlined to illustrate the summation step as these overlaps.}
       	\medskip 
         \label{transposed_conv_fig}
     \end{figure}
@@ -235,7 +238,7 @@
             \begin{description}
               \item[$\bullet$ Preprocessor] Preprocesses the ".RAW" and ".WORK" to respectively ".ZARR" and ".PARQUET" files. Since frequencies can have different resolutions, all are re-gridded to the 38kHz frequency.
               \item[$\bullet$ Unet] Using a pretrained deep learning model called Unet it produces pixel based annotations
-              \item[$\bullet$ Bottom detection] Identifies the bottom and generates a pixel based map stored as ".ZARR".
+              \item[$\bullet$ Bottom detection] Identifies the bottom and generates a pixel based map stored as “.ZARR”.
               \item[$\bullet$ Report generation] Takes in the output from the bottom detection, Unet and the preprocessed ".RAW" file and generates a report for the \gls{ices}.
     
             \end{description}

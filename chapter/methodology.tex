@@ -27,7 +27,7 @@
         \end{figure}        
         
         
-    \subsection{The final dataset}
+    \subsection{Data generation}
         With the pseudo labels from section \ref{Pseudo label} I possessed all the components I needed to create my own dataset. Here I will go through my implementation of preprocessing the ".RAW" into a dataset able to be quickly loaded into a deep learning algorithm.
         \clearpage
         \begin{figure}[H]
@@ -39,12 +39,12 @@
         \end{figure}
         The entire process is illustrated in figure \ref{data_generation_flowchart_fig} and starts with the utilization of \gls{crimac} preprocessor module as described in \ref{CRIMAC-pipeline}. This takes in the \textit{.RAW} data and outputs the \gls{sv} data in the \textit{.ZARR} format. From the \gls{sv} data, a crop is then extracted and was checked for any missing values or being located entirely below the seafloor. This was repeated until the algorithm found a crop that did not trigger any of the previous two statements.
         
-        In figure \ref{data_generation_flowchart_fig} the \gls{sv} data were also sent to both the pretrained Unet and bottom detection modules from the \gls{crimac} pipeline. The Unet outputs the pseudo labels and the bottom detection outputs a mask of the seafloor. Then, using the vertical and horizontal coordinates from the \gls{sv} data, a corresponding crop from both the seafloor mask and the pseudo labels were extracted. The two new crops were then used together to remove predictions that appeared under the seafloor, thus cleaning the pseudo labels. The steps explained in this paragraph are also visualized in figure \ref{crop_extract_fig}.
+        In figure \ref{data_generation_flowchart_fig} the \gls{sv} data were also sent to both the pretrained U-Net and bottom detection modules from the \gls{crimac} pipeline. The U-Net outputs pseudo labels and the bottom detection outputs a mask of the seafloor. Then, using the vertical and horizontal coordinates from the \gls{sv} data, a corresponding crop from both the seafloor mask and the pseudo labels were extracted. The two new crops were then used together to remove predictions that appeared under the seafloor, thus cleaning the pseudo labels. The steps explained in this paragraph are also visualized in figure \ref{crop_extract_fig}.
         \clearpage
         \begin{figure}[H]
             \centering
             \includegraphics[scale=0.5]{figures/crop_extract_illustration.png}
-            \caption[Data, label and bottom crop extraction and interaction]{Example of how the data, pseudo labels and bottom crops would look during data generation. For the pseudo label, purple is values of 0 and yellow value of 1. Some predictions under the seafloor are removed.  Size is shown to make it clear that it is a crop of the same size from the same location.}.
+            \caption[Data, label and bottom crop extraction and interaction]{Example of how the data, pseudo labels and bottom crops would look during data generation. For the pseudo label, purple is values of 0 and yellow value of 1. In the pseudo labels, you can see that some predictions under the seafloor are removed.  Size is shown to make it clear that it is a crop of the same size from the same location.}.
           	\medskip 
             \label{crop_extract_fig}
         \end{figure}
@@ -56,18 +56,18 @@
         \begin{figure}[H]
             \centering
             \includegraphics[scale=0.5]{figures/data_hierarki.png}
-            \caption[The data-hierarchy]{An overview of the data hierarchy.}.
+            \caption[The data-hierarchy]{An overview of the data hierarchy. Two main branches, one with the bottom and one without.}.
           	\medskip 
             \label{data_hierarchy_fig}
         \end{figure}
         
         The criterions were based on those stated in the \ref{unet_paper_acoustic} article and can be seen in figure \ref{data_generation_flowchart_fig}. In the previously mentioned article, they had the real annotations to know if there was \textit{sandeel} or instances of the \textit{other} class in a crop. I had to rely on the pseudo labels for the same task, and as these were noisy, I had to counteract this. Hence, I set a filter where 100 of the pixels in the crop had to belong to a single class to satisfy my criteria. If there were not enough pixels of either class, the crop would be set to be "valid" with or without bottom. To mitigate duplicate samples, the criteria would be checked from the top to the bottom of the criterion list and store the crop to disk depending on the first criterion hit.
         
-        The process of generating data from a single year took around 1 to 3 days. This made me decide to not use all the data, but two years was sufficient for my experiment. In dialogue with the \gls{imr} I chose the year 2018 and 2019 as these were recommended. This was because they had few errors associated with them. The final data distribution can be seen in table \ref{data_distribution_table}.
+        The process of generating data from a single year took around 1 to 3 days and close to all capacity on the server. This made me decide to not use all the data, but two years was sufficient for my experiment. In dialogue with the \gls{imr} I chose the year 2018 and 2019 as these were known to have few errors associated with them. The final data distribution can be seen in table \ref{data_distribution_table}.
         
         \clearpage
         \begin{table}[H]
-        \caption{Data distribution.}.
+        \caption[Data distribution]{Data distribution for 2019 and 2018.}.
         \begin{tabular}{|llll|l|l|lllll|l|l}
         \cline{1-5} \cline{7-12}
         \multicolumn{4}{|l|}{\textbf{2018 dataset}}                                             & \% of dataset &  & \multicolumn{5}{l|}{\textbf{2019 dataset}}                                             & \% of dataset &  \\ \cline{1-5} \cline{7-12}
@@ -102,9 +102,9 @@
 Sandeel                                     & 5/26                                      & Random crop containing the sandeel class                                                      \\ \hline
 Other                                       & 5/26                                      & Random crop containing the other class                                                        \\ \hline
 Valid                                       & 1/26                                      & Random crop containing no fish                                                                \\ \hline
-Seafloor + Sandeel                          & 5/26                                      & \begin{tabular}[c]{@{}l@{}}Random crop containing the sandeel class\\ + seafloor\end{tabular} \\ \hline
-Seafloor + Other                            & 5/26                                      & \begin{tabular}[c]{@{}l@{}}Random crop containing the other class\\ + seafloor\end{tabular}   \\ \hline
-Seafloor + Background                       & 5/26                                      & \begin{tabular}[c]{@{}l@{}}Random crop containing no fish\\ + seafloor\end{tabular}           \\ \hline
+Sandeel + bottom                          & 5/26                                      & \begin{tabular}[c]{@{}l@{}}Random crop containing the sandeel class\\ + seafloor\end{tabular} \\ \hline
+Other + bottom                             & 5/26                                      & \begin{tabular}[c]{@{}l@{}}Random crop containing the other class\\ + seafloor\end{tabular}   \\ \hline
+Valid + bottom                        & 5/26                                      & \begin{tabular}[c]{@{}l@{}}Random crop containing no fish\\ + seafloor\end{tabular}           \\ \hline
 \end{longtable}
 
 
@@ -141,20 +141,28 @@ Seafloor + Background                       & 5/26                              
         
         For all experiments, the model architecture was based on the one described in section \ref{unet_paper_acoustic}. The only change to the model was the number of channels in the input layer called "input image" with a value of 4 in figure \ref{unet_fig}. This would range from 1 to 6 to accommodate the tests.
         
-        The data for all models would be identical. This meant the training, validation and test data would all be presented to the models in the same sequence with the same augmentations. This was to establish reproducibility and easier comparison between models as I could judge their performance on the same samples.
+        To evaluate the performance of the models, I utilized the F1 score mentioned in section \ref{f1_score}. I also included the precision and recall, as these are interesting values to discuss and gives greater insight.
         
-        To evaluate the performance of the models, I utilized the F1 score mentioned in section \ref{f1_score}. I also included the precision and recall, as these are interesting values to discuss. Performance will hence forth be listed as three values in this manner:
-            \begin{equation} \label{performance_metric}
-                (Precision, Recall, F1-score)
-            \end{equation}
-        
-    \subsection{Experiment: Training on pseudo labels}
-      This was a preliminary test to establish that training a model on pseudo labels was possible and would achieve acceptable performance. All frequencies would be included, and this would then produce a baseline performance for the later experiments. 
+    %\subsection{Experiment: Training on pseudo labels}
+    %  This was a preliminary test to establish that training a model on pseudo labels was possible and would achieve acceptable performance. All frequencies would be included, and this would then produce a baseline performance for the later experiments. 
     
     \subsection{Experiment: Exhaustive frequency search}
-        This experiment would see all combinations of all frequencies being tested. 
-
-
+        To find the most impactful frequencies and try to discover hidden synergies between them, a comprehensive test had to be enacted. This experiment would see all combinations of all frequencies being tested. A total of 5 separate tests would be run to reduce variance in the results. Each would have different random state seeds set to enable different model initialization, but mainly the data would not be identical due to the new sequence loaded and augmentations applied. The random state also accommodates reproducibility. With 6 frequencies in total, the amount of possible combinations for each of the 5 testes would be 63, as the order did not matter.
+        
+        I observed that the year 2019 in table \ref{data_distribution_table} had the most data, and this was to be the one used during training. 70\% was to be training data, and 30\% as validation data. The 2018 dataset was set as the test data. The total amount of data was 5,000 batches. With a batch size of 16 this corresponds to 80,000 samples ($5,000 * 16$). This was the same amount as used in the \gls{crimac} U-Net model (section \ref{unet_paper_acoustic})
+        
+        Logging of metrics would occur at different stages during the training process;
+            \begin{itemize}
+                \item Every 100 minibatch: Record training loss.
+                \item Every 500 minibatch: Run model on 100 batches from the validation data, plot one sample output, its label and record validation loss. Also, calculate F1-score on both training and validation data for every class, and add the historical F1-scores for the sandeel class to the plot. 
+            \end{itemize}
+    
+        As the logging and random state was equal for all combinations internal in a test, this would create good comparison illustrations. The metrics loss and F1-score would give an indication towards convergence, over-/under-fitting problems and performance.
+        
+        After the training of the current combination, the network would be evaluated on 500 batches from the test data, but without any noise added through augmentation. Vertical flipping would still occur. Finally, the F1-score, precision and recall would be calculated for each class and logged in a \textit{.csv} file. Then the next combination would start the entire process afresh with training.
+        
+        
+        
     \subsection{Experiment: Greedy-search frequencies - Decreasing amount}
         This experiment will look into the performance of a model that both trains and predicts on data containing sequentially fewer frequencies. 
         
