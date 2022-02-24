@@ -1,40 +1,53 @@
 \chapter{Methodology}
+    Through this chapter, I will describe how I generated my dataset and conducted my experiments. 
+
     \section{Pseudo labels} \label{Pseudo label}
         Due to the bitmap errors mentioned in \ref{bitmap_error} I did not have access to the same labels that were used in the original work \ref{unet_paper_acoustic} and had to find an alternate solution. This came to be based on what is called pseudo labels. In meetings with the \gls{imr} we came up with the idea to use the output of the model used in \ref{unet_paper_acoustic} as my labels. The reasoning were that the models' performance were assessed to be sufficient for my task. I was then able to create labels for all my data.
         
-        This would mean that the labels would consist of predictions produced from the four frequencies used in article \ref{unet_paper_acoustic}, namely; 18kHz,38kHz,120kHz and 200kHz. These values were a segmentation map of probabilities in the range [0,1], and so I applied a threshold of 0.8 to convert the values below to 0 and above to 1. Hence, producing a mask for each class \textit{sandeel}, \textit{other} and \textit{background}. Due to the weighted cross-entropy loss used during training of the model seen in section \ref{unet_paper_acoustic} the background class were usually noisy. This was because the weighting caused the model to care less about classifying the background correctly, two samples in figure \ref{data sample fig} illustrates this.
+        This would mean that the labels would consist of predictions produced from the four frequencies used in article \ref{unet_paper_acoustic}, namely; 18kHz,38kHz,120kHz and 200kHz. These values were a segmentation map of probabilities in the range [0,1], and so I applied a threshold of 0.8 to convert the values below to 0 and above to 1. Hence, producing a mask for each class \textit{sandeel}, \textit{other} and \textit{background}. 
         
         \clearpage
         \begin{figure}[H]
-            \centering
-            \includegraphics[scale=0.32]{figures/data_sample.png}
-          	\includegraphics[scale=0.32]{figures/data_sample_noisy.png}
-            \caption[Example pseudo label]{Two examples of pseudo labels by row. Purple is values 0 zero and yellow is 1. The upper row illustrates a low noise sample, while the sample in the lower row contains more noise, especially in the background annotations.}
-            \label{data sample fig}
-        \end{figure}        
+        \centering
         
+        \subfloat[Low noise label.]{
+        	\label{subfig:correct}
+        	\includesvg[inkscapelatex=false,width=0.9\textwidth,keepaspectratio]{figures/data_sample.svg}}
+        	%\includegraphics[width=1\textwidth]{figures/data_sample.png} } 
+        
+        \subfloat[High noise background label.]{
+        	\label{subfig:notwhitelight}
+        	\includesvg[inkscapelatex=false,width=0.9\textwidth,keepaspectratio]{figures/data_sample_noisy.svg}}
+        
+        
+        \caption{An example pseudo label displaying the mask of all three classes present in a 256x256 crop. The upper (a) without much noise in the background and the lower (b) containing severe noise.}
+        \label{data sample fig}
+        
+        \end{figure}
+        These labels will contain some noise, as the model they originate from was not perfect. In the next section, I will explain how I handled this. Due to the weighted cross-entropy loss used during training of the model seen in section \ref{unet_paper_acoustic} the background class were usually very noisy. This was because the weighting caused the model to care less about classifying the background correctly, two samples in figure \ref{data sample fig} illustrates this. As I was to use the same weighting, this did not pose a large problem but explains noise in later illustrations of the background class, and therefore mentioned.
+
         
     \subsection{Data generation}
-        With the pseudo labels, I possessed all the components I needed to create my own dataset. Here I will go through my implementation of preprocessing the ".RAW" into a dataset able to be quickly loaded into a deep learning algorithm.
+        With the pseudo labels, I possessed all the components I needed to create my own dataset. Here I will go through my implementation of preprocessing the \textit{.raw} data into a dataset able to be quickly loaded into a deep learning algorithm.
         
         \begin{figure}[H]
             \centering
-            \includegraphics[scale=0.75]{figures/flow_data_gen.png}
-            \caption[Data generation process]{An overview of the data generation process. CRIMAC pipeline modules (black), data.raw (blue), SV data.zarr (green), pseudo labels.zarr (yellow), bottom.zarr (red) and the finished file.pytorch (gray)}
+            \includesvg[inkscapelatex=false,width=0.8\textwidth,keepaspectratio]{figures/flow_data_gen.svg}
+            %\includegraphics[scale=0.75]{figures/flow_data_gen.png}
+            \caption[Data generation process]{An overview of the data generation process. CRIMAC pipeline modules (black), data.raw (blue), SV data.zarr (green), pseudo labels.zarr (yellow), bottom.zarr (red) and the finished file.pytorch (gray).}
           	\medskip 
             \label{data_generation_flowchart_fig}
         \end{figure}
         
-        The entire process is illustrated in figure \ref{data_generation_flowchart_fig} and starts with the utilization of \gls{crimac} preprocessor module as described in \ref{CRIMAC-pipeline}. This takes in the \textit{.raw} data and outputs the \gls{sv} data in the \textit{.zarr} format. The \gls{sv} data were also sent to both the pretrained U-Net and bottom detection modules from the \gls{crimac} pipeline. The U-Net outputs pseudo labels, and the bottom detection outputs a mask of the seafloor, both to be used later.
+        The entire process is illustrated in figure \ref{data_generation_flowchart_fig} and starts with the utilization of \gls{crimac} preprocessor module as described in \ref{CRIMAC-pipeline}. This takes in the entire \textit{.raw} dataset and outputs the \gls{sv} data in the \textit{.zarr} format as a single large array. The \gls{sv} were then sent to both the pretrained U-Net and bottom detection modules from the \gls{crimac} pipeline. The U-Net outputs pseudo labels, and the bottom detection outputs a mask of the seafloor, as arrays equal to the \gls{sv} data array.
         
-        From the \gls{sv} data generated, a crop is extracted and was checked for any missing values or the crop being located entirely below the seafloor. This was repeated until the algorithm found a crop that did not trigger any of the previous two statements.
-        
-        Then, using the vertical and horizontal coordinates from the \gls{sv} data, a corresponding crop from both the seafloor mask and the pseudo labels were extracted. The two new crops were then used together to remove predictions that appeared under the seafloor, thus cleaning the pseudo labels. The steps explained in this paragraph are also visualized in figure \ref{crop_extract_fig}.
+        From the \gls{sv} dataset generated, a non-overlapping crop were extracted and was checked for any missing values or the crop being located entirely below the seafloor. This was repeated until the algorithm found a crop that did not trigger any of the previous two statements. Then, using the vertical and horizontal coordinates from the \gls{sv} data, a corresponding crop from both the seafloor mask and the pseudo labels were extracted, as the array sizes matched. The two new crops were then used together to remove predictions that appeared under the seafloor, thus cleaning the pseudo labels. The steps explained in this paragraph are also visualized in figure \ref{crop_extract_fig}.
         \clearpage
         \begin{figure}[H]
             \centering
-            \includegraphics[scale=0.5]{figures/crop_extract_illustration.png}
-            \caption[Data, label and bottom crop extraction and interaction]{Example of how the data, pseudo labels and bottom crops would look during data generation. For the pseudo label, purple is values of 0 and yellow value of 1. In the pseudo labels, you can see that some predictions under the seafloor are removed.  Size is shown to make it clear that it is a crop of the same size from the same location.}.
+            %\includegraphics[scale=0.5]{figures/crop_extract_illustration.png}
+            \includesvg[inkscapelatex=false,width=0.9\textwidth,keepaspectratio]{figures/crop_extract_illustration.svg}
+            \caption[Data, label and bottom crop extraction and interaction]{Example of how the data, pseudo labels and bottom crops would look during data generation. For the pseudo label, purple is values of 0 and yellow value of 1. In the pseudo labels, you can see that some predictions under the seafloor are removed.  Size is shown in the lower-left corner to make it clear that it is a crop of the same size from the same location, but from different arrays.}.
           	\medskip 
             \label{crop_extract_fig}
         \end{figure}
@@ -45,15 +58,16 @@
         %\clearpage
         \begin{figure}[H]
             \centering
-            \includegraphics[scale=0.5]{figures/data_hierarki.png}
+            %\includegraphics[scale=0.5]{figures/data_hierarki.png}
+            \includesvg[inkscapelatex=false,width=0.6\textwidth,keepaspectratio]{figures/data_hierarki.svg}
             \caption[The data-hierarchy]{An overview of the data hierarchy. Two main branches, one with the bottom and one without.}.
           	\medskip 
             \label{data_hierarchy_fig}
         \end{figure}
         
-        The criterions were based on those stated in the \ref{unet_paper_acoustic} article and can be seen in figure \ref{data_generation_flowchart_fig}. In the previously mentioned article, they had the real annotations to know if there was \textit{sandeel} or instances of the \textit{other} class in a crop. I had to rely on the pseudo labels for the same task. Since these labels could be noisey, I set a filter where 100 of the pixels in the crop had to belong to a single class to satisfy my criteria. If there were not enough pixels of either class, the crop would be set to be “valid” with or without bottom. \textit{Valid} can hence forth be thought of as synonymous with “background”. To mitigate duplicate samples, the criteria would be checked from the top to the bottom of the criterion list and store the crop to a folder depending on the first criterion hit.
+        The criterions were based on those stated in the \ref{unet_paper_acoustic} article and can be seen in figure \ref{data_generation_flowchart_fig} in a box in the lower-right corner. In the previously referenced article, they had the real annotations to know if there was \textit{sandeel} or instances of the \textit{other} class in a crop. I had to rely on the pseudo labels for the same task. Since these labels could be noisey, I set a filter where 100 of the pixels in the crop had to belong to a single class to satisfy my criteria. If there were not enough pixels of either class, the crop would be set to be \textit{valid}. \textit{Valid} can hence forth be thought of as synonymous with \textit{background}. The crop from the bottom was checked to see if any bottom was present, splitting the data into folders with or without bottom. To mitigate duplicate samples, the criteria would be checked from the top to the bottom of the criterion list and store the crop to a folder depending on the first criterion hit.
         
-        The loop extracting crops from the \gls{sv} data would continue until the end of the \textit{.zarr} file. The process of generating data from a single year took around 1 to 3 days and close to all capacity on the server. Due to these issues, I chose two years as my dataset. In dialogue with the \gls{imr} I chose the year 2018 and 2019 as these were known to have few errors associated with them. The final data distribution can be seen in table \ref{data_distribution_table}.
+        The loop extracting crops from the \gls{sv} data would continue until the end of the \gls{sv} dataset \textit{.zarr} file.  The process of generating data from a single year took around 1 to 3 days and close to all capacity on the server. Due to these issues, I chose two years as my dataset. In dialogue with the \gls{imr} I chose the year 2018 and 2019 as these were known to have few errors associated with them. The final data distribution can be seen in table \ref{data_distribution_table}.
         
         %\clearpage
         \begin{table}[H]
@@ -72,21 +86,21 @@
         \label{data_distribution_table}
         \end{table}
         
-        From the table \ref{data_distribution_table} I observed that as in article \ref{unet_paper_acoustic} most of the data will contain no fish, here represented as “valid”.
+        From the table \ref{data_distribution_table} I observed that as in article \ref{unet_paper_acoustic} most of the data will contain no fish, here represented as \textit{valid}.
 
 \clearpage
 \section{Experiments}
-    The experiments revolved around manipulating the number of frequencies given as input to the model. In this section, I will describe how my experiments were performed and my thought process around evaluation performance. 
+    The experiments revolved around manipulating the number of frequencies given as input to the model and then evaluate performance. In this section, I will describe how my experiments were performed and my thought process around evaluation performance. 
     
     \subsection{Experiment settings} \label{Experiment settings}
-        All models are based on the one created in article \ref{unet_paper_acoustic}. In this section, all settings are summaries, and stay the same for all experiments.
+        All models are based on the one created in article \ref{unet_paper_acoustic}. In this section, all settings are summarized, and stay the same for all experiments.
         The architecture itself can be seen in figure \ref{unet_fig}, with the only alternation being the number of channels in the input layer. This would range from 1…6 channels, being the number of frequencies included. 
         
         Data loaded to the model started with first selecting a folder from the hierarchy as seen in table \ref{Data_loading_scheme_table},with a set probability for each. Then a sample would be extracted at random from this folder. 
         
         %\clearpage
         \begin{longtable}{lcl}
-            \caption[Data loading scheme]{The sample classes correspond to the hierarchy described in figure \ref{data_hierarchy_fig}. Each is given a probability of being picked target folder for sample extraction.}
+            \caption[Data loading scheme]{The sample classes correspond to the hierarchy described in figure \ref{data_hierarchy_fig}. Each is given a probability of being the target folder for sample extraction.}
             \\\hline
             \multicolumn{1}{|l|}{\textbf{Sample class}} & \multicolumn{1}{l|}{\textbf{Probability}} & \multicolumn{1}{l|}{\textbf{Details}}                                                         \\ \hline
             \endfirsthead
@@ -103,7 +117,7 @@
             \label{Data_loading_scheme_table}
         \end{longtable}
 
-        The augmentations performed was flipping along the vertical axis, and random a multiplicative noise to 5\% of pixels in an input echogram. Then the echogram would be converted to the decibel scale with cutoff values at minimum -75db and maximum 0db. Augmentations are summaries in table \ref{data_augmentation_table}.
+        The augmentations performed was flipping along the vertical axis, and random a multiplicative noise to 5\% of pixels in an input echogram. Then the echogram would always be converted to the decibel scale, with cutoff values at minimum -75db and maximum 0db. Augmentations are summaries in table \ref{data_augmentation_table}.
         
         %\clearpage
         \begin{longtable}{lll}
@@ -115,8 +129,8 @@
             %
             \endhead
             %
-            \textit{Add noise to 5\% of pixels.}      &       & 50\% of happening upon loading sample \\ \hline
-            \textit{Flip along vertical axis}        &       & 50\% of happening upon loading sample \\ \hline
+            \textit{Add noise to 5\% of pixels.}      &       & 50\% of occurring upon loading sample \\ \hline
+            \textit{Flip along vertical axis}        &       & 50\% of occurring upon loading sample \\ \hline
             \textit{Convert to decibel scale}        &       & Min -75db, max 0db                    \\ \hline
             \label{data_augmentation_table}
         \end{longtable}
@@ -124,9 +138,9 @@
         The hyperparameters used during training are summarized in table \ref{hyperparameter_table}.
 
         \begin{longtable}{lll}
-            \label{hyperparameter_table}
+            
             \caption[Experiment hyperparameters]{Settings for all hyperparameters used during the training.}\\
-            \hline
+            \\ \hline
             \multicolumn{1}{|l|}{\textbf{Hyperparameters}} & \multicolumn{1}{l|}{\textbf{Value/ Category}} & \multicolumn{1}{l|}{\textbf{Details}}                                                 \\ \hline
             \endfirsthead
             %
@@ -138,15 +152,16 @@
             \textit{Momentum:}                              & 0.95                                          &                                                                                       \\ \hline
             \textit{Batch size:}                            & 16                                            &                                                                                       \\ \hline
             \textit{Crop size:}                             & 256×256                                       & \begin{tabular}[c]{@{}l@{}}Include all \\ available channels\end{tabular}             \\ \hline
+        \label{hyperparameter_table}
         \end{longtable}
 
 
 
 
         
-        For all experiments, the model architecture was based on the one described in section \ref{unet_paper_acoustic}. The only change to the model was the number of channels in the input layer called “input image” with a value of 4 in figure \ref{unet_fig}. This would range from 1 to 6 to accommodate the tests.
+        For all experiments, the model architecture was based on the U-Net described in section \ref{unet_paper_acoustic}. The only change to the model was the number of channels in the input layer called “input image” with a value of \textbf{4} in figure \ref{unet_fig}. This would range from 1 to 6 to accommodate the currently tested frequencies.
         
-        To evaluate the performance of the models, I utilized the F1 score mentioned in section \ref{f1_score}. I also included the precision and recall, as these are interesting values to discuss and gives greater insight.
+        To evaluate the performance of the models, I utilized the F1 score mentioned in section \ref{f1_score}. I also included the precision and recall, as these are provided greater insight to the model's performance.
         
     %\subsection{Experiment: Training on pseudo labels}
     %  This was a preliminary test to establish that training a model on pseudo labels was possible and would achieve acceptable performance. All frequencies would be included, and this would then produce a baseline performance for the later experiments. 
@@ -154,27 +169,22 @@
     \subsection{Experiment: Exhaustive frequency search}
         This experiment's goal is to answer the research question:
         \begin{itemize}
-            \item \textit{"As a lightweight vessel do not have the structural capacity to carry all the six echo sounders the \gls{imr} usually deploy, which ones should be prioritized when looking for sand eel?”}
+            \item \textit{“As a lightweight vessel do not have the structural capacity to carry all the six echo sounders the \gls{imr} usually deploy, which ones should be prioritized when classifying sand eel in acoustic data?”}
         \end{itemize}
     
-        To find the most impactful frequencies and try to discover hidden synergies between them, a comprehensive test had to be enacted. This experiment would see all combinations of all frequencies being tested. The experiment would be run 5 times so to take the mean of the results,  reducing variance, and be able to display some statistical data for each. Each would have different random state seeds set to enable different model initialization, but mainly the data and augmentations would not be identical. The random state also accommodates reproducibility. With 6 frequencies in total, the amount of possible combinations for each of the testes would be 63, as the order did not matter.
+        To find the most impactful frequencies and try to discover hidden synergies between them, a comprehensive test had to be enacted. This experiment would see all combinations of all frequencies being tested. The experiment would be run 5 times so to take the mean of the results,  reducing variance, and be able to display some statistical data for each. Each would have different random state seeds set to enable different model initialization, but mainly the data and augmentations would not be identical. The random state also accommodates reproducibility. With 6 frequencies in total, the amount of possible combinations for each of the testes would be 63, as the order did not matter and the combination with 0 frequencies was excluded.
         
-        I observed that the year 2019 in table \ref{data_distribution_table} had the most data, and this was to be the one used during training. 70\% was to be training data, and 30\% as validation data. The 2018 dataset was set as the test data. The total amount of data was 5,000 batches. With a batch size of 16 this corresponds to 80,000 samples ($5,000 * 16$). This was the same amount as used in the \gls{crimac} U-Net model (section \ref{unet_paper_acoustic})
+        I observed that the year 2019 in table \ref{data_distribution_table} contained the most data, and this was to be the one used during training. 70\% was to be training data, and 30\% as validation data. The 2018 dataset was set as the test data. The total amount of data given to a model during training was set to 5,000 batches. With a batch size of 16 this corresponds to 80,000 samples ($5,000 * 16$). This was the same amount as used in the \gls{crimac} U-Net model (section \ref{unet_paper_acoustic})
         
         Logging of metrics would occur at different stages during the training process;
             \begin{itemize}
                 \item Every minibatch: Calculate running average training loss.
                 \item Every minibatch: Logg the running average for both training and validation loss.
-                \item Every 500 minibatch: Run model on 100 batches from the validation data, plot one sample output, its label and record running validation loss on each minibatch. Furthermore, calculate F1-score on both training and validation data for every class, and add the historical F1-scores for the sandeel class to the plot. 
+                \item Every 500 minibatch: Run model on 100 batches from the validation data, plot one sample output, its label and record running validation loss on each minibatch. Furthermore, calculate F1-score on both training and validation data for every class.
             \end{itemize}
-        To accommodate this logging scheme, I split the training process into 50 epochs, with 100 batches in each. This epoch only related to the logging scheme, and not to the data itself. Hence, each epoch is not the entire dataset, but a part of a sequence of data.
+        To accommodate this logging scheme, I split the training process into 50 epochs, with 100 batches in each. This epoch only related to the logging scheme, and not to the data itself. Hence, each epoch is not the entire dataset, but a part of a sequence of data. This is mentioned to not confuse the reader observing the results.
     
-        As the logging and random state was equal for all combinations internal in a test, this would create good comparison illustrations. The metrics loss and F1-score would give an indication towards convergence, over-/under-fitting problems and performance. A sanity check would also be performed by looking at prediction of sandeel. This would be done in the following manner:
-        \begin{itemize}
-            \item Convergence, by observing the loss stabilizing.
-            \item Over- or under-fit issues by watching for mismatch in loss or F1 score when comparing metrics from training and validation.
-            \item Sanity check, by plotting output and the corresponding label.
-        \end{itemize}
+        As the logging and random state was equal for all combinations internal in a test, this would create good comparison illustrations of how each combination performed on the same sample. The metrics loss and F1-score would give an indication towards convergence, over-/under-fitting problems and performance. A sanity check would also be performed by observing a prediction of the sandeel class.
         
         After the training of the current combination, the network would be evaluated on 500 batches from the test data, but without any noise added through augmentation. Finally, the F1-score, precision and recall would be calculated for each class and logged in a \textit{.csv} file. Then the next combination would start the entire process afresh with training.
         
@@ -182,10 +192,6 @@
         \begin{itemize}
 
             \item Greedy search among the best frequency combinations per number of frequencies possible. For example; The best from all combinations of three frequencies. One greedy search based on each metric; f1-score, precision, and recall.
-            \item To observe how unique the performance was for each combination, a plot to illustrate the statistical properties of each will be presented. This will be shown as an error bar around the mean value of the combination. The top of the bar is the max F1-score achieved, and the bottom is the minimum. I chose this presentation because I judged that too few tests had been run for a proper standard deviation to be calculated.
+            \item To observe how unique the performance was for each combination, a plot to illustrate the statistical properties of each will be presented. This will be shown as an error bar, the top of the bar is the max F1-score achieved, and the bottom is the minimum. I chose this presentation because I judged that too few tests had been run for a proper standard deviation to be calculated.
             \item The performance trend of each frequency. This meant I would, for all frequencies, filter out those sets it was a part of and sort these in increasing order. This would produce a line-plot illustrating what performance scores this frequency contributes to and its overall trend.
         \end{itemize}
-        
-    
-        
-
