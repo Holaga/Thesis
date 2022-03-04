@@ -1,12 +1,5 @@
 \chapter{Background}
 
-\section{The sandeel}
-    
-
-\section{The sandeel survey and acoustic data} \label{acoustic_data}
-    things
-
-
 \section{Machine Learning} \label{Machine Learning}
     As described in the book Deep Learning\cite{Goodfellow-et-al-2016_ML} machine learning can intuitively be split into four parts; The algorithm, empirical data, a task and a performance measure. A machine learning algorithm can then be identified as an algorithm that increases its performance on a task, given data. As this happens, the algorithm is said to be learning. The task itself and the data the algorithm is given may vary. This is why we can approximately divide the machine learning approaches into three categories\cite{Goodfellow-et-al-2016_E}: supervised learning, unsupervised and reinforcement learning. 
     
@@ -28,14 +21,47 @@
         things
     \subsection{Bias - variance tradeoff}
         things
+        
     \subsection{Model evaluation}
-        things
+        In this section, I will describe the tools used to measure my models performances. This can be used to select the best model from a list of models, or gain more insight into the behavior of each or discover errors in the training process.
     \subsubsection{Train-Val-Test split}
-        things
+        The goal, when a machine learning model is learning, is to achieve the lowest \textit{generalization error} \cite{Goodfellow-et-al-2016_generalization}. This means to not only perform well on data from the current dataset, but also on a new dataset. To measure this, it is normal to split your data into three parts\cite{Goodfellow-et-al-2016_train_val_test_split}. First the \textit{training} dataset, which will be used in various ways to achieve a low \textit{training error} and is used during learning. The next part, called the \textit{validation} dataset, is drawn from the training dataset and performance on this is an estimate of the generalization error and have many utilities that will be explained later in this thesis. The final and third part is called the \textit{test} dataset and are not touched throughout the training process. It is on this test dataset that the true \textit{generalization error} of a model is calculated. 
     \subsubsection{F1-score, Precision, Recall} \label{f1_score}
-        things
-    \subsubsection{Hyperparameter-search}
-        things
+        To explain the measurement of a classification model's performance, I will do it by looking into a binary classification system that classifies samples into either the \textit{positive} or \textit{negative} class\cite{powers2020evaluation_f1_recall_precision}. The predictions from this system can then be sorted as follows:
+        
+        \begin{itemize}
+            \item \textbf{True positive (TP):} A correct classification of a positive example.
+            \item \textbf{True negative (TN):} A correct classification of a negative example.
+            \item \textbf{False positive (FP):} Predicted the positive class, but it was actually negative.
+            \item \textbf{False negative (FN):} Predicted the negative class, but it was actually positive.
+            \end{itemize}
+        
+        We can now calculate a performance from these values, and the simplest is accuracy\cite{powers2020evaluation_f1_recall_precision}:
+        
+        \begin{equation}
+            accuracy = \dfrac{TP+TN}{TP+TN+FP+FN} 
+        \end{equation}
+        
+        This metrics weakness is that is does not handle class imbalance well\cite{powers2020evaluation_f1_recall_precision}, as it is equivalent to calculating the percentage of correct predictions. The example being that if 95\% of the data belongs to one class, then always predicting this class will give you an accuracy of 95\%.
+        
+        To deal with the class imbalance issue, you calculate two new metrics\cite{powers2020evaluation_f1_recall_precision}. First \textit{precision}, which is the percentage of positive predictions made by the model that are actually correct. Secondly, \textit{recall}, which is the percentage of all positive samples the model managed to classify correctly. The formulas are shown below:
+        
+        \begin{equation}
+            \textrm{precision} = \dfrac{TP}{TP+FP}
+        \end{equation}
+        
+        \begin{equation}
+            \textrm{recall} = \dfrac{TP}{TP+FN}
+        \end{equation}
+        
+        Then, by using precision and recall, you calculate the \textit{F1-score}, which is the harmonic mean between them\cite{powers2020evaluation_f1_recall_precision}. It combines these metrics and is designed to work well on imbalanced data. There are other metrics that could be calculated, but those mentioned in this section are the ones used in this work. The F1-score formula:
+        
+        \begin{equation}
+            \textrm{F1-score} = 2 * \dfrac{\textrm{precision} * \textrm{recall}}{\textrm{precision} + \textrm{recall}}
+        \end{equation}
+        
+        
+
 
 \section{Artificial Neural Networks} \label{neural networks}
     In this section, I will introduce the basic components of an \gls{ann} and how these are combined to create a complete network.
@@ -85,10 +111,13 @@
 \section{Training Neural Networks} \label{training neural networks}
     \citeauthor{Goodfellow-et-al-2016_NN}\cite{Goodfellow-et-al-2016_NN} describes \gls{ann} as an unknown function \textit{\^{f}} that maps an input \textbf{x} to an output \textbf{y}. The goal is then to approximate some optimal function \textit{f} through learning from examples. In supervised tasks, the data instructs the output layer exactly how it should perform and what \textbf{y} should look like. Although, the data does not instruct the individual \textit{hidden layers} how to perform to produce this desired output. When the data flow through the network, it produces outputs \textbf{\^{y}}, this is called the \textit{forward-propagation step}. By using a \textit{loss function} comparing the true \textbf{y} values to the estimated values \textbf{\^{y}}, you get a measurement of the network's \textit{error} or also called \textit{loss}. Using this loss, you step back through the network in a process called \textit{back-propagation} and calculate a value called the \textit{gradient}. The gradient is the derivative of the loss with respect to each weight and bias\cite{rumelhart1986learning_backprop}. The gradient indicates how each weight and bias in the hidden layers should be adjusted to decrease the networks' loss. Using the gradient, an optimizing algorithm (example in section \ref{batch learning}) is applied to adjust all the individual parameters, performing \textit{gradient descent}\cite{Goodfellow-et-al-2016_gradient_descent}. In what magnitude a parameter is adjusted by the optimizing algorithm is tuned through a value called the learning rate. The precise formulation is presented later in section \ref{batch learning}.
     
-    In classification tasks, the network is trained to output the probability of a class given an input. To do this, \citeauthor{zhou2019mpce_cross_entropy}\cite{zhou2019mpce_cross_entropy} describes a \textit{softmax} function that calculates the probability of each class with a sum of 1 across all classes as the last layer of a classification \gls{ann}. This probability is then the input to a loss function called \textit{cross entropy}, which calculate a loss based on probabilities. A variant of this function is called weighted cross entropy\cite{ho2019real_weighted_cross_entropy}, and with this, you can adjust the weighting different classes have on the calculated loss. It is often used when dealing with class imbalances, and hence in this thesis.
-        \begin{equation} \label{batch_learning_eq}
-            \Theta = \arg \min_{\Theta}\dfrac{1}{N} \sum^{N}_{i=1} loss (x_{i},\Theta)
+    In classification tasks, the network is trained to output the probability of a class given an input. To do this, \citeauthor{zhou2019mpce_cross_entropy}\cite{zhou2019mpce_cross_entropy} describes a \textit{softmax} function that calculates the probability of each class with a sum of 1 across all classes as the last layer of a classification \gls{ann}. This probability is then the input to a loss function called \textit{cross entropy}, which calculate a loss based on probabilities in this way:
+        \begin{equation} \label{cross_entropy}
+            loss = - \sum^{n}_{i=1} y_{i}\log(\hat{y_{i}})
         \end{equation}
+    
+    where \textit{n} is the number of classes, $y_{i}$ is the true value, and $\hat{y_{i}}$ is the output from the softmax for the $i^{th}$ class. A variant of this function is called \textit{weighted} cross entropy\cite{ho2019real_weighted_cross_entropy}, and with this, you can adjust the weighting different classes have on the calculated loss. It is often used when dealing with class imbalances, and hence in this thesis.
+
     
     %By repeatedly applying forward-propagation, back-propagation and some optimizing algorithm on new examples as stated by \citeauthor{Goodfellow-et-al-2016_NN}, you train a network to approximate the optimal function \textit{f}.
     
@@ -99,7 +128,7 @@
         expensive."} - (\citeauthor{Goodfellow-et-al-2016_SGD}\citeyear{Goodfellow-et-al-2016_SGD}, page 152)
     \end{quote}
     
-    The problem, described in the quote above, arises when you have a large dataset, and you would calculate the loss values of all samples before updating the parameters in your network\cite{Goodfellow-et-al-2016_SGD}. Depending on your hardware, this could lead to a crash or slow learning due to heavy memory demands. A solution is then to choose a number of uniformly chosen examples from the entire dataset forming a \textit{minibatch}, with the intent to approximately estimate the true gradient using this smaller fraction of the dataset. Then you would update the parameters of your network based on this and repeat on a new batch. When you have run this process on all your data, you say that an \textit{epoch} has passed. The size of this minibatch can vary from one example, to hundreds and the size chosen can heavily affect training and is very reliant on a fitting learning rate\cite{wilson2001need_learning_rate}. A widely used optimization algorithm is \textit{\gls{sgd}}\cite{Goodfellow-et-al-2016_SGD}, which utilizes this minibatch form of training. \gls{sgd} is the algorithm used is this thesis. In the more precise from batch learning is formulated as:
+    The problem, described in the quote above, arises when you have a large dataset, and you would calculate the loss values of all samples before updating the parameters in your network\cite{Goodfellow-et-al-2016_SGD}. Depending on your hardware, this could lead to a crash or slow learning due to heavy memory demands. A solution is then to choose a number of uniformly chosen examples from the entire dataset forming a \textit{minibatch}, with the intent to approximately estimate the true gradient using this smaller fraction of the dataset. Then you would update the parameters of your network based on this and repeat on a new batch. When you have run this process on all your data, you say that an \textit{epoch} has passed. The size of this minibatch can vary from one example, to hundreds and the size chosen can heavily affect training and is very reliant on a fitting learning rate\cite{wilson2001need_learning_rate}. A widely used optimization algorithm is \textit{\gls{sgd}}\cite{Goodfellow-et-al-2016_SGD}, which utilizes this minibatch form of training. \gls{sgd} is the algorithm used in this thesis. In the more precise from batch learning is formulated as:
     
         \begin{equation} \label{batch_learning_eq}
             \Theta = \arg \min_{\Theta}\dfrac{1}{N} \sum^{N}_{i=1} loss (x_{i},\Theta)
@@ -111,12 +140,37 @@
     Regularization as described by \citeauthor{kukavcka2017_regularization}\cite{kukavcka2017_regularization} is a small alternation or technique added to the training process that has as goal to make the model generalize better on the validation and test data. This can be applied in different ways, and two used in this thesis will be described here; \textit{batch normalization} and \textit{data-augmentation}.
     
 \subsubsection{Batch-Norm}
+    Batch normalization is a technique applied to reduce what is called \textit{internal  covariate shift}\cite{pmlr-v37-ioffe15_batch_norm}. This is defined as the change in the distribution of activations in \gls{ann}s hidden layers caused by the change in the networks parameters when training. As the hidden layers depend on the activations of all layers before them, this has been shown to slow down and destabilize the training process. The solution to this problem is the implementation of \textit{batch normalization}. By using the activations from all the neurons in a hidden layer, a \textit{mean} and \textit{variance} is calculated, and is done per batch. These values are then used to normalize the activations of the hidden layer, and each hidden layer are given two additional learnable parameters $\gamma$ and $\beta$, that perform a linear transformation of the normalized activations, defined as such:
+    
+        \begin{equation} \label{batch_normalization}
+            \textrm{Batch normalized activations} =   \gamma Z^{(i)}_{norm} + \beta
+        \end{equation}
+    
+    where $Z^{(i)}_{norm}$ is the normalized activations for the $i^{th}$ hidden layer. The learnable parameters make the \gls{ann} able to adjust and shift the distribution through the training process. The result is a faster and more stable training process. 
 
 \subsubsection{Data-Augmentation}
-    things
-
+    The previous regularization method is applied during training, but \textit{data-augmentation} is applied to the data itself\cite{kukavcka2017_regularization}. There are several methods available, but the two used in this work are: \textit{adding noise} and \textit{vertical flipping}. As described in section \ref{acoustic_data}, the acoustic data can contain much noise and have similar properties to image data. \textit{Noise} can then be added to each pixel to simulate real life noise. The \textit{vertical flipping} is a simple yet effective transformation where you flip the input along a certain axis and can be thought of as flipping an image. Both methods make the model generalize better by producing new unseen samples by changing the way the data is represented. The vertical flipping is also justified in this case, as this never change where the seafloor and surface is in an echogram. An example of each method can be seen in figure \ref{data augmentation fig}:
+    
+    \clearpage
+    \begin{figure}[H]
+        \centering
+        
+        \subfloat[Noise.]{
+        	\includesvg[inkscapelatex=false,width=0.9\textwidth,keepaspectratio]{figures/add_noise.svg}}
+        	%\includegraphics[width=1\textwidth]{figures/data_sample.png} } 
+        
+        \subfloat[Vertical flipping.]{
+        	\includesvg[inkscapelatex=false,width=0.9\textwidth,keepaspectratio]{figures/vertical_flip.svg}}
+        
+        
+        \caption[Two data augmentation examples]{Two augmentation methods applied to the same image.}
+        \label{data augmentation fig}
+        
+        \end{figure}
+    
+    
 \clearpage
-\section{Computer vision}
+\section{Computer vision} \label{computer vision}
     \textbf{Computer vision} is a very popular field of research within deep learning\cite{voulodimos2018deep_computer_vision}. This is because it has mainly focused around tasks we humans do naturally, while computers would struggle. This could be facial recognition, object detection and many more. Some work also went beyond human capability, like \citeauthor{davis2014visual_deep_video_audio}s\cite{davis2014visual_deep_video_audio} work, where he recovered sounds from the vibrations they induced in objects captured on video. There are many methods in the field of computer vision, but I will focus on the \gls{cnn}.
     
     
@@ -182,7 +236,7 @@
     \begin{figure}[H]
         \centering
         \includegraphics[scale=0.35]{figures/1x1.png}
-                %\includesvg[inkscapelatex=false,scale=0.3,keepaspectratio]{figures/Bilde1.svg}
+        %\includesvg[inkscapelatex=false,scale=0.3,keepaspectratio]{figures/Bilde1.svg}
         \caption[1x1 convolution]{Illustration of the 1x1 convolution with stride 1.}
       	\medskip 
         \label{1x1_fig}
@@ -234,43 +288,9 @@
     Minor changes were made to adapt\citeauthor{unet_ronneberger2015}s original U-Net to the acoustic data used in \ref{unet_paper_acoustic}, as the input now had the form 4 x 256 x 256. The four channels being the frequencies used. The convolutions were set to \textit{same} instead of \textit{valid}, as were the original setting. This was done to make the size of the input and output match. Further, batch normalization was added to each convolution. 
     
 
-% Unsure if this is to be here, in methodology or appendix.
-\clearpage
-\section{The data and tools}
-    The data was provided by the \gls{imr} and I had access to a broad selection of yearly trawl cruises spanning from 2011 to 2020. In this chapter, I will delve into the data itself to give you a clearer picture of how it looked, how I acquired it and what tools I utilized.
-    
-    \subsection{The data provided (.RAW)}
-        The files were initially presented to me as ".RAW" \cite{raw} and ".WORK" files. ".RAW" is the uncompressed raw output from the echo sounder. The same format is used by cameras before they are converted to, for example, ".JPEG". Because they are uncompressed, they do not lose any data. Unfortunately, this also makes them large. The ".WORK" files are the annotations of the ".RAW" files done by operators using a system called the \Gls{lsss}\cite{lsss}. The data from 2020 alone which spanned three months took 240 GB of storage space and stored on a remote server.
-        
-        SJEKK DATAEKSEMPEL!
-    \subsection{Windows Azure}
-        Windows Azure \cite{azure} is a platform owned by Microsoft that provides cloud solutions for several services. My use was to access a remote storage provided by the \gls{imr} and mount this to my local computer. Thus enabling me to download the data for this thesis from \gls{imr}s server. 
-    
-    \subsection{Docker}
-        Docker \cite{docker} is an open-source platform that provides what they call containerization and is owned by the company under the same name, Docker, Inc. If you are familiar with virtual machines, then containerization will be very familiar to you. Docker is based on the Linux kernel, and enables you to create a container, which is an independent process that uses resources from the main instance. For each container, you can manage its own dependencies like programming languages and libraries. These containers can then be shared with others as images files, and as they can be run without the receiver having to manage the aforementioned dependencies as this is built into the image. Thus, you can make an application or code easily accessible for other people, as long as they have installed Docker.
-        
-    \subsection{Zarr}
-        By using the ".ZARR" \cite{zarr} format, you gain access to store chunked compressed  multidimensional arrays. There are several highlights from this library, but I used primarily the ability to access the arrays on disk. This means I did not need to load the entire array into memory and could work with the array and access parts of it without hardware limitations.
-        
-    \subsection{CRIMAC-pipeline} \label{CRIMAC-pipeline}
-        Together, the \gls{nr} and the \gls{imr} developed a pipeline\cite{crimac_pipeline} to classify the acoustic backscatter in echo sounder data under a project called \gls{crimac}. This was part of the work described earlier in \ref{unet_paper_acoustic} and is accessed by using docker. They also provide the image for a container to access the data through Azure.
-        
-        The pipeline is run using one docker container, which in turn downloads and runs four others:
 
-            \begin{description}
-              \item[$\bullet$ Preprocessor] Preprocesses the \textit{.zarr} and \textit{.work} to respectively \textit{.zarr} and \textit{.parquet} files. Since frequencies can have different resolutions, all are re-gridded to the 38kHz frequency.
-              \item[$\bullet$ Unet] Using a pretrained deep learning model called UNet it produces pixel-based annotations.
-              \item[$\bullet$ Bottom detection] Identifies the bottom and generates a pixel-based map stored as \textit{.zarr}.
-              \item[$\bullet$ Report generation] Takes in the output from the bottom detection, Unet and the preprocessed \textit{.zarr} file and generates a report for the \gls{ices}.
-    
-            \end{description}
 
-        The Unet, bottom detection and preprocessing is the same as described in section \ref{unet_paper_acoustic}.
+        
 
-    \subsection{Xarray}
-        Xarray\cite{xarray} is a Python package that is made for working with multidimensional arrays. It is based on NumPy and adds labels in the form of attributes and coordinates on top of the NumPy-arrays. This was the library I used for accessing and working more efficiently with the \textit{.zarr} arrays, as I was already very familiar with NumPy.
-        
-        
-    \subsection{Pytorch} \label{Pytorch}
     
     
