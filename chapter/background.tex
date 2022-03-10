@@ -1,5 +1,31 @@
 \chapter{Background}
 
+\section{Acoustic data}
+    This section will explain the basics behind acoustic data, and how it has similar properties to image data. This important to understanding in relation to the machine learning techniques explained later in this chapter. 
+    
+    Echo sounders are a maritime instrument which induces acoustic waves into the water and logs the backscattered soundwaves\cite{brautaset2020acoustic}. A single emission is called a ping, and is stored is stored as values. In acoustic trawl missions, the multi-frequency echo sounders are mounted on ships and pings on all frequencies chosen for the mission at the same time, with a set interval, and records while traversing an area of interest. As a result, you create what is called an \textit{echogram} which is the representation of the backscattered acoustic waves' encoded as  per frequency. Range is equivalent to \textit{depth}. The frequencies in an echogram can be viewed as the color channels in a picture, each a different representation of the same context. Hence, enabling machine learning techniques to be applied to \textit{echograms}. Below is an example:
+    
+    
+    \begin{figure}[H]
+        \centering
+        
+        \subfloat[Frequency channels that form an echogram. This example show the \gls{sv} per pixel, on the log scale.]{
+        	\includesvg[inkscapelatex=false,width=0.4\textwidth,keepaspectratio]{figures/freq_stacked.svg}}
+        	%\includegraphics[width=1\textwidth]{figures/data_sample.png} } 
+        
+        \subfloat[Color channels RGB that forms a picture.]{
+        	\includesvg[inkscapelatex=false,width=0.9\textwidth,keepaspectratio]{figures/colors_and_OG.svg}}
+        
+        
+        \caption[Frequency channels and color channels]{How data from echo sounders relate to image data.}
+        \label{accoustic data and color channels fig}
+        
+        \end{figure}
+    
+    
+    
+    
+    
 \section{Machine Learning} \label{Machine Learning}
     As described in the book Deep Learning\cite{Goodfellow-et-al-2016_ML} machine learning can intuitively be split into four parts; The algorithm, empirical data, a task and a performance measure. A machine learning algorithm can then be identified as an algorithm that increases its performance on a task, given data. As this happens, the algorithm is said to be learning. The task itself and the data the algorithm is given may vary. This is why we can approximately divide the machine learning approaches into three categories\cite{Goodfellow-et-al-2016_E}: supervised learning, unsupervised and reinforcement learning. 
     
@@ -24,7 +50,7 @@
         
     \subsection{Model evaluation}
         In this section, I will describe the tools used to measure my models performances. This can be used to select the best model from a list of models, or gain more insight into the behavior of each or discover errors in the training process.
-    \subsubsection{Train-Val-Test split}
+    \subsubsection{Train-Validation-Test split}
         The goal, when a machine learning model is learning, is to achieve the lowest \textit{generalization error} \cite{Goodfellow-et-al-2016_generalization}. This means to not only perform well on data from the current dataset, but also on a new dataset. To measure this, it is normal to split your data into three parts\cite{Goodfellow-et-al-2016_train_val_test_split}. First the \textit{training} dataset, which will be used in various ways to achieve a low \textit{training error} and is used during learning. The next part, called the \textit{validation} dataset, is drawn from the training dataset and performance on this is an estimate of the generalization error and have many utilities that will be explained later in this thesis. The final and third part is called the \textit{test} dataset and are not touched throughout the training process. It is on this test dataset that the true \textit{generalization error} of a model is calculated. 
     \subsubsection{F1-score, Precision, Recall} \label{f1_score}
         To explain the measurement of a classification model's performance, I will do it by looking into a binary classification system that classifies samples into either the \textit{positive} or \textit{negative} class\cite{powers2020evaluation_f1_recall_precision}. The predictions from this system can then be sorted as follows:
@@ -61,6 +87,7 @@
         \end{equation}
         
         
+        \todo{etter beskivelse av over-underfit, knytt hvordan du kan lese av convergence og andre problemer via train-val-test observasjon}
 
 
 \section{Artificial Neural Networks} \label{neural networks}
@@ -135,7 +162,10 @@
         \end{equation}
     
     where \gls{sgd} optimize the parameters $\Theta$ of the network, $x_{1..N}$ is the training data, and $x_{1..m}$ is a minibatch of the training data.
-    
+
+\subsection{Momentum}
+
+
 \subsection{Regularization}
     Regularization as described by \citeauthor{kukavcka2017_regularization}\cite{kukavcka2017_regularization} is a small alternation or technique added to the training process that has as goal to make the model generalize better on the validation and test data. This can be applied in different ways, and two used in this thesis will be described here; \textit{batch normalization} and \textit{data-augmentation}.
     
@@ -149,13 +179,12 @@
     where $Z^{(i)}_{norm}$ is the normalized activations for the $i^{th}$ hidden layer. The learnable parameters make the \gls{ann} able to adjust and shift the distribution through the training process. The result is a faster and more stable training process. 
 
 \subsubsection{Data-Augmentation}
-    The previous regularization method is applied during training, but \textit{data-augmentation} is applied to the data itself\cite{kukavcka2017_regularization}. There are several methods available, but the two used in this work are: \textit{adding noise} and \textit{vertical flipping}. As described in section \ref{acoustic_data}, the acoustic data can contain much noise and have similar properties to image data. \textit{Noise} can then be added to each pixel to simulate real life noise. The \textit{vertical flipping} is a simple yet effective transformation where you flip the input along a certain axis and can be thought of as flipping an image. Both methods make the model generalize better by producing new unseen samples by changing the way the data is represented. The vertical flipping is also justified in this case, as this never change where the seafloor and surface is in an echogram. An example of each method can be seen in figure \ref{data augmentation fig}:
+    The previous regularization method is applied during training, but \textit{data-augmentation} is applied to the data itself\cite{kukavcka2017_regularization}. There are several methods available, but the two used in this work are: \textit{adding noise} and \textit{vertical flipping}. One example of applying noise is to add Gaussian values with a mean of 0 and some user-defined variance to each pixel. This adds more randomness to the data, making the model learn more general features instead of specific, hence increasing generalization performance. Other methods of applying noise are described in \citeauthor{kukavcka2017_regularization}\cite{kukavcka2017_regularization}. \todo{mer detalj} The \textit{vertical flipping} is a simple yet effective transformation where you flip the input along a certain axis. Vertical flipping is justified in this case, as this never change where the seafloor and surface is in an echogram. Both methods make the model generalize better by producing new unseen samples by changing the way the data is represented.  An example of each method can be seen in figure \ref{data augmentation fig}:
     
-    \clearpage
     \begin{figure}[H]
         \centering
         
-        \subfloat[Noise.]{
+        \subfloat[Gaussian noise added to each pixel.]{
         	\includesvg[inkscapelatex=false,width=0.9\textwidth,keepaspectratio]{figures/add_noise.svg}}
         	%\includegraphics[width=1\textwidth]{figures/data_sample.png} } 
         
@@ -171,7 +200,7 @@
     
 \clearpage
 \section{Computer vision} \label{computer vision}
-    \textbf{Computer vision} is a very popular field of research within deep learning\cite{voulodimos2018deep_computer_vision}. This is because it has mainly focused around tasks we humans do naturally, while computers would struggle. This could be facial recognition, object detection and many more. Some work also went beyond human capability, like \citeauthor{davis2014visual_deep_video_audio}s\cite{davis2014visual_deep_video_audio} work, where he recovered sounds from the vibrations they induced in objects captured on video. There are many methods in the field of computer vision, but I will focus on the \gls{cnn}.
+    \textbf{Computer vision} is a very popular field of research within deep learning\cite{voulodimos2018deep_computer_vision}. This is because it has mainly focused around tasks we humans do naturally, while computers would struggle. Examples are facial recognition, object detection and many more. Some work also went beyond human capability, like \citeauthor{davis2014visual_deep_video_audio}s\cite{davis2014visual_deep_video_audio} work, where he recovered sounds from the vibrations they induced in objects captured on video. There are many methods in the field of computer vision, but I will focus on the \gls{cnn}.
     
     
     
@@ -287,7 +316,6 @@
     
     Minor changes were made to adapt\citeauthor{unet_ronneberger2015}s original U-Net to the acoustic data used in \ref{unet_paper_acoustic}, as the input now had the form 4 x 256 x 256. The four channels being the frequencies used. The convolutions were set to \textit{same} instead of \textit{valid}, as were the original setting. This was done to make the size of the input and output match. Further, batch normalization was added to each convolution. 
     
-
 
 
         

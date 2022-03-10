@@ -1,17 +1,21 @@
 \chapter{Tools used}
 
     \section{Windows Azure} \label{Windows Azure}
-        Windows Azure \cite{azure} is a platform owned by Microsoft that provides cloud solutions for several services. My use was to access a remote storage provided by the \gls{imr} and mount this to my local computer. Thus enabling me to download the data for this thesis from \gls{imr}s server. 
+        Windows Azure \cite{azure} is a platform owned by Microsoft that provides cloud solutions for several services. It was used to access the remote storage provided by the \gls{imr} and mount this to a local computer. Thus enabling the downloading of the data for this thesis from \gls{imr}s server. 
     
     \section{Docker} \label{Docker}
-        Docker \cite{docker} is an open-source platform that provides what they call containerization and is owned by the company under the same name, Docker, Inc. If you are familiar with virtual machines, then containerization will be very familiar to you. Docker is based on the Linux kernel, and enables you to create a container, which is an independent process that uses resources from the main instance. For each container, you can manage its own dependencies like programming languages and libraries. These containers can then be shared with others as images files, and as they can be run without the receiver having to manage the aforementioned dependencies as this is built into the image. Thus, you can make an application or code easily accessible for other people, as long as they have installed Docker.
+        Docker \cite{docker} is an open-source platform that provides what they call containerization and is owned by the company under the same name, Docker, Inc. Docker is based on the Linux kernel, and enables you to create a container, which is an independent process that uses resources from the main instance, like virtual machine on a server but here applications. For each container, you can manage its own dependencies like programming languages and libraries. These containers can then be shared with others as images files, and as they can be run without the receiver having to manage the aforementioned dependencies as this is built into the image. Thus, you can make an application or code easily accessible for other people, as long as they have installed Docker.
         
     \section{Zarr} \label{Zarr}
-        By using the .zarr \cite{zarr} format, you gain access to store chunked compressed  multidimensional arrays. There are several highlights from this library, but I used primarily the ability to access the arrays on disk. This means I did not need to load the entire array into memory and could work with the array and access parts of it without hardware limitations.
+        By using the .zarr \cite{zarr} format, you gain access to store chunked compressed  multidimensional arrays. There are several highlights from this library, but was used primarily to access the arrays on disk. This means we did not need to load the entire array into memory and could work with the array and access parts of it without hardware limitations.
         
 
     \section{Xarray} \label{Xarray}
-        Xarray\cite{xarray} is a Python package that is made for working with multidimensional arrays. It is based on NumPy and adds labels in the form of attributes and coordinates on top of the NumPy-arrays. This was the library I used for accessing and working more efficiently with the \textit{.zarr} arrays, as I was already very familiar with NumPy.
+        Xarray\cite{xarray} is a Python package that is made for working with multidimensional arrays. It is based on NumPy and adds labels in the form of attributes and coordinates on top of the NumPy-arrays. This was the library used for accessing and working more efficiently with the \textit{.zarr} arrays, as this library has more functionality.
+        
+        
+    \section{Pickle}
+        To \textit{pickle}\cite{pickle} a file, means to use the built-in Python package pickle, which \textit{serializes} Python object structures into byte streams. These can then be \textit{unpickled} which means to \textit{deserialize}, which is the opposite operation. As an example, this can be used to store and load Python arrays or machine learning models to and from disk.
         
         
     \section{Pytorch} \label{Pytorch}
