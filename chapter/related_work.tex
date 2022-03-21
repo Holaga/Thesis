@@ -22,22 +22,17 @@ Image Segmentation} \label{unet}
     
 \section{Acoustic classification in multifrequency echosounder data using deep convolutional neural networks} \label{unet_paper_acoustic}
     
+    %OBS! Må ha forklart U-net, accoustic klassifikasjon, F1 OBS, feature construction, statistical and machine learning methods!
     
-    OBS! Må ha forklart U-net, accoustic klassifikasjon, F1 OBS, feature construction, statistical and machine learning methods!
-    
-    To help assess the size of legal fishing quotas, acoustic trawls surveys are initiated to gather data. Before the data is of use, an operator manually needs to interpret the data in a time-consuming process to assign the acoustic back scattering to the correct category, but in turn often introduces bias. Several methods have been implemented to reduce this bias and with a goal to automate the process, but they all have a common weakness where they need a predefined feature space.  In 2020 a group of researchers implemented a U-net deep learning model to the problem and as this is an \gls{cnn} it does not need to have pre-designed features but learn them from the data. Sandeel  ~\cite{brautaset2020acoustic}. 
+    %To help assess the size of legal fishing quotas, acoustic trawls surveys are initiated to gather data. Before the data is of use, an operator manually needs to interpret the data in a time-consuming process to assign the acoustic back scattering to the correct category, but in turn often introduces bias. Several methods have been implemented to reduce this bias and with a goal to automate the process, but they all have a common weakness where they need a predefined feature space.  In 2020 a group of researchers implemented a U-net deep learning model to the problem and as this is an \gls{cnn} it does not need to have pre-designed features but learn them from the data. Sandeel  ~\cite{brautaset2020acoustic}. 
     
     %In this thesis, this will be a semantic segmentation of the classes \textit{background}, \textit{other } and most importantly \textit{sandeel}.
     
     
     
-    The \gls{crimac} used this model in their project (described in \ref{unet_paper_acoustic}) and had to do some small modifications to the network to fit their task. This modified U-Net is the one presented in this section, as this is the one used in the experiments. The core functionality of the network stays true to the original Unet, and the alterations done to the original will be explained later in this section.
+    %The \gls{crimac} used this model in their project (described in \ref{unet_paper_acoustic}) and had to do some small modifications to the network to fit their task. This modified U-Net is the one presented in this section, as this is the one used in the experiments. The core functionality of the network stays true to the original Unet, and the alterations done to the original will be explained later in this section.
     
     
     
     
     %Minor changes were made to adapt\citeauthor{unet_ronneberger2015}s original U-Net to the acoustic data used in \ref{unet_paper_acoustic}, as the input now had the form 4 x 256 x 256. The four channels being the frequencies used. The convolutions were set to \textit{same} instead of \textit{valid}, as were the original setting. This was done to make the size of the input and output match. Further, batch normalization was added to each convolution. 
-    
-    \subsection{Result}
-        things
-    \subsection{Problems}

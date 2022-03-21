@@ -5,7 +5,7 @@
     \begin{figure}[H]
         \centering
         
-        \subfloat[Frequency channels that form an echogram.This example show an example \gls{sv} data crop with six frequencies, on the log scale.]{
+        \subfloat[Frequency channels that form an echogram. This example show an example \gls{sv} data crop with six frequencies, on the log scale.]{
         	\includesvg[inkscapelatex=false,width=0.4\textwidth,keepaspectratio]{figures/freq_stacked.svg}}
         	%\includegraphics[width=1\textwidth]{figures/data_sample.png} } 
         
@@ -13,7 +13,7 @@
         	\includesvg[inkscapelatex=false,width=0.9\textwidth,keepaspectratio]{figures/colors_and_OG.svg}}
         
         
-        \caption[Frequency channels and color channels]{(a) and (b) both consist of several channels that togetherer represent some visual observation.}
+        \caption[Frequency channels and color channels]{(a) and (b) both consist of several channels that together represent some visual observation.}
         \label{accoustic data and color channels fig}
         
         \end{figure}
@@ -23,33 +23,39 @@
     
 \clearpage
 \section{Machine Learning} \label{Machine Learning}
-    As described in the book Deep Learning\cite{Goodfellow-et-al-2016_ML} machine learning can intuitively be split into four parts; The algorithm, empirical data, a task and a performance measure. A machine learning algorithm can then be identified as an algorithm that increases its performance on a task, given data. As this happens, the algorithm is said to be learning. The task itself and the data the algorithm is given may vary. This is why we can approximately divide the machine learning approaches into three categories\cite{Goodfellow-et-al-2016_E}: supervised learning, unsupervised and reinforcement learning. 
+    As described in the book Deep Learning\cite{Goodfellow-et-al-2016_ML} machine learning can intuitively be split into four parts; The algorithm, empirical data, a task and a performance measure. A machine learning algorithm can then be identified as an algorithm that increases its performance on a task, given data. As this happens, the algorithm is said to be learning, creating a machine learning \textit{model}. The task itself and the data the algorithm is given may vary. This is why we can approximately divide the machine learning approaches into three categories\cite{Goodfellow-et-al-2016_E}: supervised learning, unsupervised and reinforcement learning. 
     
     \subsection{Algorithm types} \label{Algorithm types}
         \subsubsection{Supervised learning}
-            Supervised learning \cite{Goodfellow-et-al-2016_E} algorithms base themselves on datasets containing samples that also have a label. This means that the algorithm will have to lean a mapping from input to label. These labels can for example be binary class or consist of a multitude of classes or values in regression problems.
+            Supervised learning \cite{Goodfellow-et-al-2016_E} algorithms base themselves on datasets containing samples that also have a label. This means that the algorithm will have to learn a function, mapping from input to label. These labels can for example be binary class or consist of a multitude of classes or values in regression problems.
             
         \subsubsection{Unsupervised learning}
             Unlike supervised leaning, the unsupervised learning \cite{Goodfellow-et-al-2016_E} algorithms only have the data and will learn properties contained in the data. A practical example is clustering, where we can divide a dataset into clusters based on similar features. 
                 
         \subsubsection{Reinforcement learning}
-            In reinforcement learning \cite{Goodfellow-et-al-2016_E}, the algorithm do not learn from a given dataset, but will act in an environment. In some cases this is a feedback loop giving either a positive or negative reward for performing certain actions. The goal is then for the algorithm to maximize this reward. This is what people often associate with \gls{ai} and can be for example seen in the AlphaZero software that beat professional chess players\cite{silver2017mastering}.
+            In reinforcement learning \cite{Goodfellow-et-al-2016_E}, the algorithm do not learn from a given dataset, but will act in an environment. In some cases, this is a feedback loop, giving either a positive or negative reward for performing certain actions. The goal is then for the algorithm to maximize this reward. This is what people often associate with \gls{ai} and can be for example seen in the AlphaZero software that beat professional chess players\cite{silver2017mastering}.
     
-    \subsection{Data}
-        things
-    \subsection{Features}
-        things
-    \subsection{Overfitting vs. underfitting}
-        things
-    \subsection{Bias - variance tradeoff}
-        things
-        
+    \subsection{Data and features}
+    \citeauthor{najafabadi2015deep}\cite{najafabadi2015deep} describes that the quality of the data input to a machine learning algorithm will likely affect its performance. Hence, the time allocated to increase the quality of the data can exceed the time spent learning.  Data must be gathered, integrated, cleaned of errors, preprocessed, and features extracted before being input to the algorithm. The process of extracting features is often referred to as \textit{feature engineering}, and is the process of constructing a representation of the data with the best factors to solve the current problem. This is often domain specialized, and usually involves human interaction. In section \ref{neural networks}, \gls{ann} are introduced which have the ability to automate the extraction of complicated features.
+
     \subsection{Model evaluation}
     \subsubsection{Train-Validation-Test split}
-        The goal, when a machine learning model is learning, is to achieve the lowest \textit{generalization error} \cite{Goodfellow-et-al-2016_generalization}. This means to not only perform well on data seen during training, but also on a new data. To measure this, it is normal to split our data into three parts\cite{Goodfellow-et-al-2016_train_val_test_split}. First the \textit{training} dataset, will be used during training to achieve low  \textit{training error}. The next part, called the \textit{validation} dataset, is drawn from the training dataset and performance on this is an estimate of the generalization error and have many utilities that will be explained later in this thesis. The final and third part is called the \textit{test} dataset and are not touched throughout the training process. It is on this test dataset that the \textit{generalization error} of a model is calculated.
+        The goal, when a machine learning model is learning, is to achieve the lowest \textit{generalization error}\cite{Goodfellow-et-al-2016_generalization}. This means to not only perform well on data seen during training, but also on new unseen data. To measure this, it is normal to split our data into three parts\cite{Goodfellow-et-al-2016_train_val_test_split}. First, the \textit{training} dataset, will be used during training to achieve low  \textit{training error}. The next part, called the \textit{validation} dataset, is drawn from the training dataset and performance on this is an estimate of the generalization error, and have many utilities that will be explained later in this thesis. The final and third part is called the \textit{test} dataset and are not touched throughout the training process. It is on this test dataset that the \textit{generalization error} of a model is estimated.
+    
+    \subsubsection{Overfitting vs. Underfitting}
+        As stated by \citeauthor{Goodfellow-et-al-2016}\cite{Goodfellow-et-al-2016}[p.~107-122] performance of a model is dependent on its \textit{training error}, and the difference between this \textit{training error} and the \textit{test error}. \textit{Underfitting} take place when a model fails to achieve a low training error, while \textit{overfitting} occurs when the difference between the training and test error is significant. To manipulate this behavior, we introduce \textit{capacity}. Low \textit{capacity} means to underfit and the models fails to capture patterns contained in the data. High \textit{capacity} translates to memorizing the training data too well, which won't aid the model when exposed to the test data. Figure \ref{over/under fit fig} illustrates this, and the optimal solution is to have a model that with a balanced capacity relative to the data. 
+        
+        \begin{figure}[H]
+            \centering
+            %\includegraphics[scale=0.5]{figures/perceptron.png}
+            \includesvg[inkscapelatex=false,width=1\textwidth,keepaspectratio]{figures/overunderfit.svg}
+            \caption[Over/under-fit]{Training data is generated with random noise around a sinus wave (True function). Model \textit{capacity} increases from left to right. The center plot illustrates a model that have learned an almost perfect fit to the actual true function.}
+          	\medskip 
+            \label{over/under fit fig}
+        \end{figure}
         
     \subsubsection{F1-score, Precision, Recall} \label{f1_score}
-        To explain the measurement of a classification model's performance, we will observe a binary classification system that classifies samples into either the \textit{positive} or \textit{negative} class\cite{powers2020evaluation_f1_recall_precision}. The predictions from this system can then be sorted as follows:
+        This section described actual the performance metric used in this thesis. We will observe a binary classification system that classifies samples into either the \textit{positive} or \textit{negative} class\cite{powers2020evaluation_f1_recall_precision}. An example could be to treat one important class among ten classes as the positive and the rest as negative. The predictions from this system can then be sorted as follows:
         
         \begin{itemize}
             \item \textbf{True positive (TP):} A correct classification of a positive example.
@@ -66,7 +72,7 @@
         
         This metrics does not handle class imbalance well\cite{powers2020evaluation_f1_recall_precision}, as it is equivalent to calculating the percentage of correct predictions. The example being that if 95\% of the data belongs to one class, then always predicting this class will give us an accuracy of 95\%.
         
-        To deal with the class imbalance issue, we calculate two new metrics\cite{powers2020evaluation_f1_recall_precision}. First \textit{precision}, which is the percentage of positive predictions made by the model that are actually correct. Secondly, \textit{recall}, which is the percentage of all positive samples the model managed to classify correctly. The formulas are shown below:
+        To deal with the class imbalance issue, we calculate two new metrics\cite{powers2020evaluation_f1_recall_precision}. First \textit{precision}, which is the percentage of positive predictions made by the model that are correct. Secondly, \textit{recall}, which is the percentage of all positive samples the model managed to classify correctly. The formulas are shown below:
         
         \begin{equation}
             \textrm{precision} = \dfrac{TP}{TP+FP}
@@ -82,9 +88,7 @@
             \textrm{F1-score} = 2 * \dfrac{\textrm{precision} * \textrm{recall}}{\textrm{precision} + \textrm{recall}}
         \end{equation}
         
-        
-        \todo{etter beskivelse av over-underfit, knytt hvordan du kan lese av convergence og andre problemer via train-val-test observasjon}
-
+        By measuring the \textit{training} and \textit{validation} F1-score during training, we can detect if the model shows signs of under-/overfitting problems or are balanced and close to the same score. An example can be seen in the results \ref{results}.
 
 \section{Artificial Neural Networks} \label{neural networks}
     In this section, we introduce the basic components of an \gls{ann} and how these are combined to create a complete network.
@@ -110,7 +114,7 @@
                 \label{Perceptron / MLP}
             \end{figure}
         
-        The \textit{architecture} of the \gls{ann} consist of an input layer, a user-defined number of \textit{hidden layers} and finally an output layer\cite{razavi2021deep_exp_per}. A \gls{mlp} is a type of network called \textit{feed-forward} \gls{ann} because the data flows from the input to the output layer and each layer is a function of the previous layer. The parameters that are adjusted through training (explained in section \ref{training neural networks}) are all the weights between every neuron in the network and the individual biases. The intuition for the MLP depicted in \ref{Perceptron / MLP} is that different neurons will activate with varying strengths depending on the input, resulting in different outputs. The architecture of the \gls{mlp} in figure \ref{Perceptron / MLP} can be expressed as\cite{Goodfellow-et-al-2016_architecture}:
+        The \textit{architecture} of the \gls{ann} consist of an input layer, a user-defined number of \textit{hidden layers} and finally an output layer\cite{razavi2021deep_exp_per}. More hidden layers, creates a \textit{deeper} network.. A \gls{mlp} is a type of network called \textit{feed-forward} \gls{ann} because the data flows from the input to the output layer and each layer is a function of the previous layer. The parameters that are adjusted through training (explained in section \ref{training neural networks}) are all the weights between every neuron in the network and the individual biases. The intuition for the MLP depicted in \ref{Perceptron / MLP} is that different neurons will activate with varying strengths depending on the input, resulting in different outputs. The architecture of the \gls{mlp} in figure \ref{Perceptron / MLP} can be expressed as\cite{Goodfellow-et-al-2016_architecture}:
         
         \begin{equation}
             \textbf{h}^{(1)} = \sigma^{(1)}(\textbf{W}^{(1)T}\textbf{x} + \textbf{b}^{(1)})
@@ -124,7 +128,7 @@
         
         
     \subsection{Activation function} \label{activation function}
-        The activation function is what enables the \gls{ann} to learn non-linear features \cite{razavi2021deep_exp_per}. The reason it is needed is because a network that consisting of only linear layers will be the same as a single linear layer \cite{razavi2021deep_exp_per}, and won't be able to capture non-linearities in the data. The activation function used in this thesis was the ReLU which stands for rectified linear unit as described in \cite{sharma2019new_activation_func}. The formula for it is as follows:
+        The activation function is what enables the \gls{ann} to learn non-linear features \cite{razavi2021deep_exp_per}. The reason it is needed is that a network consisting of only linear layers will be the same as a single linear layer \cite{razavi2021deep_exp_per}, and won't be able to capture non-linearities in the data. The activation function used in this thesis was the ReLU which stands for rectified linear unit as described in \cite{sharma2019new_activation_func}. The formula for it is as follows:
             \begin{equation} \label{relu_eq}
                 \sigma(x) = max(0,x)
             \end{equation}
@@ -153,7 +157,7 @@
 \section{Training Neural Networks} \label{training neural networks}
 
 \subsection{Forward-propagation and the loss function}
-    \citeauthor{Goodfellow-et-al-2016_NN}\cite{Goodfellow-et-al-2016_NN} describes \gls{ann} as an unknown function \textit{\^{f}} that maps an input \textbf{x} to an output \textbf{y}. The goal is then to approximate some optimal function \textit{f} through learning from examples. In supervised tasks, the labels instructs the output layer exactly how to perfom when the data in input. However, the data does not instruct the individual \textit{hidden layers} how to perform to produce this desired output. When the data flow through the network using the current parameters $\theta$ (weights and biases), it produces outputs \textbf{\^{y}}, this is called the \textit{forward-propagation step}. By using a \textit{loss function} comparing the true \textbf{y} values to the estimated values \textbf{\^{y}}, we get a measurement of the network's \textit{error}, also called \textit{loss}. In classification tasks, the network is trained to output the probability of each class given an input\cite{ho2019real_weighted_cross_entropy}. The probabilities are then the input to the loss function, which in this work is \textit{weighted cross entropy}. This function outputs a loss based on probabilities, weights classification of different classes differently, and is often used when dealing with data containing class imbalance. Expressed as:
+    \citeauthor{Goodfellow-et-al-2016_NN}\cite{Goodfellow-et-al-2016_NN} describes \gls{ann} as an unknown function \textit{\^{f}} that maps an input \textbf{x} to an output \textbf{y}. The goal is then to approximate some optimal function \textit{f} through learning from examples. In supervised tasks, the labels instructs the output layer exactly how to perform when the data in input. However, the data does not instruct the individual \textit{hidden layers} how to perform to produce this desired output. When the data flow through the network using the initial parameters $\theta$ (weights and biases), it produces outputs \textbf{\^{y}}, this is called the \textit{forward-propagation step}. How the parameters are initialized can heavily affect the training process, and different strategies are further described in \citeauthor{Goodfellow-et-al-2016}\cite{Goodfellow-et-al-2016}[p.~301-306]. By using a \textit{loss function} comparing the true \textbf{y} values to the estimated values \textbf{\^{y}}, we get a measurement of the network's \textit{error}, also called \textit{loss}. In classification tasks, the network is trained to output the probability of each class given an input\cite{ho2019real_weighted_cross_entropy}. The probabilities are then the input to the loss function, which in this work is \textit{weighted cross entropy}. This function outputs a loss based on probabilities, weights classification of different classes differently, and is often used when dealing with data containing class imbalance. Expressed as:
     
         \begin{equation} \label{cross_entropy}
             loss(\theta) = - \sum^{n}_{i=1} w_{y_{i}}y_{i}\log(\hat{y_{i}})
@@ -200,7 +204,7 @@
     
     \begin{longtable}{lllllll} \label{sgd algorithm}\\
     \hline
-    \multicolumn{7}{l}{Mini-batch SGD}                                                              \\ \hline
+    \multicolumn{7}{l}{Mini-batch SGD one epoch}                                                              \\ \hline
     \endfirsthead
     %
     \endhead
@@ -226,7 +230,7 @@
     Regularization as described by \citeauthor{kukavcka2017_regularization}\cite{kukavcka2017_regularization} is a small alternation or technique added to the training process that has as goal to make the model generalize better. This can be applied in different ways, and two used in this thesis will be described here; \textit{batch normalization} and \textit{data-augmentation}.
     
 \subsubsection{Batch-Norm}
-    Batch normalization is a technique applied to reduce what is called \textit{internal  covariate shift}\cite{pmlr-v37-ioffe15_batch_norm}. This is defined as the change in the distribution of activations in \gls{ann}s hidden layers caused by the change in the networks parameters when training. During \textit{backpropagation}, the hidden layers depend on the activations of all layers before them, and this has been shown to slow down and destabilize the training process. The solution to this problem is the implementation of \textit{batch normalization}. By using the activations from all the neurons in a hidden layer, a \textit{mean} and \textit{variance} is calculated, and is done per batch. These values are then used to normalize the activations of the hidden layer, and each hidden layer are given two additional learnable parameters $\gamma$ and $\beta$, that perform a linear transformation of the normalized activations, defined as such:
+    Batch normalization is a technique applied to reduce what is called \textit{internal  covariate shift}\cite{pmlr-v37-ioffe15_batch_norm}. This is defined as the change in the distribution of activations in \gls{ann}s hidden layers caused by the change in the networks parameters when training. During \textit{backpropagation}, the hidden layers depend on the activations of all layers before them, and this has been shown to slow down and destabilize the training process. The solution to this problem is the implementation of \textit{batch normalization}. By using the activations from all the neurons in a hidden layer, a \textit{mean} and \textit{variance} is calculated per batch. These values are then used to normalize the activations of the hidden layer, and each hidden layer are given two additional learnable parameters $\gamma$ and $\beta$, that perform a linear transformation of the normalized activations, defined as such:
     
         \begin{equation} \label{batch_normalization}
             \textrm{Batch normalized activations} =   \gamma Z^{(i)}_{norm} + \beta
@@ -235,7 +239,7 @@
     where $Z^{(i)}_{norm}$ is the normalized activations for the $i^{th}$ hidden layer. The learnable parameters make the \gls{ann} able to adjust and shift the distribution through the training process. The result is a faster and more stable training process. 
 
 \subsubsection{Data-Augmentation}
-    The previous regularization method is applied during training, but \textit{data-augmentation} is applied to the data itself\cite{kukavcka2017_regularization}. There are several methods available, but the two used in this work are: \textit{adding noise} and \textit{vertical flipping}. One example of applying noise is to add Gaussian values with a mean of 0 and some user-defined variance to each pixel. This adds more randomness to the data, making the model learn more general features instead of specific, hence increasing generalization performance. Other methods of applying noise are described in \citeauthor{kukavcka2017_regularization}\cite{kukavcka2017_regularization}. The \textit{flipping} is a simple yet effective transformation where we flip the input and label along a certain axis, and now produce a new datapoint. During training, an echograms' orientation of the surface and bottom can never individually be changed, and so vertical flipping is justified in on accoustic data. This is an important observation when applying data augmentation, as it can't change the meaning of the data. For example, when classifying numbers in images, rotating an image of the number \textit{9} clockwise 180 degrees will change its representation to now be more similar to a \textit{6}, but the label would still say it belongs to the class \textit{9}. An example of each method mentioned can be seen in figure \ref{data augmentation fig}:
+    The previous regularization method is applied during training, but \textit{data-augmentation} is applied to the data itself\cite{kukavcka2017_regularization}. There are several methods available, but the two used in this work are: \textit{adding noise} and \textit{vertical flipping}. One example of applying noise is to add Gaussian values with a mean of 0 and some user-defined variance to each pixel. This adds more randomness to the data, making the model learn more general features instead of specific, hence increasing generalization performance. Other methods of applying noise are described in \citeauthor{kukavcka2017_regularization}\cite{kukavcka2017_regularization}. The \textit{flipping} is a simple yet effective transformation where we flip the input and label along a certain axis, and now produce a new sample. During training, an echograms' orientation of the surface and bottom can never individually be changed, and so vertical flipping is justified in on acoustic data. This is an important observation when applying data augmentation, as it can't change the meaning of the data. For example, when classifying numbers in images, rotating an image of the number \textit{9} clockwise 180 degrees will change its representation to now be more similar to a \textit{6}, but the label would still say it belongs to the class \textit{9}. An example of each method mentioned can be seen in figure \ref{data augmentation fig}:
     
     \begin{figure}[H]
         \centering
@@ -256,7 +260,7 @@
     
 \clearpage
 \section{Computer vision} \label{computer vision}
-    \textbf{Computer vision} is a very popular field of research within deep learning\cite{voulodimos2018deep_computer_vision}. This is because it has mainly focused around tasks we humans do naturally, while computers would struggle. Examples are facial recognition, object detection and many more. Some work also went beyond human capability, like \citeauthor{davis2014visual_deep_video_audio}s\cite{davis2014visual_deep_video_audio} work, where they recovered sounds from the vibrations they induced in objects captured on video. There are many methods in the field of computer vision, but we will focus on the \gls{cnn}.
+    \textbf{Computer vision} is a very popular field of research within deep learning\cite{voulodimos2018deep_computer_vision}. This is because it has mainly focused on tasks we humans do naturally, while computers would struggle. Examples are facial recognition, object detection and many more. Some work also went beyond human capability, like \citeauthor{davis2014visual_deep_video_audio}s\cite{davis2014visual_deep_video_audio} work, where they recovered sounds from the vibrations they induced in objects captured on video. There are many methods in the field of computer vision, but we will focus on the \gls{cnn}.
     
     
     
@@ -266,13 +270,13 @@
     \begin{figure}[H]
         \centering
         \includegraphics[scale=0.4]{figures/conv_net.png}
-        \caption[Convolutional neural network example]{Illustrations of the main components in a \gls{cnn}. The \textit{flatten} operation is applied here to make the output from the pooling layer compatible with the fully connected layer of regular neurons. The \textit{softmax} is an example final layer to classify the input to a class.}
+        \caption[Convolutional neural network example]{Illustrations of the main components in a \gls{cnn}. The \textit{flatten} operation is applied here to make the output from the pooling layer compatible with the fully connected layer of regular neurons.}
       	\medskip 
         \label{convolutional_neural_network_fig}
     \end{figure}
     
     \subsubsection{Convolutional layer}
-     \citeauthor{o2015introduction_convolutions}\cite{o2015introduction_convolutions} describes that the convolutional layer consists of a number of learnable  weight matrices each consisting of three dimensions; \textit{height}, \textit{width} and \textit{depth} written as: \textit{height} x \textit{width} x \textit{depth}. From now, this matrix will be called the kernel. The height and the width of the kernel are parameters defined by the user and are usually small, but the depth will always equal the number of channels in the input. This results in kernels being written only as: \textit{height} x \textit{width}. The kernel slides over the input, and is applied to different locations of the input, also called the current \textit{receptive field}. When applied, a single scalar value is computed that is the weighted sum of the kernels weights and the corresponding values in the receptive field. If we have a two-dimensional image $S(i,j)$ as input, a convolutional operation would be expressed as\cite{Goodfellow-et-al-2016_convolution}:
+     \citeauthor{o2015introduction_convolutions}\cite{o2015introduction_convolutions} describes that the convolutional layer consists of a number of learnable  weight matrices each consisting of three dimensions; \textit{height}, \textit{width} and \textit{depth} written as: \textit{height} x \textit{width} x \textit{depth}. From now, this matrix will be called the kernel. The height and the width of the kernel are parameters defined by the user and are usually small, but the depth will always equal the number of channels in the input. This results in kernels being written only as: \textit{height} x \textit{width}. The kernel slides over the input, and is applied to different locations of the input, also called the current \textit{receptive field}. When applied, a single scalar value is computed that is the weighted sum of the kernel's weights and the corresponding values in the receptive field. If we have a two-dimensional image $S(i,j)$ as input, a convolutional operation would be expressed as\cite{Goodfellow-et-al-2016_convolution}:
      
         \begin{equation}
             S(i,j) = (I*K)(i,j) = \sum_{height}\sum_{width}I(i+height,j+width)K(height,width)
@@ -280,8 +284,7 @@
      
      where $*$ is the convolutional operation, I is the input and K is the kernel.
      
-     The output scalar value from the convolutional operation is called the \textit{activation}, and is often fed through non-linear activation function like ReLu\cite{o2015introduction_convolutions}. The sliding operation is constructed around a value called \textit{stride} and is the amount of horizontal positions to move the kernel in the input between each calculation. If it is not possible to move in the horizontal direction, the kernel will move rows down vertically equal to the stride and begin anew. After sliding over the entire input, a complete 2D activation map has been created, one such map for each kernel applied and often several is applied. The idea is that each of these kernels will learn to identify different features in the input, and an example of a horizontal edge detector can be seen in figure \ref{convolutional_fig}. 
-    \clearpage
+     The output scalar value from the convolutional operation is called the \textit{activation}, and is often fed through non-linear activation function like ReLu\cite{o2015introduction_convolutions}. The sliding operation is constructed around a value called \textit{stride} and is the number of horizontal positions to move the kernel in the input between each calculation. If it is not possible to move in the horizontal direction, the kernel will move rows down vertically equal to the stride and begin anew. After sliding over the entire input, a complete 2D activation map has been created, one such map for each kernel applied and often several is applied. The idea is that each of these kernels will learn to identify different features in the input, and an example of a horizontal edge detector can be seen in figure \ref{convolutional_fig}. 
     \begin{figure}[H]
         \centering
         \includegraphics[scale=0.4]{figures/convolutions.png}
@@ -315,7 +318,7 @@
     
     
 \subsubsection{Pooling layer}
-    There are many different kinds of pooling layers, but I will focus on the variant called max pool. The \textbf{max pool layer} reduces the \textit{height} and \textit{widht} of its input\cite{o2015introduction_convolutions}. Like a convolutional operation, the max pool looks at a region of the input, but then instead applies a \textit{max} operation. The pooling kernel size is given in \textit{height} x \textit{width}, and is applied individually to each dimension of the input. This reduces the height and width, but not the channels. The most common setting is 2×2 with a stride 2, which results in decreasing the size to 25\%. On it own, the max pool have no learnable parameters and is applied to decrease the computation complexity of the \gls{cnn}.
+    There are many different kinds of pooling layers, but I will focus on the variant called max pool. The \textbf{max pool layer} reduces the \textit{height} and \textit{widht} of its input\cite{o2015introduction_convolutions}. Like a convolutional operation, the max pool looks at a region of the input, but then instead applies a \textit{max} operation. The pooling kernel size is given in \textit{height} x \textit{width}, and is applied individually to each dimension of the input. This reduces the height and width, but not the channels. The most common setting is 2×2 with a stride 2, which results in decreasing the size to 25\%. On it own, the max pool has no learnable parameters and is applied to decrease the computation complexity of the \gls{cnn}.
 
     \begin{figure}[H]
         \centering
@@ -334,12 +337,12 @@
       	\medskip 
         \label{1x1_fig}
     \end{figure}
-    \citeauthor{lin2013network_in_network_1x1}\cite{lin2013network_in_network_1x1} proposed the convolutional layer with kernel size 1×1 and stride 1, followed by a activation function, as an equivalent to the regular hidden layer shown earlier in figure \ref{Perceptron / MLP}\cite{lin2013network_in_network_1x1}. The 1x1 layer will take the weighted sum along a 1x1 slice through all channels of the input, as illustrated in figure \ref{1x1_fig}. This is the exact same as applying a fully connected layer to the same values. As this preserves \textit{height} and \textit{width}, this can then be used as a tool for alterations of the depth of a network by specifying the desired number of kernels. In this work, it is used mainly to map high dimensional feature maps to the desired number of classes.
+    \citeauthor{lin2013network_in_network_1x1}\cite{lin2013network_in_network_1x1} proposed the convolutional layer with kernel size 1×1 and stride 1, followed by a activation function, as an equivalent to the regular hidden layer shown earlier in figure \ref{Perceptron / MLP}\cite{lin2013network_in_network_1x1}. The 1x1 layer will take the weighted sum along a 1x1 slice through all channels of the input, as illustrated in figure \ref{1x1_fig}. This is the exact same as applying a fully connected layer to the same values. As these preserves \textit{height} and \textit{width}, this can then be used as a tool for alterations of the depth of a network by specifying the desired number of kernels. In this work, it is used mainly to map high dimensional feature maps to the desired number of classes.
     
     
 
 \subsubsection{Transposed convolutions}
-    A transposed convolution is an operation performing the opposite operation compared to a regular convolution\cite{dumoulin2016guide_transposed_convolution}. This means taking an input and with a similar \textit{kernel} as described earlier in \ref{cnn} and now instead map this to a higher spatial size. In example figure \ref{transposed_conv_fig} a 2D 2×2 input is fed to a transposed convolutional layer with kernel size 2×2. The whole kernel is multiplied element wise to the input and proceeds to produce values in a temporary matrix initialized with zeros(empty cells in the figure). The calculated values in the temporary matrix are situated correctly relative to the input. These temporary matrices are then summed over, producing the output. This operation is repeated for all channels, retaining the depth of the input. 
+    A transposed convolution is an operation performing the opposite operation compared to a regular convolution\cite{dumoulin2016guide_transposed_convolution}. This means taking an input and with a similar \textit{kernel} as described earlier in \ref{cnn} and now instead map this to a higher spatial size. In example figure \ref{transposed_conv_fig} a 2D 2×2 input is fed to a transposed convolutional layer with kernel size 2×2. The whole kernel is multiplied element wise to the input and proceeds to produce values in a temporary matrix initialized with zeros (empty cells in the figure). The calculated values in the temporary matrix are situated correctly relative to the input. These temporary matrices are then summed over, producing the output. This operation is repeated for all channels, retaining the depth of the input. 
     
     \begin{figure}[H]
         \centering
@@ -350,7 +353,7 @@
     \end{figure}
     
 \subsubsection{Segmentation}
-    Segmentation is a computer vision task where the objective is to assign one or several classification masks to the input\cite{He_2017_ICCV_segmentation}. This is again split into two different categories; \textit{semantic} and \textit{instance} segmentation. In semantic segmentation, we assign each pixel in the input to predefined classes. While in instance segmentation, we increase the complexity by applying semantic segmentation and in parallel assigning a bounding box to each individual object. Semantic segmentation is the variant used in this thesis, and examples of both can be viewed in figure \ref{segmentation_fig}.
+    Segmentation is a computer vision task where the objective is to assign one or several classification masks to the input\cite{He_2017_ICCV_segmentation}. This is again split into two different categories: \textit{semantic} and \textit{instance} segmentation. In semantic segmentation, we assign each pixel in the input to predefined classes. While in instance segmentation, we increase the complexity by applying semantic segmentation and in parallel assigning a bounding box to each individual object. Semantic segmentation is the variant used in this thesis, and examples of both can be viewed in figure \ref{segmentation_fig}.
     
     \begin{figure}[H]
         \centering
