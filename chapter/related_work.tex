@@ -22,6 +22,59 @@ Image Segmentation} \label{unet}
     
 \section{Acoustic classification in multifrequency echosounder data using deep convolutional neural networks} \label{unet_paper_acoustic}
     
+        \begin{figure}[H]
+        \centering
+        %\includegraphics[scale=0.5]{figures/unet_arrows.png}
+        \includesvg[inkscapelatex=false,width=1.0\textwidth,keepaspectratio]{figures/unet_brautset.svg}
+        \caption[U-Net architecture]{U-Net architecture, the downwards facing arrow illustrates the contracting path and the one facing upwards is the expanding path. The color gets darker as the channels increase.}
+      	\medskip 
+        \label{unet__brautset_fig}
+        \hspace*{15pt}\hbox{\scriptsize Credit: \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic}}
+    \end{figure}
+    
+    \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic} had as objective to propose a deep learning method to classify and segment acoustic data gathered during acoustic trawl surveys, without using predefined features. The acoustic data is used as support when estimating the allowed catches of different fish populations, and in this case \textit{sand eel}. To estimate the quantity of fish, there is a linear relationship between the \gls{sv} value and quantity as long as the exact species can be assigned to the value. Today, the process of designating the proper class is heavily influenced by human operators using a variety of tools, and trawl samples (biological samples). These tools use predefined features, and are subject to not fit all situations equally well. 
+    
+    The deep learning architecture proposed was based on an altered version of \citeauthor{unet_ronneberger2015}\cite{unet_ronneberger2015} U-Net\cite{brautaset2020acoustic}. It is visualized in figure \ref{unet__brautset_fig}, and the difference is the use of \textit{same convolutions} and \textit{batch normalization}. As a consequence, the resolution of the layers in the contracting and expanding path had the same size, and when concatenating, cropping was no longer needed. 
+    
+    The data used originated from yearly trawl missions spanning 2007-2018\cite{brautaset2020acoustic}, where 2011-2016 was set as training and validation data, and 2007-2010 combined with 2017-2018 as test data. The frequency channels extracted from each year was the 18kHz, 38kHz, 70kHz and 200kHz. Operator annotations initially contained the classes \textbf{sandeel}, \textbf{other}, \textit{0-group sandeel} and \textit{possible sandeel}, and were created by the same operator. \textit{0-group sandeel} and \textit{possible sandeel} was added to a new class \textbf{ignore}, as both of them were edge cases, originated from an extraordinary event seen during a trawl or operator uncertainty. The annotations were converted to a pixel map of the same size as the \gls{sv} data, and all pixels not allocated to a class was set as the \textbf{background class}. Annotations were originally designed to summarize the \gls{sv} values over an area, to estimate quantity. Hence, they were usually square and larger than the actual school, and not suitable as labels for a \gls{cnn} due to some pixel around the edges really belonging to the \textit{background class}. As a result, the annotations were reshaped to look more similar to real schools of fish.
+    
+    
+    - goal, (i) develop a deep learning
+        strategy that is suitable
+        for segmenting and classifying echosounder data collected during acoustic trawl surveys without prior feature extraction; (ii) demonstrate that the strategy devel-
+        oped in (i) works on a real test case, and (iii) provide perspec- tives, e.g. pros and cons, on the use of deep learning algorithms in the classification of acoustic observations into acoustic catego-ries (e.g. species groups).
+
+
+
+x    - modified architecture, same convs, batch norm
+x    - trawl missions from 2007 - 2018, many classes, combined into three
+    - four frequencies used -> output segmantation map of sandeel, other and background
+    - preprocessing of the data, as we use the same approach this is described in the CRIMAC-tool.
+        - regrid to 200kHz
+    - modified the annotations to be more similar to actual schools of sandeel
+    - balanced sampling 256x256x4 crops with regard to the information contained in the crop with equal probability from the dataset
+    - a word about the classes.
+    - a thing about the annotations, not deemed fully compatible with semantic segmentation, one operator
+    - Performance
+        - Training scheme outlined in the methodology, 
+        - stained by domain knowledge, and there could be more imacting performance
+            - when calculating F1 score, compare only examined regions withing 20 pixels of an actual annoation (false positive)
+            - 0.87 F1 at discriminate between sandeel (positive) and background and other as negative across the test data. Benchmark method got 0.77.
+            
+        - When evaluating entire echograms, was deem satisfactory for 2018 and 2017 at 0.78 and 0.68, benchmark (0.62 and 0.32)
+        - Both on complete echograms,unet (0.11 - 0.68) and 0.03-0.5)
+    
+    Echograms contain (problems): 
+    - missing annotations, will confuse a pixel based classifier as there were clear signs of sandeel
+    - false positives near the surface as, and was speculated to be dense layers of plankton, resulting in high sv values hence being classified as sandeel, and was missed was not data the model had been exposed to earlier. (this causes my model to likely classify this as sandeel). The exact plankton "Phaeocystis" produces gases which have high intensity at 18 and 38kHz, and could be a reason why the. The backround class contains everything not related to the other and sandeel class so will maybe contain other noise inducing factors, as seen when trying to predict entire echograms  
+    
+    - large uncertainy across years, weather conditions and school populations,  which affects the quality quality of labeling. Historical data was affected by tools being under development.
+    
+    
+    
+    
+    
+    
     %OBS! Må ha forklart U-net, accoustic klassifikasjon, F1 OBS, feature construction, statistical and machine learning methods!
     
     %To help assess the size of legal fishing quotas, acoustic trawls surveys are initiated to gather data. Before the data is of use, an operator manually needs to interpret the data in a time-consuming process to assign the acoustic back scattering to the correct category, but in turn often introduces bias. Several methods have been implemented to reduce this bias and with a goal to automate the process, but they all have a common weakness where they need a predefined feature space.  In 2020 a group of researchers implemented a U-net deep learning model to the problem and as this is an \gls{cnn} it does not need to have pre-designed features but learn them from the data. Sandeel  ~\cite{brautaset2020acoustic}. 
