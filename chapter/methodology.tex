@@ -1,4 +1,4 @@
-\chapter{Methods and material}
+\chapter{Methods And Material} \label{methods}
     This chapter describes the steps taken in this thesis to answer the research question:
         \begin{itemize}
             \item \textit{“As a lightweight vessel do not have the structural capacity to carry all the six echo sounders the \gls{imr} usually deploy, which ones should be prioritized when classifying sand eel in acoustic data?”}
@@ -6,13 +6,13 @@
     
     The thesis followed the work of \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic}, which was outlined in section \ref{unet_paper_acoustic} and will be referenced throughout this chapter. In summary, this chapter will first look at the data itself and the tools and methods applied to prepare it for the training of machine learning models, with a following description of the experiment. The experiment revolved around training individual U-Net models with different amounts of frequencies and measuring the performance of each.
     
-    \section{The data}
+    \section{The Data}
         The data was split into yearly trawl missions, with each consisting of a collection of \textit{.raw} files with corresponding \textit{.work} files. The \textit{.raw} is the uncompressed raw output from the echo sounder. Because they are uncompressed, they do not lose any data, but unfortunately, this also makes them large. The data from 2020 alone which spanned three months took 240 GB of storage space and was accessed by downloading it through Windows Azure (described in appendix \ref{Windows Azure}). The \textit{.work} files are the annotations of the \textit{.raw} files done by operators using a system called the \Gls{lsss}\cite{lsss}. 
     
-    \section{Tool: The CRIMAC-pipeline}
+    \section{Tool: The CRIMAC-Pipeline}
         Based on the work performed by \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic}, a pipeline for classifying the acoustic backscatter was created\cite{crimac_pipeline} and used as a tool throughout this work. The pipeline could be run as one module, to directly get the predictions from the .raw data, or submodules (illustrated in figure \ref{Module_overview_fig}) could be accessed and run separately. All modules were accessed through docker (described in appendix \ref{Docker}), and a majority of their output is the \textit{.zarr} format. This is a format that is compatible with the Python package Zarr (described in appendix \ref{Zarr}), which facilitates NumPy array operations as well as loading of arrays from disk instead of memory, as these can be very large. This section will describe the function of each module used in this thesis.
         
-            \subsection{CRIMAC-pipeline modules} \label{CRIMAC-pipeline}
+            \subsection{CRIMAC-Pipeline Modules} \label{CRIMAC-pipeline}
               \begin{figure}[H]
                 \centering
                 \includesvg[inkscapelatex=false,width=0.7\textwidth,keepaspectratio]{figures/module_overveiw.svg}
@@ -24,7 +24,7 @@
             \begin{description}
               \item[$\bullet$ CRIMAC/Preprocessor:] Preprocesses the \textit{.raw} and \textit{.work} to respectively \textit{.zarr} and \textit{.parquet} files. The output \textit{.zarr} file contained several types of measurements from the trawl missions, like location,\gls{sv}, and temperature. The data extracted for this thesis was the \gls{sv} data and was represented as a multidimensional array of size \textit{frequency} x \textit{ping} x \textit{range} in the  \textit{.zarr} format. \textit{Range} is equivalent to \textit{depth}. The \textit{.parquet} file would act as bitmaps for each class, but the version of this module was unable to produce these at the time of this work. The output \gls{sv} file is illustrated in figure \ref{Module_outputs_illustration_fig}:
 
-              \item[$\bullet$ Pretrained CRIMAC/U-Net:] Using a pretrained U-Net model, it produces a segmentation map of pixel-based probabilities of spatial size \textit{class} x \textit{ping} x \textit{range} where values in each pixel summaries to 1 over all classes. The classes were \textit{sandeel}, \textit{other} and \textit{background}. This is illustrated in figure \ref{Module_outputs_illustration_fig}.  By changing the settings, you have the option to train a new U-Net model with the same scheme setup in \citeauthor{brautaset2020acoustic}, but was incompatible with the .zarr format.
+              \item[$\bullet$ Pretrained CRIMAC/U-Net:] Using a pretrained U-Net model, it produces a segmentation map of pixel-based probabilities of spatial size \textit{class} x \textit{ping} x \textit{range} where values in each pixel summaries to 1 over all classes. Output classes were \textit{sandeel}, \textit{other} and \textit{background}. The \textit{ignore} class was not included. The pixel maps are illustrated in figure \ref{Module_outputs_illustration_fig}.  By changing the settings, we have the option to train a new U-Net model with the same scheme setup in \citeauthor{brautaset2020acoustic}, but was incompatible with the \textit{.zarr} format.
               
               \item[$\bullet$ CRIMAC/Bottom detection:] Identifies the bottom and generates a pixel-based map stored as \textit{.zarr}. This is a 2D array of size \textit{ping} x \textit{range}. The output is shown in figure \ref{Module_outputs_illustration_fig}:
 
@@ -39,7 +39,7 @@
             \label{Module_outputs_illustration_fig}
         \end{figure}
 
-    \section{Pseudo labels} \label{Pseudo label}
+    \section{Pseudo Labels} \label{Pseudo label}
         The operator annotations used as labels by \citeauthor{brautaset2020acoustic} was unavailable at the time of writing this thesis, but their method still relied on supervised learning, where each sample has a corresponding label. To solve this, pseudo labels were created by using the aforementioned pretrained CRIMAC/Unet (section \ref{CRIMAC-pipeline}) module. The data was processed by the module and the segmentation map of pixel-based probabilities for each class was produced. A hard threshold of 0.8 was then applied to the predictions, and all values below was set to 0, and above to 1, hence resulting in a hard mask for each class. This threshold was applied to only include the most certain predictions of the pretrained CRIMAC/Unet. Below is an example pseudo label:
         
         %These labels will contain some noise, as the model they originate from was not perfect. In the next section, I will explain how I handled this. Due to the weighted cross-entropy loss used during training of the model seen in section \ref{unet_paper_acoustic} the background class were usually very noisy, as this class was lowly weighted. This low weight caused the model to care less about classifying the background correctly, and the two samples in figure \ref{data sample fig} illustrates this. As I was to use the same weighting, this did not pose a large problem but explains noise in later illustrations of the background class, and therefore mentioned.
@@ -63,7 +63,7 @@
 
 
         
-    \section{Data preparation}
+    \section{Data Preparation}
         Here the process of preparing the dataset will be explained, and it was built to enable a sampling scheme during training equal to the one developed by \citeauthor{brautaset2020acoustic}. In short, the data preparations take as input the data, creates samples with corresponding pseudo labels, and stores them to a folder structure depending on the samples features.
         
         \clearpage
@@ -128,12 +128,6 @@
 
 
 
-% Please add the following required packages to your document preamble:
-% \usepackage{longtable}
-% Note: It may be necessary to compile the document several times to get a multi-page table to line up properly
-% Please add the following required packages to your document preamble:
-% \usepackage{longtable}
-% Note: It may be necessary to compile the document several times to get a multi-page table to line up properly
 \begin{longtable}{lllllllll}
 \caption[2018 data distribution]{Data distribution for the 2018 dataset.}
 \\ \cline{1-4}
@@ -183,7 +177,7 @@ Bottom               & Other                & 2815                             &
 \section{Experiment} \label{Experiment}
     In this section, I will describe how my experiments were performed, and how performance was measured. First by describing the settings, then the in detail the experiment itself. In short, the experiment will  test different frequency combinations.
     
-    \subsection{Experiment settings} \label{Experiment settings}
+    \subsection{Experiment Settings} \label{Experiment settings}
         The experiment would use the same U-Net architecture as described in section \ref{unet} with the alteration developed by \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic}. The only difference in this work was to adjust the amount of frequency channels in the input layer to test different combinations. This would range from 1 to 6 depending on the number of frequencies in a combination. All machine learning was performed by using PyTorch (described in appendix \ref{Pytorch}.
         
         Data loaded to the model started with first selecting a folder from the folder structure, with a set probability for each. Then a sample would be extracted at random from this folder. This imitates the sampling strategy from \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic}, and the probabilities originate from this work.
@@ -251,7 +245,7 @@ Bottom               & Other                & 2815                             &
     %\subsection{Experiment: Training on pseudo labels}
     %  This was a preliminary test to establish that training a model on pseudo labels was possible and would achieve acceptable performance. All frequencies would be included, and this would then produce a baseline performance for the later experiments. 
     
-    \subsection{Exhaustive frequency search}
+    \subsection{Exhaustive Frequency Search}
     
         To find the most impactful frequencies and try to discover hidden synergies between them, a comprehensive test had to be enacted. This experiment would see all combinations of all frequencies being tested. This means to train a U-net model using only the frequencies in the frequency combination and measure the performance. The experiment would be run 5 times, to get enough results to estimate the mean,  reducing variance, and be able to display some statistical data for each test. Each would have different random state seeds set to enable different data splits, and also model different initialization. The explicit random state also accommodates reproducibility. With 6 frequencies in total, the amount of possible frequency combinations for each of the tests is 63 (as the order did not matter and the combination with 0 frequencies was excluded).
         
