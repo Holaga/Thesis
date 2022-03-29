@@ -19,10 +19,10 @@
         \clearpage
         \begin{figure}[H]
             \centering
-            \subfloat[\centering Loss]{{\includegraphics[width=5cm]{figures/Loss_val_train.png} }}%
+            \subfloat[\centering Loss visualized along the y-axis and the x-axis represent epochs.]{{\includegraphics[width=5cm]{figures/Loss_val_train.png} }}%
             \qquad
-            \subfloat[\centering F1-score]{{\includegraphics[width=5cm]{figures/F1_score_per_5.png} }}%
-            \caption[Loss and F1 score during training]{The F1-score and loss for both training and validation. The validation loss was calculated less often, resulting in larger steps. The training and validation F1-score on the final validation data was respectively 0.63 and 0.64}%
+            \subfloat[\centering F1-score visualized along the y-axis and the x-axis represent epochs.]{{\includegraphics[width=5cm]{figures/F1_score_per_5.png} }}%
+            \caption[Loss and F1 score during training]{The F1-score and loss for both training and validation. The validation loss was calculated less often, resulting in larger jumps in value. The training and validation F1-score on the final validation data was respectively 0.63 and 0.64.}%
             \label{loss_f1_duo_plot_fig}%
         \end{figure}
             
@@ -48,7 +48,7 @@
             \label{increasing_freq_f1_score_fig}
         \end{figure}
 
-        In figure \ref{increasing_freq_f1_score_fig} the best frequencies combinations based on precision is visualized. The trend is similar to the one based on F1-score.
+        In figure \ref{increasing_freq_precision_score_fig} the best frequencies combinations based on precision is visualized. The trend is similar to the one based on F1-score.
         % Precision
         \begin{figure}[H]
             \centering
@@ -89,7 +89,7 @@
         \begin{figure}[H]
             \centering
             %\includegraphics[scale=0.7]{figures/perfomance_trend.png}
-            \includesvg[inkscapelatex=false,width=0.9\textwidth,keepaspectratio]{figures/perfomance_trend.svg}
+            \includesvg[inkscapelatex=false,width=1\textwidth,keepaspectratio]{figures/perfomance_trend.svg}
             \caption[Performance trend per frequency]{For all combinations containing a certain frequency, the performance is plotted increasingly.}
           	\medskip 
             \label{performance_trend_fig}
