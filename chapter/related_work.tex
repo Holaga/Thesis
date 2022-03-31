@@ -2,7 +2,7 @@
 This chapter will start with a description of a deep learning architecture called U-Net, and then an implementation of this network on acoustic data. The latter is the work this thesis is heavily based upon. In the final part of this chapter, the context of the research field will be described.
 
 
-\section{U-Net: Convolutional Networks For Biomedical
+\section{U-Net: Convolutional Networks for Biomedical
 Image Segmentation} \label{unet}
 
     In this section, we introduce the architecture of the model that is the foundation of the work in this thesis, and hence we will do this in more detail. U-Net is a fully convolutional state-of-the-art\cite{rajak2021segmentation} semantic segmentation \gls{cnn} and was initially developed for biomedical image analysis by \citeauthor{unet_ronneberger2015}\cite{unet_ronneberger2015}. 
@@ -20,6 +20,13 @@ Image Segmentation} \label{unet}
     U-Net utilized what \citeauthor{unet_ronneberger2015}\cite{unet_ronneberger2015} called a \textit{contracting path} to identify what was in a picture, while an \textit{expanding path} to localize where it was. These two branches were symmetrical, and together they formed a U-shape, giving the network its name. The contracting path can be looked at as five different stages of processing, from top to bottom, in figure \ref{unet_fig}. Each stage applied the same operations to its given input. For each stage, this consisted of two 3×3 valid convolutions with their individual ReLU activation functions. Initially, the feature channels would be increased to 64, and later doubled for each contracting stage. The convolutions were followed by a 2×2 max pooling operation with stride 2 to decrease the resolution of the output from the convolutional operations, and then send this feature map down to the next stage. At the bottom stage, the only change was the use of transpose convolutions instead of max pooling to now increase the resolution. At each subsequent stage going back up the expanding path, the number of feature channels were halved during the convolutional steps. The output of the previous stage would be concatenated with a crop from the output feature map of a stage from the contracting path with the same channel size, the cropping due to different resolutions. This step is crucial for the performance of the model, as it helps the network localize the abstract features in the expanding path to locations in the contracting. At the last stage, a 1×1 convolution was applied instead of increasing the resolution. The 1×1 convolution mapped the 64 feature channels to the 2 classes. The softmax was then calculated between these classes, giving each pixel a value between [0,1], summarized over all classes to 1. Hence, giving us a segmentation map of each class. In the field of biomedicine, data are scarce and so heavy use of data augmentation was applied, which made the U-Net able to train on very few samples.
     
     As of U-Net's development in \citeyear{unet_ronneberger2015}, it outperformed other networks in multiple biomedical challenges\cite{unet_ronneberger2015}. It's performance inspired new versions with enhanced performance that use the U-Net architecture as its backbone, as can be seen in NAS-Unet\cite{weng2019unet} from \citeyear{weng2019unet}, and Unet++\cite{zhou2018unet} from \citeyear{zhou2018unet}. U-Net has also been applied with success to other fields such as road extraction in satellite images by \citeauthor{zhang2018road}\cite{zhang2018road} in \citeyear{zhang2018road} and on acoustic classification by \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic} in \citeyear{brautaset2020acoustic}, which is the next article to be described in this thesis.
+    
+    
+    
+    
+    
+    
+    
     
 \clearpage
 \section{Acoustic Classification In Multifrequency Echosounder Data Using Deep Convolutional Neural Networks} \label{unet_paper_acoustic}
@@ -55,14 +62,27 @@ Image Segmentation} \label{unet}
         \item A review of unmanned vehicles for the detection and monitoring of marine fauna
         
     \end{itemize}
-    
-    
-    
-    
-        \citeauthor{VERFUSS201917} \citeyear{VERFUSS201917}\cite{VERFUSS201917} reviewed the current status of the unmanned vehicles, in combinations with a variety of sensors, used to monitor marine fauna. They discussed the different aspects to be considered when selecting systems in the context of a task. The task specifies the technical requirements of the vehicle, and this again what information will be gain. Regarding the population monitoring task, which is the focus of this thesis, they stated that it is especially important that this information enables us to assign recorded animals to the correct species. Signifying the importance of developing methods to correctly classify species, and those that already exists may only work in the context of for which they were created. The market can today provide commercial systems within this field and enables affordable products and increase availability. They emphasized that unmanned vehicles have the potential to improve mission safety, and measurements while decreasing costs. Although, at the same time, may increase the need for more support vessels and additional personnel with expertise system knowledge.  
+        
+        In 
+        
+        2. Other uses of DL in accoustic classification
+        - 
+        -  Instance segmentation,
+        
+        In \citeyear{VERFUSS201917} \citeauthor{VERFUSS201917}\cite{VERFUSS201917} reviewed the current status of systems consisting of unmanned vehicles and  sensors monitoring marine life. In the case of the acoustic sensors, they emphasized the need to be able to efficiently assign the correct species to the measured animal. This directly impacts the technical requirements of the vehicles purchased, as they need a minimum amount of information provided by the sensors to solve the given task. Possibly, further increasing the need for more support vessels and personnel with expertise system knowledge. Many of the systems reviewed are commercially available, leading to a growth in number and use. \citet{malde2020machine} states that this increase in unmanned vehicles, combined with the possibility to gather more complex data, will see an exponential increase in the data gathered in marine science. Furthermore, they state that the quality if the data would maybe decrease, as people will have less or no opportunities to actively engage in the information gathering process. 
+        
+        mimic experts
+        
+         
+        
+        
+        
+        %\citeauthor{VERFUSS201917} \citeyear{VERFUSS201917}\cite{VERFUSS201917} reviewed the current status of the unmanned vehicles, in combinations with a variety of sensors, used to monitor marine fauna. They discussed the different aspects to be considered when selecting systems in the context of a task. The task specifies the technical requirements of the vehicle, and this again what information will be gain. Regarding population monitoring tasks, which is the focus of this thesis, they stated that it is especially important that this information enables us to assign recorded animals to the correct species. Signifying the importance of developing methods to correctly classify species, and those that already exists may only work in the environment for which they were created. The market can today provide commercial systems within this field and enables affordable products and increase availability. They emphasized that unmanned vehicles have the potential to improve mission safety, and measurements while decreasing costs. Although, at the same time, may increase the need for more support vessels and additional personnel with expertise system knowledge.
  
-        An example of an unmanned vehicle has been tested in Årdalsfjorden in Norway and involved a kayak with an electric motor and only one 200kHz echosounder installed to measure \textit{sprat} abundance\cite{johnsen2020measuring}. Results showed that the vehicle managed to measure fish that usually live closer to the surface in the acoustic 8-meter blind zone of the larger vessels, as the echosounders are usually installed on the bottom part of the large research ship used during acoustic trawl surveys. In addition, the vehicle produces significantly less noise in the water and are less prone to scare away the fish. The lightweight kayak platform enabled it to collect data from shallower water, earlier inaccessible to the larger vessels. The end result was positive for the continued use of unmanned vehicles, but the manned vessels are still needed for the biological samples in addition to the acoustic data gathered. There was room for one more echosounder on the kayak, and had one been there, another frequency channel could have been monitored. Which frequency to choose in addition to the 200kHz relates to the question we seek to solve in this thesis.
+        An example of an unmanned vehicle has been tested in Årdalsfjorden in Norway and involved a kayak with an electric motor and only one 200kHz echosounder installed to measure \textit{sprat} abundance\cite{johnsen2020measuring}. Results showed that the vehicle managed to measure fish that usually live closer to the surface in the acoustic 8-meter blind zone of the larger vessels, as the echosounders are usually installed on the bottom part of the large research ship used during acoustic trawl surveys. In addition, the vehicle produces significantly less noise in the water and are less prone to scare away the fish. The lightweight kayak platform enabled it to collect data from shallower water, earlier inaccessible to the larger vessels. The end result was positive for the continued use of unmanned vehicles, but the manned vessels are still needed for the biological samples in addition to the acoustic data gathered. There was room for one more echosounder on the kayak, which could have increased performance. Hence, which frequency to choose, in addition to the 200kHz, relates to the question we seek to solve in this thesis.
 
+        
+        
         %- Measure the ipopulation, mitigation, and focal animal monitoringmpact of underwater sound on marine animals we focus on population monitoring
         %- population, mitigation, and focal animal monitoring
        % - unnmaned systems "
@@ -90,9 +110,6 @@ Image Segmentation} \label{unet}
 %        strategy that is suitable
 %        for segmenting and classifying echosounder data collected during acoustic trawl surveys %without prior feature extraction; (ii) demonstrate that the strategy devel-
 %        oped in (i) works on a real test case, and (iii) provide perspec- tives, e.g. pros and %cons, on the use of deep learning algorithms in the classification of acoustic %observations into acoustic catego-ries (e.g. species groups).
-
-
-
 % - modified architecture, same convs, batch norm
 % - trawl missions from 2007 - 2018, many classes, combined into three
 % - four frequencies used -> output segmantation map of sandeel, other and background

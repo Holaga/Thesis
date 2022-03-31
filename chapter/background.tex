@@ -1,7 +1,7 @@
 \chapter{Background}
     In this chapter, the key concepts used during the experiments will be introduced. Afterwards, the context of the research field will be described.  
     
-\section{Terminology Of Multidimensional Arrays}
+\section{Terminology of Multidimensional Arrays}
     This chapter will frequently describe multidimensional arrays; therefore this section will clarify some commonly used terms. Multidimensional arrays consist of multiple 2-dimensional arrays. These are called \textit{channels}, and have uniform \textit{resolution}. \textit{Depth} denotes the number of channels, while the resolution indicates the \textit{height} and \textit{width} of the channels. Thus, a multidimensional array can be described with \textit{height} x \textit{width} x \textit{depth}. The terms are illustrated in figure \ref{Multidimensional array terminology}.
     
         \begin{figure}[H]
@@ -106,15 +106,15 @@
         
 
 \section{Artificial Neural Networks} \label{neural networks}
-    In this section, we introduce the basic components of an \gls{ann} and how these are combined to create a \textit{deep learning} network. 
+    In this section, we introduce the basic components of an \gls{ann} and how these are combined to create a \textit{deep learning} network/ model. 
 
     \subsection{Perceptron} \label{perceptron}
-        The \gls{ann}s fundamental building block is called an artificial \textit{neuron} or perceptron. It is formulated in the following way\cite{razavi2021deep_exp_per}:
+        The \gls{ann}s fundamental building block is called an artificial \textit{neuron} or perceptron. It consists of a linear regression with the tunable parameters $w$ and $b$ inside a non-linear activation function, which will be explained later in \ref{activation function}. The perceptron is formulated in the following way\cite{razavi2021deep_exp_per}:
             \begin{equation} \label{eq_perceptron}
                 y = \sigma(\sum_{i=1}^{D}w_ix_i + b)
             \end{equation}
             
-        where D is the number dimension of the input space, $x$ is the input vector and $w$ is a set of weights that is of the same size as $x$, $b$ is the bias and {\textsigma} is a nonlinear activation function which will be explained later in \ref{activation function}. The output \textit{y} is a weighted sum of the input and weights, also called the neurons' \textit{activation}. In short, the equation inside the activation functions is a linear regression with the tunable parameters $w$ and $b$. The perceptron is illustrated in figure \ref{Perceptron / MLP}.
+        where D is the number dimension of the input space, $x$ is the input vector and $w$ is a set of weights that is of the same size as $x$, $b$ is the bias and {\textsigma} is the activation function. The output \textit{y} is a weighted sum of the input and weights plus the bias, also called the neurons' \textit{activation}. The perceptron is illustrated in figure \ref{Perceptron / MLP}.
     
     \subsection{Multi-Layered Perceptron} \label{MLP}
         The neurons presented in section \ref{perceptron} are organized together in layers to form a \gls{ann}, which in turn forms what is called a \gls{mlp} \cite{razavi2021deep_exp_per}. All neurons in each layer are connected to every neuron in the next layer, as depicted in figure \ref{Perceptron / MLP}.
@@ -182,7 +182,7 @@
 \section{Training Neural Networks} \label{training neural networks}
     This section will describe the main concepts behind how a machine learning algorithm using \gls{ann}s increase their performance on a task. 
 
-\subsection{Forward-Propagation And The Loss Function}
+\subsection{Forward-Propagation and The Loss Function}
     \citeauthor{Goodfellow-et-al-2016_NN}\cite{Goodfellow-et-al-2016_NN} describes \gls{ann} as an unknown function \textit{\^{f}} that maps an input \textbf{x} to an output \textbf{y}. The goal is to approximate some optimal function \textit{f} through learning from examples. In supervised tasks, the labels instruct the output layer exactly how to perform given the input data. However, the data does not inform the individual \textit{hidden layers} how to perform to produce this desired output. When the data flow through the network using the initial parameters $\theta$ (weights and biases), it produces outputs \textbf{\^{y}}, this is called the \textit{forward-propagation step}. How the parameters are initialized can heavily affect the training process, and different strategies are further described in \citeauthor{Goodfellow-et-al-2016_param_init}\cite{Goodfellow-et-al-2016_param_init}. By using a \textit{loss function} comparing the true \textbf{y} values to the estimated values \textbf{\^{y}}, we get a measurement of the network's \textit{error}, also called \textit{loss}. In classification tasks, the network is trained to output the probability of each class given an input\cite{ho2019real_weighted_cross_entropy}. The probabilities are then the input to the loss function, which in this work is \textit{weighted cross entropy}. This function outputs a loss based on probabilities, weights classification of certain classes differently, and is often used when dealing with data containing class imbalance as you can apply more weight to the minority class. Expressed as:
     
         \begin{equation} \label{cross_entropy}
@@ -208,7 +208,7 @@
     where $\theta$ is the set of parameters to be optimized, $x_{1..N}$ is the training data, and $x_{1..m}$ is a minibatch of the training data. \gls{sgd} is what is called an \textit{optimization} algorithm, and the next section will describe how it is applied to solve equation \ref{batch_learning_eq}. 
     
     
-\subsection{Backpropagation And Gradient-based Learning}
+\subsection{Backpropagation and Gradient-based Learning}
     To update the parameters of the network, we use the loss from a batch, and iteratively step back through the layers in a process called \textit{back-propagation}\cite{rumelhart1986learning_backprop}. In each step, we calculate a value called the \textit{gradient} for each parameter. The gradient is the partial derivative of the \textit{loss} function with respect to each weight and bias in the current layer, and is computed using the chain rule. This is in order to determine how changes to each parameter will affect the \textit{loss}. Using the gradient, \gls{sgd} adjusts all the individual parameters to minimize the \textit{loss}, performing \textit{gradient descent}\cite{Goodfellow-et-al-2016_gradient_descent} by updating all parameters in the opposite direction of the gradient to reduce the \textit{loss}. In what magnitude a parameter is adjusted by the optimizing algorithm is determined by the \textit{learning rate}, usually a value between 0 and 1. The parameter update is expressed as\cite{pmlr-v37-ioffe15_batch_norm}:
     
     \begin{equation}
