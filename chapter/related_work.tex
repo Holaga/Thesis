@@ -1,5 +1,5 @@
 \chapter{Related Work}
-This chapter will start with a description of a deep learning architecture called U-Net, and then an implementation of this network on acoustic data. The latter is the work this thesis is heavily based upon. In the final part of this chapter, the context of the research field will be described.
+This chapter will start with a description of a deep learning architecture called U-Net, and then an implementation of this network on acoustic data. The latter is the work this thesis is heavily based upon. In the final part of this chapter, the context of the research field will be described, focusing on deep learning and unmanned vehicles withing marine science.
 
 
 \section{U-Net: Convolutional Networks for Biomedical
@@ -21,13 +21,6 @@ Image Segmentation} \label{unet}
     
     As of U-Net's development in \citeyear{unet_ronneberger2015}, it outperformed other networks in multiple biomedical challenges\cite{unet_ronneberger2015}. It's performance inspired new versions with enhanced performance that use the U-Net architecture as its backbone, as can be seen in NAS-Unet\cite{weng2019unet} from \citeyear{weng2019unet}, and Unet++\cite{zhou2018unet} from \citeyear{zhou2018unet}. U-Net has also been applied with success to other fields such as road extraction in satellite images by \citeauthor{zhang2018road}\cite{zhang2018road} in \citeyear{zhang2018road} and on acoustic classification by \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic} in \citeyear{brautaset2020acoustic}, which is the next article to be described in this thesis.
     
-    
-    
-    
-    
-    
-    
-    
 \clearpage
 \section{Acoustic Classification In Multifrequency Echosounder Data Using Deep Convolutional Neural Networks} \label{unet_paper_acoustic}
     
@@ -42,26 +35,38 @@ Image Segmentation} \label{unet}
     \end{figure}
     
     
-    \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic} had as objective to propose a deep learning method to classify and segment acoustic data gathered during acoustic trawl surveys, without using predefined features. This work is the backbone of this thesis and the data is the same or very similar, hence a more detailed description is provided. The acoustic data from the surveys are used as support when fisheries estimate the allowed catches of different fish populations, and in this case \textit{sand eel}. To estimate the quantity of fish, there is a linear relationship between the \gls{sv} value and quantity as long as the exact species can be assigned to the value. Today, the process of designating \gls{sv} to the proper species is heavily influenced by human operators using a variety of tools, and trawl samples (biological samples). These tools use predefined features, and are subject to not fit all situations equally well. 
+    \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic} had as objective to propose a deep learning method to classify and segment acoustic data gathered during acoustic trawl surveys, without using predefined features. This work is the backbone of this thesis and the data is the same or very similar, hence a more detailed description is provided. The acoustic data from the surveys are used as support when fisheries estimate the allowed catches of different fish populations, and in this case \textit{sandeel}. To estimate the quantity of fish, there is a linear relationship between the \gls{sv} value and quantity as long as the correct species can be assigned to the value. Today, the process of designating \gls{sv} to the proper species is heavily influenced by human operators using a variety of tools, and trawl samples (biological samples) \cite{korneliussen2016acoustic}. These tools use predefined features, and are subject to not fit all situations equally well. 
     
     The deep learning architecture proposed was based on an altered version of \citeauthor{unet_ronneberger2015}\cite{unet_ronneberger2015} U-Net\cite{brautaset2020acoustic}. It is visualized in figure \ref{unet__brautset_fig}, and the difference is the use of \textit{same convolutions} and \textit{batch normalization}. Furthermore, as the resolution of the layers in the contracting and expanding path had the same size, when concatenating, cropping was no longer needed. 
     
-    The data used by this work and partly in this thesis originated from yearly trawl missions spanning 2007-2018\cite{brautaset2020acoustic}, where 2011-2016 was set as training and validation data, and 2007-2010 combined with 2017-2018 as test data. The frequency channels extracted from each year was the 18kHz, 38kHz, 70kHz and 200kHz. Operator annotations initially contained the classes \textit{sandeel}, \textit{other}, \textit{0-group sandeel} and \textit{possible sandeel}, and were annotated by the same operator. \textit{0-group sandeel} and \textit{possible sandeel} was added to a new class \textit{ignore}, as both of them were edge cases, originated from an extraordinary event seen during a trawl or operator uncertainty. The annotations were converted to a pixel map of the same size as the \gls{sv} data (the output from the echosounder), and all pixels not allocated to a class was set as the \textit{background class}. Annotations were originally designed to summarize the \gls{sv} values over an area, to estimate quantity. Hence, they were usually square and larger than the actual school of fish, and not suitable as labels for a \gls{cnn} as pixels around the edges sometimes belonged to the \textit{background class}. As a result, the annotations were approximately reshaped to be more similar to real schools of fish. The outline of further methods applied is described in the methodology chapter (chapter \ref{methods}) as it is based on this article.
+    The data used by this work and partly in this thesis originated from yearly trawl missions spanning 2007-2018\cite{brautaset2020acoustic}, where 2011-2016 was set as training and validation data, and 2007-2010 combined with 2017-2018 as test data. For all years, the \gls{lsss} system was used to categorize and annotate the data. The frequency channels extracted from each year was the 18kHz, 38kHz, 70kHz and 200kHz. Operator annotations initially contained the classes \textit{sandeel}, \textit{other}, \textit{0-group sandeel} and \textit{possible sandeel}, and were annotated by the same operator. \textit{0-group sandeel} and \textit{possible sandeel} was added to a new class \textit{ignore}, as both of them were edge cases, originated from an extraordinary event seen during a trawl or operator uncertainty. The annotations were converted to a pixel map of the same size as the \gls{sv} data (the output from the echosounder), and all pixels not allocated to a class was set as the \textit{background class}. Annotations were originally designed to summarize the \gls{sv} values over an area, to estimate quantity. Hence, they were usually square and larger than the actual school of fish, and not suitable as labels for a \gls{cnn} as pixels around the edges sometimes belonged to the \textit{background class}. As a result, the annotations were approximately reshaped to be more similar to real schools of fish. The outline of further methods applied is described in the methodology chapter (chapter \ref{methods}) as it is based on this article.
     
     Performance was measured using two different methods\cite{brautaset2020acoustic}. The first method extracted predictions in \textit{small regions} around existing annotations, and was applied due to  the observations of many schools lacking annotations. This would likely result in the decrease of many false positives being produced by the model, and would now reflect its actual performance. The second method was to measure the performance over \textit{entire echograms}. To have a benchmark to compare to, they used the pipeline developed by \citet{korneliussen2016acoustic} which use an acoustic feature library to identify species. The metric used was F1-score, where \textit{sandeel} was the \textit{positive}   while \textit{other} and \textit{background} was the \textit{negative}. \textit{Small regions} resulted in an overall F1-score of 0.87 on all the test data after a threshold of 0.8 was applied to the probabilities, while the benchmark achieved a F1 score of 0.77. When applying the model to \textit{entire echograms}, the performance decreased and ranged from 0.11-0.68 on individual test years. This was also mirrored by the benchmark method, which achieved 0.03-0.50. The decrease in performance over entire echograms was attributed to missing annotations, and many unidentified features in the data being allocated to the \textit{background} class. The training scheme later described in section \ref{Experiment settings} did not take many of these into account. The quality of the data from different years varied due to different weather conditions, fish populations and stages of development in software used during annotations. The model was concluded as able to be reliably trained to classify acoustic multifrequency measurements\cite{brautaset2020acoustic}.
     
+\section{Deep Learning in Marine Science}
+In \citeyear{korneliussen2018acoustic} \citet{korneliussen2018acoustic} reported the then most recent methods used for acoustic target classification. The mentioned methods applying \gls{ann}s all utilized the supervised learning approach, and were most frequently applied to single frequency channel data. Due to the supervised setting, they stressed the importance of high-quality annotations. Including the work detailed earlier in \citet{brautaset2020acoustic}, we will now describe some more recent research.
+   
+\citet{marques2021detecting} compared different methods for automatically interpreting multi-frequency echograms, and proposed that a deep learning based end-to-end framework was best suited for the task. Their experiments handled the generation of square bounding boxes around schools of fish, and their results were comparable or better than those produced by human operators. This work was later improved upon by applying an instance segmentation method\cite{marques2021instance}. This produced more accurate predictions with pixel precision, and they described this as more befitting biological analysis.
+ 
+ \citet{semtantic-segm2021choi} proposed in \citeyear{semtantic-segm2021choi} a semi-supervised deep learning network, with the intent of solving the reliance supervised \gls{ann}s have on the correct manual annotation of the acoustic data. By using the same data as \citet{brautaset2020acoustic}, they utilized two \textit{loss functions} which in alternating order optimize the same \gls{cnn}. This \gls{cnn} was based on an \gls{cnn} architecture called VGG-16\cite{simonyan2014very}. The first loss function seeks to \textit{cluster} the data by finding intrinsic characteristics in the data. The second loss function uses classification based on the existing annotated data. This combined use of loss functions was, presumably, the first application to acoustic data. They showed that their model could outperform other traditional machine learning algorithms, both with or without missing annotations. Proving that we can efficiently process data with only a few annotated samples.
+ 
 
-\section{Context of research area}
+    
+    
     \begin{itemize}
-        \item Deep learning acoustic data
+        \item ~Deep learning acoustic data
         \item litt historie kanskje 
         \item 2021 model, instance segmentation
         
-        \item Johnsen autonomous vessels
+        \item X Johnsen autonomous vessels
         \item Best frequency - 200kHz, and others
-        \item A review of unmanned vehicles for the detection and monitoring of marine fauna
+        \item X A review of unmanned vehicles for the detection and monitoring of marine fauna
         
     \end{itemize}
+        
+        
+        
+        
         
         In 
         
@@ -69,17 +74,42 @@ Image Segmentation} \label{unet}
         - 
         -  Instance segmentation,
         
-        In \citeyear{VERFUSS201917} \citeauthor{VERFUSS201917}\cite{VERFUSS201917} reviewed the current status of systems consisting of unmanned vehicles and  sensors monitoring marine life. In the case of the acoustic sensors, they emphasized the need to be able to efficiently assign the correct species to the measured animal. This directly impacts the technical requirements of the vehicles purchased, as they need a minimum amount of information provided by the sensors to solve the given task. Possibly, further increasing the need for more support vessels and personnel with expertise system knowledge. Many of the systems reviewed are commercially available, leading to a growth in number and use. \citet{malde2020machine} states that this increase in unmanned vehicles, combined with the possibility to gather more complex data, will see an exponential increase in the data gathered in marine science. Furthermore, they state that the quality if the data would maybe decrease, as people will have less or no opportunities to actively engage in the information gathering process. 
-        
-        mimic experts
         
          
+        
+        finn earlier works
+        
+
+% Setting the stage for the machine intelligence era in
+% marine science - Cigdem Beyan et al.
+%  - nevner brautaset, ikke noe mer innen acoustic categorization
+%  - 
+
+
+
+
+\section{Unmanned Vehicles in Marine Science}
+        In \citeyear{VERFUSS201917} \citeauthor{VERFUSS201917}\cite{VERFUSS201917} reviewed the current status of systems consisting of unmanned vehicles and  sensors monitoring marine life. The vehicles can operate stationary or moving, on the ocean surface, as aerial or submerged.  They can both be remotely controlled, autonomous or a combination. In the case of the acoustic sensors, they emphasized the need to be able to efficiently assign the correct species to the measured animal. This directly impacts the technical requirements of the vehicles purchased, as they need a minimum amount of information provided by the sensors to solve the given task. Possibly, further increasing the need for more support vessels and personnel with expertise system knowledge. Many of the systems reviewed are commercially available, leading to a growth in number and use. \citet{malde2020machine} states that this increase in unmanned vehicles, combined with the possibility to gather more complex data, will see an exponential increase in the data gathered in marine science. As a consequence, increasing the need to make automated programs or better tools to aid in the current manual data processing, which today is a major chokepoint. Furthermore, they state that the nature of the data gathered will change, possibly in decreasing quality, as humans will have less or no opportunities to actively engage in the information gathering process that are autonomous. This means that future unmanned surveys will have to be planned in more detail. 
+        
+        In \citeyear{johnsen2020measuring} an unmanned vehicle was tested in Årdalsfjorden in Norway and involved a kayak with an electric motor and only one 200kHz echosounder installed to measure \textit{sprat} abundance\cite{johnsen2020measuring}. Results showed that the vehicle managed to measure fish that usually live closer to the surface in the acoustic 8-meter blind zone of the larger vessels, as the echosounders are usually installed on the bottom part of the large research ship used during acoustic trawl surveys. In addition, the vehicle produces significantly less noise in the water and are less prone to scare away the fish. The lightweight kayak platform enabled it to collect data from shallower water, earlier inaccessible to the larger vessels. The end result was positive for the continued use of unmanned vehicles, but the manned vessels are still needed for the biological samples in addition to the acoustic data gathered. There was room for one more echosounder on the kayak, which could have increased performance. Hence, which frequency to choose, in addition to the 200kHz, relates to the question we seek to solve in this thesis.
+
+
+
+        
+        
+        
+        
+        
+
+        
+        
+        
         
         
         
         %\citeauthor{VERFUSS201917} \citeyear{VERFUSS201917}\cite{VERFUSS201917} reviewed the current status of the unmanned vehicles, in combinations with a variety of sensors, used to monitor marine fauna. They discussed the different aspects to be considered when selecting systems in the context of a task. The task specifies the technical requirements of the vehicle, and this again what information will be gain. Regarding population monitoring tasks, which is the focus of this thesis, they stated that it is especially important that this information enables us to assign recorded animals to the correct species. Signifying the importance of developing methods to correctly classify species, and those that already exists may only work in the environment for which they were created. The market can today provide commercial systems within this field and enables affordable products and increase availability. They emphasized that unmanned vehicles have the potential to improve mission safety, and measurements while decreasing costs. Although, at the same time, may increase the need for more support vessels and additional personnel with expertise system knowledge.
  
-        An example of an unmanned vehicle has been tested in Årdalsfjorden in Norway and involved a kayak with an electric motor and only one 200kHz echosounder installed to measure \textit{sprat} abundance\cite{johnsen2020measuring}. Results showed that the vehicle managed to measure fish that usually live closer to the surface in the acoustic 8-meter blind zone of the larger vessels, as the echosounders are usually installed on the bottom part of the large research ship used during acoustic trawl surveys. In addition, the vehicle produces significantly less noise in the water and are less prone to scare away the fish. The lightweight kayak platform enabled it to collect data from shallower water, earlier inaccessible to the larger vessels. The end result was positive for the continued use of unmanned vehicles, but the manned vessels are still needed for the biological samples in addition to the acoustic data gathered. There was room for one more echosounder on the kayak, which could have increased performance. Hence, which frequency to choose, in addition to the 200kHz, relates to the question we seek to solve in this thesis.
+
 
         
         
