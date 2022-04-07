@@ -1,5 +1,5 @@
 \chapter{Background}
-    In this chapter, the key concepts used during the experiments will be introduced. Afterwards, the context of the research field will be described.  
+    In this chapter, the key concepts used during the experiments will be introduced.
     
 \section{Terminology of Multidimensional Arrays}
     This chapter will frequently describe multidimensional arrays; therefore this section will clarify some commonly used terms. Multidimensional arrays consist of multiple 2-dimensional arrays. These are called \textit{channels}, and have uniform \textit{resolution}. \textit{Depth} denotes the number of channels, while the resolution indicates the \textit{height} and \textit{width} of the channels. Thus, a multidimensional array can be described with \textit{height} x \textit{width} x \textit{depth}. The terms are illustrated in figure \ref{Multidimensional array terminology}.
@@ -11,10 +11,29 @@
       	\medskip 
         \label{Multidimensional array terminology}
     \end{figure}
-    
 
-\section{Echosounder and Image Data} \label{echosounder and image data acoustic }
-    This section describes the data gathered by the Simrad EK60 echosounder system produced during the yearly trawl surveys conducted by the \gls{imr}\cite{johnsen2017collective} and how it relates to image data. Echosounders are maritime instruments, in this case mounted below a ship, which emit acoustic waves into the water (\textit{ping}) and log the backscattered waves\cite{brautaset2020acoustic}. The logs record the \gls{sv}. The data is 2-dimensional, recording the \textit{date and time of the ping} and \textit{range} (\textit{depth}) of the backscattered waves, for each frequency channel used during the measurement. This output is called an \textit{echogram}. As the ping rate was set to 1Hz\cite{choi2021semi}, with a pulse duration of 1.024 milliseconds, the length of each pixel is 1 second horizontally and 19.2 centimeters vertically. These echograms represent some visible observation of the water column below the echosounder, and because of this, each frequency channel can be viewed as similar to color channels in a picture. Hence, machine learning techniques usually applied to image data are also applicable to \textit{echograms}. Figure \ref{accoustic data and color channels fig} illustrates an example of this:
+
+
+\section{Acoustic Surveys}
+    When fisheries conduct acoustic surveys of fish, they use \textit{echo sounders} to remotely detect and observe targets in the water. Echo sounders are a special variety of \textit{sonar}, where the acoustic beam is directed vertically downwards from the measuring platform. The echo sounder consists of a \textit{transmitter} that produces a burst of electrical energy at some set frequency. Then a \textit{transducer} receives the output from the transmitter and converts it to an acoustic signal that is propagated through the water, also called a \textit{ping}. This forms a directional beam, akin to the light from a handheld flashlight. Targets in the water backscatters/reflects parts of the energy back towards the transducer. The \textit{backscattered} sound (echo) is detected by the transducer, and the sound is converted back to electric energy as the received signal and is further amplified. The \textit{time} when the signal is received determines the distance (range) to the target\cite{simmonds2008fisheries}.
+    
+    Pings are displayed as vertical lines in a 2-dimensional image, also called an echogram, with range along the y-axis and time of ping along the x-axis. Any targets detected in the ping will be visualized as a \textit{mark} in the echogram. With a set frequency, the process mentioned in the paragraph above is repeated to produce a series of lines. The echogram is then a representation of a vertical cross-section of the water column as the transducer is moving through the water at constant speed in one direction. This is visualized in figure \ref{echogram}. If the echosounder was stationary, the echogram would be a time-series representation of the same volume. Combined with trawl samples and knowledge of species composition, the mark can be assigned to a specific or group of species\cite{simmonds2008fisheries}.
+    
+    \begin{figure}[H]
+        \centering
+            \includesvg[inkscapelatex=false,width=1\textwidth,keepaspectratio]{figures/echogram-echosounder.svg}
+        \caption[Echosounder]{Concept of an echosounder: Pings generates echoes from a school of fish and the seabed. The echoes are displayed in an echogram.}
+      	\medskip 
+        \label{echogram}
+    \end{figure}
+
+    
+    \cite{simmonds2008fisheries}
+\subsection{Acoustic data}
+
+
+\subsection{Acoustic Data and Image Data} \label{echosounder and image data acoustic }
+   Echograms represent some visible observation of the water column below the echosounder, and measuring the backscatter of several frequencies channels in parallel, each frequency channel can be viewed as similar to color channels in a picture\cite{brautaset2020acoustic}. Hence, machine learning techniques usually applied to image data are also applicable to \textit{echograms}. Figure \ref{accoustic data and color channels fig} illustrates an example of this:
 
     \begin{figure}[H]
         \centering
@@ -32,8 +51,10 @@
         
         \end{figure}
     
-    More information about the acoustic data used in this thesis is contained in section \ref{unet_paper_acoustic}.
+    More information about the acoustic data used in this thesis is contained in section \ref{unet_paper_acoustic}. 
     
+    
+    %This section describes the data gathered by the Simrad EK60 echosounder system produced during the yearly acoustic trawl surveys conducted by the \gls{imr}\cite{johnsen2017collective} and how it relates to image data. Echosounders are maritime instruments, in this case mounted below a ship, which emit acoustic waves into the water (\textit{ping}) and log the backscattered waves\cite{brautaset2020acoustic}. The logs record the \gls{sv}. The data is 2-dimensional, recording the \textit{date and time of the ping} and \textit{range} (\textit{depth}) of the backscattered waves, for each frequency channel used during the measurement. This output is called an \textit{echogram}. As the ping rate was set to 1Hz\cite{choi2021semi}, with a pulse duration of 1.024 milliseconds, the length of each pixel is 1 second horizontally and 19.2 centimeters vertically. These echograms represent some visible observation of the water column below the echosounder, and because of this, each frequency channel can be viewed as similar to color channels in a picture. Hence, machine learning techniques usually applied to image data are also applicable to \textit{echograms}. Figure \ref{accoustic data and color channels fig} illustrates an example of this:
 \clearpage
 \section{Machine Learning} \label{Machine Learning}
     As described in the book Deep Learning\cite{Goodfellow-et-al-2016_ML}, machine learning can intuitively be split into four parts; the \textit{algorithm}, \textit{empirical data}, a \textit{task} and a \textit{performance} measure. A machine learning algorithm is designed to increase its performance on a task, given data. During this process also called \textit{training}, the algorithm is said to be \textit{learning}. Afterwards, it outputs a \textit{model} which represents what the algorithm learned and can predict on new data. Machine learning approaches can be divided into three categories\cite{Goodfellow-et-al-2016_E}: supervised learning, unsupervised and reinforcement learning. 

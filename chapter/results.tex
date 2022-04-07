@@ -55,7 +55,7 @@ This section will first describe the hardware used, then the results from the ex
         \end{figure}
     
     
-    These results also show that a model can successfully be trained on pseudo labels. More examples on logged output can be found in the appendixes, as there are too many to efficiently illustrate here. (LEGG IN DETTE). 
+    These results also show that a model can successfully be trained on pseudo labels. The logs from training showed that some combinations with low amounts of frequencies would need more training to converge. More examples on logged output can be found in the appendixes, as there are too many to efficiently illustrate here.  (LEGG IN DETTE). 
     
     \subsection{Performance Metrics - Greedy Search}
         In figure \ref{increasing_freq_f1_score_fig} the best frequency combinations based on F1-score is visualized. \textit{200kHz} dominates the results, and stays in all combinations. The most drastic increase in performance happens with the 3 frequencies \textit{18kHz}, \textit{38kHz} and \textit{200kHz} being used.
@@ -97,7 +97,7 @@ This section will first describe the hardware used, then the results from the ex
             \centering
             %\includegraphics[scale=0.7]{figures/error_bar.png}
             \includesvg[inkscapelatex=false,width=0.9\textwidth,keepaspectratio]{figures/error_bars.svg}
-            \caption[Error bars per combination]{Each colored error bar is a combination, and its y-value is the mean F1-score. The error bar's top value is the max value achieved, and the bottom is the lowest. A red circle encompasses the test containing only 18kHz, 38kHz and 200kHz. Blue vertical lines sections the error bars into groups where the number of frequencies in each combination are equal.}
+            \caption[Error bars per combination]{Each colored error bar is a frequency-combination. The error bar's top y-value value is the max value achieved, and the bottom is the lowest. A red circle encompasses the test containing only 18kHz, 38kHz and 200kHz. Blue vertical lines sections the error bars into groups where the number of frequencies in each combination are equal.}
           	\medskip 
             \label{errorbar_fig}
         \end{figure}
