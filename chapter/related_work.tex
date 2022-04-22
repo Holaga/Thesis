@@ -2,26 +2,7 @@
 This chapter will start with a description of a deep learning architecture called U-Net, and then an implementation of this network on acoustic data. The latter is the work this thesis is heavily based upon. In the final part of this chapter, the context of the research field will be described, focusing on deep learning and unmanned vehicles withing marine science.
 
 
-\section{U-Net: Convolutional Networks for Biomedical
-Image Segmentation} \label{unet}
 
-    In this section, we introduce the architecture of the model that is the foundation of the work in this thesis, and hence we will do this in more detail. U-Net is a fully convolutional state-of-the-art\cite{rajak2021segmentation} semantic segmentation \gls{cnn} and was initially developed for biomedical image analysis by \citeauthor{unet_ronneberger2015}\cite{unet_ronneberger2015}. 
-    
-    \begin{figure}[H]
-        \centering
-        %\includegraphics[scale=0.5]{figures/unet_arrows.png}
-        \includesvg[inkscapelatex=false,width=1.0\textwidth,keepaspectratio]{figures/unet_original.svg}
-        \caption[U-Net architecture]{U-Net architecture, the downwards facing arrow illustrates the contracting path and the one facing upwards is the expanding path. The color gets darker as the channels increase.}
-      	\medskip 
-        \label{unet_fig}
-        \hspace*{15pt}\hbox{\scriptsize Credit: \citeauthor{unet_ronneberger2015}\cite{unet_ronneberger2015}}
-    \end{figure}
-    
-    U-Net utilized what \citeauthor{unet_ronneberger2015}\cite{unet_ronneberger2015} called a \textit{contracting path} to identify what was in a picture, while an \textit{expanding path} to localize where it was. These two branches were symmetrical, and together they formed a U-shape, giving the network its name. The contracting path can be looked at as five different stages of processing, from top to bottom, in figure \ref{unet_fig}. Each stage applied the same operations to its given input. For each stage, this consisted of two 3×3 valid convolutions with their individual ReLU activation functions. Initially, the feature channels would be increased to 64, and later doubled for each contracting stage. The convolutions were followed by a 2×2 max pooling operation with stride 2 to decrease the resolution of the output from the convolutional operations, and then send this feature map down to the next stage. At the bottom stage, the only change was the use of transpose convolutions instead of max pooling to now increase the resolution. At each subsequent stage going back up the expanding path, the number of feature channels were halved during the convolutional steps. The output of the previous stage would be concatenated with a crop from the output feature map of a stage from the contracting path with the same channel size, the cropping due to different resolutions. This step is crucial for the performance of the model, as it helps the network localize the abstract features in the expanding path to locations in the contracting. At the last stage, a 1×1 convolution was applied instead of increasing the resolution. The 1×1 convolution mapped the 64 feature channels to the 2 classes. The softmax was then calculated between these classes, giving each pixel a value between [0,1], summarized over all classes to 1. Hence, giving us a segmentation map of each class. In the field of biomedicine, data are scarce and so heavy use of data augmentation was applied, which made the U-Net able to train on very few samples.
-    
-    As of U-Net's development in \citeyear{unet_ronneberger2015}, it outperformed other networks in multiple biomedical challenges\cite{unet_ronneberger2015}. It's performance inspired new versions with enhanced performance that use the U-Net architecture as its backbone, as can be seen in NAS-Unet\cite{weng2019unet} from \citeyear{weng2019unet}, and Unet++\cite{zhou2018unet} from \citeyear{zhou2018unet}. U-Net has also been applied with success to other fields such as road extraction in satellite images by \citeauthor{zhang2018road}\cite{zhang2018road} in \citeyear{zhang2018road} and on acoustic classification by \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic} in \citeyear{brautaset2020acoustic}, which is the next article to be described in this thesis.
-    
-\clearpage
 \section{Acoustic Classification In Multifrequency Echosounder Data Using Deep Convolutional Neural Networks} \label{unet_paper_acoustic}
     
         \begin{figure}[H]
@@ -199,3 +180,15 @@ https://academic.oup.com/icesjms/article/66/6/1100/694183?login=true
 %- instance segmentation
 %- automate the process, automatic bilogical analysis
 
+
+
+\section{Terminology of Multidimensional Arrays}
+    This chapter will frequently describe multidimensional arrays; therefore this section will clarify some  terms used in regard to multidimensional arrays in this thesis. Multidimensional arrays consist of multiple 2-dimensional arrays. These are called \textit{channels}, and have uniform \textit{resolution}. \textit{Depth} denotes the number of channels, while the resolution indicates the \textit{height} and \textit{width} of the channels. Thus, a multidimensional array can be described with \textit{height} x \textit{width} x \textit{depth}. The terms are illustrated in figure \ref{Multidimensional array terminology}.
+    
+        \begin{figure}[H]
+        \centering
+                        \includesvg[inkscapelatex=false,width=0.8\textwidth,keepaspectratio]{figures/n_array_terminology.svg}
+        \caption[Multidimensional  array]{Illustrations of the resolution (\textit{height} and \textit{width}), and \textit{depth} of a multidimensional array where the depth is split into \textit{channels} (different colors). In this example, the resolution is 3×3 and the depth is 4. }
+      	\medskip 
+        \label{Multidimensional array terminology}
+    \end{figure}
