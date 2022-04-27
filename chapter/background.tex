@@ -1,20 +1,20 @@
 \chapter{Background}
-    In this chapter, the key concepts used during the experiments will be introduced. First, a short introduction to acoustics, followed by a section introducing machine learning with a focus on \gls{ann}s.
+    In this chapter, we introduce the context of the work to give the reader an understanding of its importance, and then the concepts used during the experiments both withing acoustics and machine learning.
     
     
 \section{Marine advisory work}
-    \gls{ices} is an intergovernmental science organization that is the primary provider of advice on marine ecosystems to the governments and international bodies that manage the North Atlantic Ocean and adjacent seas\cite{ICES2020}. It consists of over 6000 marine scientists, over 300 institutes and 20 member countries, where Norway is one. Advice is developed by expert groups who work towards better understanding of marine ecosystems and their sustainable use. The \gls{imr} is a large contributor and one of its activities is to give input to these advices, through research and monitoring. An important area is the monitoring of a species known as the \textit{lesser sandeel}, which is the area this thesis seeks to contribute.
+    The \gls{ices} is an intergovernmental science organization that is the primary provider of advice on marine ecosystems to the governments and international bodies that manage the North Atlantic Ocean and adjacent seas\cite{ICES2020}. It consists of over 6000 marine scientists, over 300 institutes and 20 member countries, where Norway is one. Advice is developed by expert groups who work towards better understanding of marine ecosystems and their sustainable use. The \gls{imr} is a large contributor and one of its activities is to give input to these advices, through research and monitoring. An important area is the monitoring of a species known as the \textit{lesser sandeel}, which is the area this thesis seeks to contribute.
     
 \subsection{Why the lesser sandeel?}
     The lesser sandeel (\textit{Ammodytes marinus}), from now just \textit{sandeel} is
-    a small pelagic \footnote{Pelagic fish inhabit in the pelagic zone of ocean or lake waters – living neither close to the bottom nor near the shore.} fish which resides in sandy-bottomed coastal and shallow ocean waters and feeds mainly on plankton. It plays a key role in the North Sea, as it has a major role in both the marine ecosystem as forage fish\footnote{Forage fish are small pelagic fish which are preyed on by larger predators.} and catch for fisheries. Due to the high level of predation, it lives large parts of its life buried in a sandy seabed, but during the spring feeding season adults emerge each dawn to create large schools in the upper pelagic layer. Historic data show that changes in their abundance cause bottom-up effects of the ecosystem, causing for example breeding failure among several species of seabird \cite{johnsen2017collective}. 
+    a small pelagic \footnote{Pelagic fish inhabit in the pelagic zone of ocean or lake waters – living neither close to the bottom nor near the shore.} fish without a swim bladder which resides in sandy-bottomed coastal and shallow ocean waters and feeds mainly on plankton. It plays a key role in the North Sea, as it has a major role in the marine ecosystem as forage fish\footnote{Forage fish are small pelagic fish which are preyed on by larger predators.} and catch for fisheries. Due to the high level of predation, it lives large parts of its life buried in a sandy seabed, but during the spring feeding season adults emerge each dawn to create large schools in the upper pelagic layer. Historic data show that changes in their abundance cause bottom-up effects of the ecosystem, causing for example breeding failure among several species of seabird \cite{johnsen2017collective}. 
     
-    The North Sea is under pressures ranging from fishing, coastal construction, maritime transport, oil and gas exploration and production, tourism and recreation, navigation dredging, aggregate extraction, military, and to wind farm construction \cite{ICES2021}. With the importance of sandeel, \gls{imr} has since 2005 conducted yearly acoustic trawl missions in sandeel areas of the North Sea\cite{johnsen2017collective}. The goal is to monitor the sandeel stock and create input and data to the advices produced by \gls{ices}, one of which are fishing quotas\cite{sizedependentfreqrespons2009johnsen}. 
+    The North Sea is under pressures ranging from fishing, coastal construction, maritime transport, oil and gas exploration and production, tourism and recreation, navigation dredging, aggregate\footnote{Raw materials such as gravel, crushed stone, or sand that are obtained from natural sources.} extraction, military activities, and to wind farm construction \cite{ICES2021}. With the importance of sandeel, \gls{imr} has since 2005 conducted yearly acoustic trawl missions in sandeel areas of the North Sea\cite{johnsen2017collective}. The goal is to monitor the sandeel stock and create input and data to the advice produced by \gls{ices}, including recommendations for fishing quotas\cite{sizedependentfreqrespons2009johnsen}. 
     
     \begin{figure}[H]
         \centering
 
-        \includegraphics[width=0.8\textwidth]{figures/Ammodytes_hexapterus.jpg} 
+        \includegraphics[width=0.5\textwidth]{figures/Ammodytes_hexapterus.jpg} 
 
         \caption[Sandeel]{A sandeel buried in sand.}
         \medskip 
@@ -28,7 +28,9 @@
 \section{Acoustics surveys}\label{acoustics}
     When fisheries conduct acoustic surveys of fish, they use \textit{echo sounders} to remotely detect and observe targets in the water. Echo sounders are a special variety of \textit{sonar}, where the acoustic beam is directed vertically downwards from the measuring platform. The echo sounder consists of a \textit{transmitter} that produces a burst of electrical energy at some set frequency. Then a \textit{transducer} receives the output from the transmitter and converts it to an acoustic signal that is propagated through the water, also called a \textit{ping}. This forms a directional beam, akin to the light from a handheld flashlight. Targets in the water backscatters/reflects parts of the energy back towards the transducer. The \textit{backscattered} sound (\textit{echo}) is detected by the transducer, and the sound is converted back to electric energy as the received signal and is further amplified. The \textit{time} when the signal is received determines the distance (\textit{range}) to the target\cite{simmonds2008fisheries}.
     
-    Pings are displayed as vertical lines in a 2-dimensional image, also called an \textit{echogram}, with range along the y-axis and time of ping along the x-axis. Any targets detected in the ping will be visualized as a \textit{mark} in the echogram. With a set frequency, the process mentioned in the paragraph above is repeated to produce a series of lines. The echogram is then a representation of a vertical cross-section of the water column as the transducer is moving through the water at constant speed in one direction. This is visualized in figure \ref{echogram}. If the echosounder was stationary, the echogram would be a time-series representation of the same volume. Combined with trawl samples and knowledge of species composition, the mark can be assigned to a specific or group of species\cite{simmonds2008fisheries}.
+    Pings are usually represented as columns in a 2-dimensional image, also called an \textit{echogram}, with range along the y-axis and time of ping along the x-axis. The columns represent how the acoustic reflections varies for each ping. Any targets detected in the ping will be visualized as a \textit{mark} in the echogram, usually with a range of colors depending on the echo strength. In multi-frequency sonars, individual echograms are produced in parallel for each frequency in use This is visualized in figure \ref{echogram}. Because the echograms constructed as \textit{time} x \textit{range}, the vertical magnitude of a mark indicates the height of the target, while the horizontal position illustrate changes in \textit{time} if the echosounder is stationary or in \textit{space} if moving. When moving, the echogram thus represents a vertical cross-section of the water column as the transducer is in motion through the water at constant speed in one direction\cite{simmonds2008fisheries}.
+    
+    %If the echosounder was stationary, the echogram would be a time-series representation of the same volume. Combined with trawl samples and knowledge of species composition, the mark can be assigned to a specific or group of species.
     
     \begin{figure}[H]
         \centering
@@ -41,12 +43,16 @@
 %\subsection{Acoustic Propagation and Noise}
     
 \subsection{Acoustics and Fish}
-    To measure the force of backscattered sound received from a target, the backscattered cross-section is used. It is defined as:
+    To measure the force of backscattered sound received from a target, the backscattered cross-section or \gls{ts} is used. They are defined as:
     
     \begin{equation}
         \sigma_{bs} = r^{2}\frac{I_{b}}{I_{i}},
     \end{equation}
+    
 
+    \begin{equation}
+        \textrm{TS} = 10 \log_{10}(\sigma_{bs}),
+    \end{equation}
     where $I_{b}$ is sound intensity backscattered from the target, $I_{i}$ is the intensity of the ping at some arbitrary distance (usually 1m) and \textit{r} is the distance away from the transducer($\sigma_{bs}$ in units $m^{2}$). $\sigma_{bs}$ can vary greatly depending on the frequency used, or the composition, angle and shape of the target and several other factors as described in \citet{simmonds2008fisheries}. 
 
 \subsection{The Volume Backscattering Coefficient}
@@ -58,15 +64,76 @@
     
     where a sum over all discrete targets returning echoes in the sampled volume ($V_{0}$) is taken. There is a linear relationship between the abundance of fish, and the \gls{sv} as long as the species or group of species is known. For more details, see \citet{simmonds2008fisheries}.
 
-
 \subsection{IMRs acoustic trawl surveys}
-    \gls{imr}s acoustic trawl missions combine the gathering of acoustic data and biological data from trawl catches. The scrutiny of the data is done through the use of a post-processing software called \gls{lsss}, where acoustic target classification is done manually with aid from the catches\cite{korneliussen2006large}. Afterwards, the data and biological samples are input to a software called StoX, which is an open-source software which is used to estimate the fish abundance and age distribution to be further used as support for \gls{ices} advice\cite{johnsen2019stox}. 
+    \gls{imr}s acoustic trawl missions combine the gathering of acoustic data and biological data from trawl catches. The scrutiny of the data is done through the use of a post-processing software called \gls{lsss}, where acoustic target classification is done \textit{manually} with aid from the catches\cite{korneliussen2006large}. The echogram for each frequency channel used is stored as a 2-dimensional picture, where each pixel value is a \gls{sv} value.  Afterwards, the data and biological samples are input to a software called StoX, which is an open-source software which is used to estimate the fish abundance and age distribution to be further used as support for \gls{ices} advice\cite{johnsen2019stox}. \cite{korneliussen2018acoustic}
 
+
+
+
+%    Hei,
+%Det finnes en del på dette (se under). Vi bruker 200 kHz når vi finner stimer, men vi %ser at 18KHz og 38 KhZ er viktige for klassifiseringen. 
+%
+%\citet{sizedependentfreqrespons2009johnsen} - In earlier mentioned annual Norwegian %sandeel surveys the 
+%
+%\cite{johnsen2017collective} - Bottomconntected schools
+%
+%\citet{Greenstreet} - 38kHz was adequate but not optimal, with 120kHz as help %discrimination. Sandeels provide a better acoustic return at higher frequencies. 
+%
+%\citet{pedersen2009relative} - several analyses fish can have species specific reflected %spectrum. backed by. \
+%
+%\citet{mohammed2006acoustic} - Investegated 18, 38, 120, and 200 kHz. Combinations of sv %can be used to efficiently discriminate between sandeel from herring and mackerel. %Frequency respons instead of relative was better, and more imporant than position and %shape (støtter translation invariance). Some weakness around the use of sv, and better %to use the entire school echo. 
+%
+%\citet{korneliussen2008proposals} - Multifrequency use can give more information about %acoustic targets. 
+%
+%\citet{Forland2014Broadbandwidth} - The backscatter from sandeel vary with its %orientation. Causes a behavior where they do not always swim horizontally, slim bodies %,increases the difficulty of interpretating State: Relative low TS because of their lack %of swimmingbladder. backstatter increases with fish size and frequency. Measured the %backscatter of different bodyparts. Many studies have been conducted to find estimates %of sandeel TS at different freqs, but many studies are hard to make use of. %\citet{yasuma2009density} - Back the angle problem, drastic variation in TS by body %length. 
+%
+%\cite{FREEMAN2004141} - QTC VIEW was used to identify acoustic changes in the properties %of the seabed in the presence of buried sandeels, whilst the EK500 simultaneously %recorded temporal changes in their distribution throughout the water column.
+%
+%
+%OKEIDA SKRIV OM TARGET STRENGTH
+
+%\section{Accoustic Classification of Sandeel (ammodytes marinus)}
+%
+%https://academic.oup.com/icesjms/article/66/6/1100/694183?login=true 
+%- Size-dependent frequency response of sandeel schools
+  %  - historically hard to identify because no swim-bladder
+  %  - 200kHz for schools, 18 og 38 for individ-classifying
+  %  - some work shows:
+   %     - some difficulty classify schools og sandeel at 38 and 120kHz
+   %     - combinations of Sv at 18, 38, 120, and 200 kHz can effectively identify schools of %sandeel vs. mackerel and herring
+   % - goal
+   %     - The objective of this study was to identify and exploit differences in frequency %responses to classify sizes of sandeel in schools.
+   % - method in works:
+   %     - 18, 38, 120, and 200 kHz - further details in paper
+   %     - The borders of the schools were delineated in the 200-kHz echogram, because the Sv %from sandeel is strongest and the reverberant noise from gas-bearing phytoplankton is %lowest at this frequency. Catch and multi-f class for identification.
+   %     - To compare the frequency responses of each school, the sA measured at i frequencies %(f) were normalized by the mean sA for the four values of f, resulting in proportional %frequency responses [r(f)] -> 10 * log-scaled
+   %     - Changes in fish behaviour could change their R(f) values at 120 and 200 kHz, %possibly affecting the classification rate
+   %     - In the shallow water characteristic of the sandeel grounds, the sampling width of %the echosounder beam is small compared with the width of the trawl. Therefore, there %is a high probability of a mismatch between trawl catches and acoustic observations %for small schools in proximity to each other
+   %     -There was a significant size-dependent difference in the normalized frequency %response of schools comprising small, 1-year-old, and large, 2-year-old 
+   %     - proportional frequency responses [R(f)] at 18, 38, 120, and 200 kHz as independent %variables.
+%    \begin{itemize}
+%        \item ~Deep learning acoustic data
+%        \item litt historie kanskje 
+%        \item 2021 model, instance segmentation
+%        
+%        \item X Johnsen autonomous vessels
+%        \item Best frequency - 200kHz, and others
+%        \item X A review of unmanned vehicles for the detection and monitoring of marine %fauna
+
+         %Our approach is based on a subfield withing \textit{machine learning} called \textit{deep learning} which will be detailed in the next section. 
 
     % hvordan IMR gjør det idag, og hvorfro vi trenger videre utvikling av metoder. 
 
 %\subsection{Large Scale Survey
 %System}
+
+\section{Unmanned Vehicles in Marine Science}
+        In \citeyear{VERFUSS201917} \citeauthor{VERFUSS201917}\cite{VERFUSS201917} reviewed the current status of systems consisting of unmanned vehicles and  sensors monitoring marine life. The vehicles can operate stationary or moving, on the ocean surface, as aerial or submerged.  They can either be remotely controlled, autonomous, or a combination. In the case of the acoustic sensors, \citeauthor{VERFUSS201917} emphasized the need to be able to efficiently assign the correct species to the measured animal. This directly impacts the technical requirements of the vehicles purchased, as they need a minimum amount of information provided by the sensors to solve the given task. For example, this could be the number of transducers and at what frequencies they can induce pings. Possibly, further increasing the need for more support vessels and personnel with expertise system knowledge. Many of the systems reviewed are commercially available, leading to a growth in number and use.  This increase in unmanned vehicles, combined with the possibility to gather more complex data, will see an exponential increase in the data gathered in marine science\cite{malde2020machine}. This increases the need to make automated programs or better tools to aid in the current manual data processing, which today is a major chokepoint. Furthermore,  the nature of the data gathered will change, possibly in decreasing quality, as humans will have less or no opportunities to actively engage in the information gathering process that are autonomous.
+        
+         During the summer of \citeyear{johnsen2020measuring} an unmanned vessel was tested in Årdalsfjorden in Norway and involved a kayak with an electric motor and only one 200kHz echosounder of two possible was installed to measure \textit{sprat} abundance\cite{johnsen2020measuring}. Larger research vessels create a layer of noise consisting of turbulence and bubbles in the water, which can be detrimental to the performance of the echosounder\cite{korneliussen2008proposals}. Hence, the transducers are usually mounted on retractable keels to get below this layer, and as a consequence, vessels usually applied in this context have an 8-meter acoustic  blind zone. The kayak produces significantly less noise in the water, and the retractable keel was only 1.5 meters, and results showed that the vessel managed to measure fish that usually live closer to the surface. In addition, the kayak is less prone to scare away the fish. The lightweight kayak platform enabled it to collect data from shallower water, inaccessible to the larger vessels. However, some fish species could not be distinguished from the sprat in the acoustic signal, and more echosounders could have given additional information about the species present\cite{korneliussen2008proposals}. The end result was positive for the continued use of unmanned vehicles, but the manned vessels are still needed for biological samples\cite{johnsen2020measuring}.
+
+
+
     
 
 %\subsection{Noise}
@@ -123,7 +190,9 @@
        % \end{figure}
     
     %More information about the acoustic data used in this thesis is contained in section %\ref{unet_paper_acoustic}. 
-\clearpage
+\section{Acoustic Classification of Sandeel}
+
+Acoustic target classification is a major challenge in most acoustic surveys\cite{sizedependentfreqrespons2009johnsen}, and the sandeel is known to be difficult to interpret. The sandeels lack of swim bladder gives it a low \gls{ts}, and a swimming pattern that is usually not horizontal, which causes problems as the angle of the fish can change the backscattered signal\cite{Forland2014Broadbandwidth}. Furthermore, it has been shown that large schools of sandeel likely have a connection to the bottom, resulting in severe underestimates of such schools by conventional echosounders\cite{johnsen2017collective}. During the earlier mentioned annual Norwegian sandeel surveys conducted by \gls{imr}, the \textit{200kHz} frequency is used to delineate schools, while the \textit{18kHz} and \textit{38kHz} are the most important frequencies for classification when measurements were taken at \textit{18kHz}, \textit{38kHz}, \textit{120kHz}, and \textit{200kHz}\cite{sizedependentfreqrespons2009johnsen}. Some earlier work have had trouble identifying sandeel using \gls{sv} at 38kHz and 120kHz\cite{hassel2004influence,mackinson2005using,mosteiro2004dual,Greenstreet}, while some have had success using combinations of the four frequencies \textit{18kHz, 38kHz, 120kHz, and 200kHz} to separate sandeel from herring, and mackerel\cite{mohammed2006acoustic}. This thesis goal is to find the frequency with the most information about the sandeel, and will perform the analysis through the use of \textit{deep learning}, a field within \textit{machine learning}.
 
 \section{Machine Learning} \label{Machine Learning}
     %As described in the book Deep Learning\cite{Goodfellow-et-al-2016_ML}, machine learning can intuitively be split into four parts; the \textit{algorithm}, \textit{empirical data}, a \textit{task} and a \textit{performance} measure. A machine learning algorithm is designed to increase its performance on a task, given data. During this process also called \textit{training}, the algorithm is said to be \textit{learning}. Afterwards, it outputs a \textit{model} which represents what the algorithm learned and can predict on new data. 
@@ -296,7 +365,7 @@
     \begin{figure}[H]
         \centering
                 \includesvg[inkscapelatex=false,width=1\textwidth,keepaspectratio]{figures/convolutions.svg}
-        \caption[Horizontal edge detector example]{Illustration of a \textit{valid} convolutional operation. The kernel is applied repeatedly across the input. The size of input is 6x6, kernel size is 3x3 and stride 1, resulting in overlapping operations and output size being 4x4. The figures to the right show the input, kernel and output(activation) as color gradings, where the color gets darker if the values are low. This example is a horizontal edge detector, and the result is large values in the activation map along the border between the values of 0 and 10 in the input, which could have been colors in a picture.}
+        \caption[Horizontal edge detector example]{Illustration of a \textit{valid} convolutional operation. The kernel is applied repeatedly across the input. The size of input is 6×6, kernel size is 3×3 and stride 1, resulting in overlapping operations and output size being 4×4. The figures to the right show the input, kernel and output(activation) as color gradings, where the color gets darker if the values are low. This example is a horizontal edge detector, and the result is large values in the activation map along the border between the values of 0 and 10 in the input, which could have been colors in a picture.}
       	\medskip 
         \label{convolutional_fig}
     \end{figure}
@@ -543,7 +612,7 @@ Image Segmentation} \label{unet}
     
     Performance was measured using two different methods\cite{brautaset2020acoustic}. The first method extracted predictions in \textit{small regions} around existing annotations, and was applied due to  the observations of many schools lacking annotations. This would likely result in the decrease of many false positives being produced by the model, and would now reflect its actual performance. The second method was to measure the performance over \textit{entire echograms}. To have a benchmark to compare to, they used the pipeline developed by \citet{korneliussen2016acoustic} which use an acoustic feature library to identify species. The metric used was F1-score, where \textit{sandeel} was the \textit{positive}   while \textit{other} and \textit{background} was the \textit{negative}. \textit{Small regions} resulted in an overall F1-score of 0.87 on all the test data after a threshold of 0.8 was applied to the probabilities, while the benchmark achieved a F1 score of 0.77. When applying the model to \textit{entire echograms}, the performance decreased and ranged from 0.11-0.68 on individual test years. This was also mirrored by the benchmark method, which achieved 0.03-0.50. The decrease in performance over entire echograms was attributed to missing annotations, and many unidentified features in the data being allocated to the \textit{background} class. The training scheme later described in section \ref{Experiment settings} did not take many of these into account. The quality of the data from different years varied due to different weather conditions, fish populations and stages of development in software used during annotations. The model was concluded as able to be reliably trained to classify acoustic multifrequency measurements\cite{brautaset2020acoustic}.
     
-\subsection{Deep Learning and Acoustic Target Classification}
+\subsection{Applications of Deep Learning in Acoustic Target Classification}
 In \citeyear{korneliussen2018acoustic} \citet{korneliussen2018acoustic} reported the then most recent methods used for acoustic target classification. The mentioned methods applying \gls{ann}s all utilized the supervised learning approach, and were most frequently applied to single frequency channel data. Due to the supervised setting, they stressed the importance of high-quality annotations. Similar to the work detailed earlier in \citet{brautaset2020acoustic}, we will describe some newer research in this section.
    
 \citet{marques2021detecting} compared different machine learning methods for automatically interpreting multi-frequency echograms, and proposed that a deep learning based end-to-end framework was best suited for the task. Their experiments handled the generation of square bounding boxes around schools of fish, and their results were comparable or better than those produced by human operators. The work was later improved upon by applying an instance segmentation method in \citeyear{marques2021instance}\cite{marques2021instance}. This produced more accurate predictions with pixel precision, and they described this as more befitting biological analysis.
@@ -551,33 +620,7 @@ In \citeyear{korneliussen2018acoustic} \citet{korneliussen2018acoustic} reported
 \citet{semtantic-segm2021choi} proposed in \citeyear{semtantic-segm2021choi} a semi-supervised deep learning network, with the intent of solving the reliance supervised \gls{ann}s have on the correct manual annotation of the acoustic data. By using the same data as \citet{brautaset2020acoustic}, they utilized \textit{two} loss functions which in alternating order optimize the same \gls{cnn}. This \gls{cnn} was based on an \gls{cnn} architecture called VGG-16\cite{simonyan2014very}. The first loss function seeks to \textit{cluster} the data by finding intrinsic characteristics in the data. The second loss function uses classification based on the existing annotated data. This combined use of loss functions was, presumably, the first application to acoustic data. They showed that their model could outperform other traditional machine learning algorithms, both with or without missing annotations. Proving that we can efficiently process data with only a few annotated samples.
 
 
-%\section{Accoustic Classification of Sandeel (ammodytes marinus)}
-%
-%https://academic.oup.com/icesjms/article/66/6/1100/694183?login=true 
-%- Size-dependent frequency response of sandeel schools
-  %  - historically hard to identify because no swim-bladder
-  %  - 200kHz for schools, 18 og 38 for individ-classifying
-  %  - some work shows:
-   %     - some difficulty classify schools og sandeel at 38 and 120kHz
-   %     - combinations of Sv at 18, 38, 120, and 200 kHz can effectively identify schools of %sandeel vs. mackerel and herring
-   % - goal
-   %     - The objective of this study was to identify and exploit differences in frequency %responses to classify sizes of sandeel in schools.
-   % - method in works:
-   %     - 18, 38, 120, and 200 kHz - further details in paper
-   %     - The borders of the schools were delineated in the 200-kHz echogram, because the Sv %from sandeel is strongest and the reverberant noise from gas-bearing phytoplankton is %lowest at this frequency. Catch and multi-f class for identification.
-   %     - To compare the frequency responses of each school, the sA measured at i frequencies %(f) were normalized by the mean sA for the four values of f, resulting in proportional %frequency responses [r(f)] -> 10 * log-scaled
-   %     - Changes in fish behaviour could change their R(f) values at 120 and 200 kHz, %possibly affecting the classification rate
-   %     - In the shallow water characteristic of the sandeel grounds, the sampling width of %the echosounder beam is small compared with the width of the trawl. Therefore, there %is a high probability of a mismatch between trawl catches and acoustic observations %for small schools in proximity to each other
-   %     -There was a significant size-dependent difference in the normalized frequency %response of schools comprising small, 1-year-old, and large, 2-year-old 
-   %     - proportional frequency responses [R(f)] at 18, 38, 120, and 200 kHz as independent %variables.
-%    \begin{itemize}
-%        \item ~Deep learning acoustic data
-%        \item litt historie kanskje 
-%        \item 2021 model, instance segmentation
-%        
-%        \item X Johnsen autonomous vessels
-%        \item Best frequency - 200kHz, and others
-%        \item X A review of unmanned vehicles for the detection and monitoring of marine %fauna
+
 %        
 %    \end{itemize}
 
@@ -589,10 +632,7 @@ In \citeyear{korneliussen2018acoustic} \citet{korneliussen2018acoustic} reported
 
 
 
-\section{Unmanned Vehicles in Marine Science}
-        In \citeyear{VERFUSS201917} \citeauthor{VERFUSS201917}\cite{VERFUSS201917} reviewed the current status of systems consisting of unmanned vehicles and  sensors monitoring marine life. The vehicles can operate stationary or moving, on the ocean surface, as aerial or submerged.  They can both be remotely controlled, autonomous or a combination. In the case of the acoustic sensors, they emphasized the need to be able to efficiently assign the correct species to the measured animal. This directly impacts the technical requirements of the vehicles purchased, as they need a minimum amount of information provided by the sensors to solve the given task. Possibly, further increasing the need for more support vessels and personnel with expertise system knowledge. Many of the systems reviewed are commercially available, leading to a growth in number and use. \citet{malde2020machine} states that this increase in unmanned vehicles, combined with the possibility to gather more complex data, will see an exponential increase in the data gathered in marine science. As a consequence, increasing the need to make automated programs or better tools to aid in the current manual data processing, which today is a major chokepoint. Furthermore, they state that the nature of the data gathered will change, possibly in decreasing quality, as humans will have less or no opportunities to actively engage in the information gathering process that are autonomous. This means that unmanned surveys will have to be planned in more detail. 
-        
-         During the summer of \citeyear{johnsen2020measuring} an unmanned vehicle was tested in Årdalsfjorden in Norway and involved a kayak with an electric motor and only one 200kHz echosounder installed to measure \textit{sprat} abundance\cite{johnsen2020measuring}. Results showed that the vehicle managed to measure fish that usually live closer to the surface in the acoustic eight-meter blind zone of the larger vessels, as the echosounders are usually installed on the bottom part of the large research ship used during acoustic trawl surveys. In addition, the vehicle produces significantly less noise in the water and are less prone to scare away the fish. The lightweight kayak platform enabled it to collect data from shallower water, earlier inaccessible to the larger vessels. The end result was positive for the continued use of unmanned vehicles, but the manned vessels are still needed for the biological samples in addition to the acoustic data gathered. There was room for one more echosounder on the kayak, which could have increased performance. Hence, which frequency to choose, in addition to the 200kHz, relates to the question we seek to solve in this thesis.
+
 
 
 

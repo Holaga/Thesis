@@ -82,14 +82,30 @@
     year={2016}
 }
 
-@misc{azure, title={What is Windows Azure?}, url={https://searchcloudcomputing.techtarget.com/definition/Windows-Azure}, publisher={TechTarget}, author={Stephen J. Bigelow},year = "2021 (accessed November 29, 2021)"
+
+@book{azure,
+author = {Copeland, Marshall and Soh, Julian and Puca, Anthony and Manning, Mike and Gollob, David},
+title = {Microsoft Azure: Planning, Deploying, and Managing Your Data Center in the Cloud},
+year = {2015},
+isbn = {1484210441},
+publisher = {Apress},
+address = {USA},
+edition = {1st},
+abstract = {Written for IT and business professionals, this book provides the technical and business insight needed to plan, deploy and manage the services provided by the Microsoft Azure cloud. Find out how to integrate the infrastructure-as-a-service (IaaS) and platform-as-a-service (PaaS) models with your existing business infrastructure while maximizing availability, ensuring continuity and safety of your data, and keeping costs to a minimum. The book starts with an introduction to Microsoft Azure and how it differs from Office 365Microsofts other cloud. You'll also get a useful overview of the services available. Part II then takes you through setting up your Azure account, and gets you up-and-running on some of the core Azure services, including creating web sites and virtual machines, and choosing between fully cloud-based and hybrid storage solutions, depending on your needs. Part III now takes an in-depth look at how to integrate Azure with your existing infrastructure. The authors, Anthony Puca, Mike Manning, Brent Rush, Marshall Copeland and Julian Soh, bring their depth of experience in cloud technology and customer support to guide you through the whole process, through each layer of your infrastructure from networking to operations. High availability and disaster recovery are the topics on everyones minds when considering a move to the cloud, and this book provides key insights and step-by-step guidance to help you set up and manage your resources correctly to optimize for these scenarios. Youll also get expert advice on migrating your existing VMs to Azure using InMage, mail-in and the best 3rd party tools available, helping you ensure continuity of service with minimum disruption to the business. In the books final chapters, youll find cutting edge examples of cloud technology in action, from machine learning to business intelligence, for a taste of some exciting ways your business could benefit from your new Microsoft Azure deployment. What youll learn What Microsoft Azure can do (infrastructure and platform as a service), and reasons for adoption How to plan for successful integration of Azure with your existing IT infrastructure How to use the Azure management portal to manage basic workload items, and how to use the enterprise portal for monitoring and reporting How to create web sites on Azure to save platform running and management costs and scale easily How to create virtual machines on Azure and how to migrate them safely from an existing infrastructure When and why to choose different storage options on Azure How to extend your on-premise network to Azure How to handle identity management using Azure Active Directory, from the free edition to the full Enterprise Mobility Suite How to manage your resources with clusters and affinity groups to maximize availability, minimize costs, and optimize disaster recovery scenarios Advanced applications of Azure to machine learning and business intelligence Who this book is for This book is for IT and business administrators and managers looking to deploy some or all of Microsoft Azures services to their existing business infrastructure, while maximizing availability, building robust disaster recovery solutions, and minimizing costs.}
 }
 
 @misc{raw, title={What is a .RAW file?}, url={https://fileinfo.com/extension/raw}, publisher={fileinfo.com}, author={Unknown},year = "2021 (accessed November 29, 2021)"
 }
 
-@misc{docker, title={What is Docker?}, url={https://www.ibm.com/in-en/cloud/learn/docker}, publisher={International Business Machines Corporation (IBM)}, author={IBM Cloud Education},year = "2021 (accessed November 29, 2021)"
-}
+@article{docker,
+  title={Docker: lightweight linux containers for consistent development and deployment},
+  author={Merkel, Dirk},
+  journal={Linux journal},
+  volume={2014},
+  number={239},
+  pages={2},
+  year={2014}
+} 
 
 @misc{crimac_pipeline, title={CRIMAC pipeline - github}, url={https://github.com/CRIMAC-WP4-Machine-learning/CRIMAC-classifiers-unet}, publisher={Norwegian Computing Center and the Norwegian Institute of Marine Research as part of the research projects COGMAR and CRIMAC}, author={Nils Olav Handegaard, Ibrahim Umar, Alba Ordonez and Ingrid Utseth},year = "2021 (accessed November 29, 2021)"
 }
@@ -100,10 +116,28 @@
 @misc{ices, title={ICES}, url={https://www.ices.dk/about-ICES/Pages/default.aspx}, publisher={International Council for the Exploration of the Sea}, author={Unknown},year = "2021 (accessed November 30, 2021)"
 }
 
-@misc{zarr, title={What is zarr?}, url={https://zarr.readthedocs.io/en/stable/}, publisher={Zarr Developers}, author={Unknown},year = "2021 (accessed November 30, 2021)"
+@misc{zarr,
+	title = {zarr-developers/zarr-python},
+        author = {Miles, Alistair},
+	copyright = {MIT},
+	url = {https://github.com/zarr-developers/zarr-python},
+	abstract = {An implementation of chunked, compressed, N-dimensional arrays for Python.},
+	urldate = {2022-04-27},
+	publisher = {Zarr Developers},
+	month = apr,
+	year = {2022},
 }
 
-@misc{xarray, title={What is xarray?}, url={http://xarray.pydata.org/en/stable/}, publisher={xarray Developers}, author={Unknown},year = "2021 (accessed November 30, 2021)"
+@article{xarray,
+  title     = {xarray: {N-D} labeled arrays and datasets in {Python}},
+  author    = {Hoyer, S. and J. Hamman},
+  journal   = {Journal of Open Research Software},
+  volume    = {5},
+  number    = {1},
+  year      = {2017},
+  publisher = {Ubiquity Press},
+  doi       = {10.5334/jors.148},
+  url       = {https://doi.org/10.5334/jors.148}
 }
 
 @inbook{Goodfellow-et-al-2016_NN,
@@ -387,12 +421,15 @@ year = {2017}
   publisher =    {PMLR},
   pdf = 	 {http://proceedings.mlr.press/v37/ioffe15.pdf},
   url = 	 {https://proceedings.mlr.press/v37/ioffe15.html},
-  abstract = 	 {Training Deep Neural Networks is complicated by the fact that the distribution of each layer’s inputs changes during training, as the parameters of the previous layers change. This slows down the training by requiring lower learning rates and careful parameter initialization, and makes it notoriously hard to train models with saturating nonlinearities. We refer to this phenomenon as internal covariate shift, and address the problem by normalizing layer inputs. Our method draws its strength from making normalization a part of the model architecture and performing the normalization for each training mini-batch. Batch Normalization allows us to use much higher learning rates and be less careful about initialization, and in some cases eliminates the need for Dropout. Applied to a stateof-the-art image classification model, Batch Normalization achieves the same accuracy with 14 times fewer training steps, and beats the original model by a significant margin. Using an ensemble of batch-normalized networks, we improve upon the best published result on ImageNet classification: reaching 4.82% top-5 test error, exceeding the accuracy of human raters.}
+  abstract = 	 {Training Deep Neural Networks is complicated by the fact that the distribution of each layer’s inputs changes during training, as the parameters of the previous layers change. This slows down the training by requiring lower learning rates and careful parameter initialization, and makes it notoriously hard to train models with saturating nonlinearities. We refer to this phenomenon as internal covariate shift, and address the problem by normalizing layer inputs. Our method draws its strength from making normalization a part of the model architecture and performing the normalization for each training mini-batch. Batch Normalization allows us to use much higher learning rates and be less careful about initialization, and in some cases eliminates the need for Dropout. Applied to a stateof-the-art image classification model, Batch Normalization achieves the same accuracy with 14 times fewer training steps, and beats the original model by a significant margin. Using an ensemble of batch-normalized networks, we improve upon the best published result on ImageNet classification: reaching 4.82\% top-5 test error, exceeding the accuracy of human raters.}
 }
 
-
-@misc{pickle, title={What is a Python pickle?}, url={https://docs.python.org/3/library/pickle.html}, publisher={https://docs.python.org}, author={Unknown},year = "2022 (accessed March 09, 2022)"
-}
+@book{pickle, 
+  title={The Python Library Reference, release 3.8.2},
+  author={Van Rossum, Guido}, 
+  year={2020}, 
+  publisher={Python Software Foundation} 
+} 
 
 
 @article{johnsen2017collective,
@@ -637,8 +674,9 @@ abstract = {Recent technology developments have turned present-day unmanned syst
  year = {2018}
 }
 
-@article{ICES2020, author = "ICES", title = "{Guide to ICES advisory framework and principles}", year = "2020", month = "12", url = "https://ices-library.figshare.com/articles/report/Guide_to_ICES_advisory_framework_and_principles/18638000", doi = "10.17895/ices.advice.7648" } 
-
+@article{ICES2020, author = "ICES", title = "{Guide to ICES advisory framework and principles}", year = "2020", month = "12", url = {https://bit.ly/3rPqs38}, doi = "10.17895/ices.advice.7648" } 
+%https://ices-library.figshare.com/articles/report/Guide_to_ICES_advisory_framework_and_principles/18638000
+%https://bit.ly/3rPqs38
 
 
 %IMAGES
@@ -658,7 +696,10 @@ abstract = {Recent technology developments have turned present-day unmanned syst
    note = "[Online; accessed 21-April-2022]"
 }
 
-@article{ICES2021, author = "ICES", title = "{Greater North Sea Ecoregion – Ecosystem overview}", year = "2021", month = "12", url = "https://ices-library.figshare.com/articles/report/Greater_North_Sea_Ecoregion_Ecosystem_overview/18640001", doi = "10.17895/ices.advice.9434" } 
+@article{ICES2021, author = "ICES", title = "{Greater North Sea Ecoregion – Ecosystem overview}", year = "2021", month = "12", url = "https://bit.ly/3kbZJJK", doi = "10.17895/ices.advice.9434" } 
+%https://ices-library.figshare.com/articles/report/Greater_North_Sea_Ecoregion_Ecosystem_overview/18640001
+
+
 
 @article{johnsen2019stox,
   title={StoX: An open source software for marine survey analyses},
@@ -679,4 +720,131 @@ abstract = {Recent technology developments have turned present-day unmanned syst
   year={2006}
 }
 
+@article{Greenstreet,
+    author = {Greenstreet, Simon P.R. and Armstrong, Eric and Mosegaard, Henrik and Jensen, Henrik and Gibb, Iain M. and Fraser, Helen M. and Scott, Beth E. and Holland, Gayle J. and Sharples, Jonathan},
+    title = "{Variation in the abundance of sandeels Ammodytes marinus off southeast Scotland: an evaluation of area-closure fisheries management and stock abundance assessment methods}",
+    journal = {ICES Journal of Marine Science},
+    volume = {63},
+    number = {8},
+    pages = {1530-1550},
+    year = {2006},
+    month = {01},
+    abstract = "{In 2000, a sandeel fishery off SE Scotland, which commenced in the early 1990s, was closed in response to concerns that the fishery was having a deleterious effect on seabird breeding performance at colonies in the vicinity of the fishing grounds. Fishery-derived catch per unit effort (cpue) data are used together with three different fishery-independent survey techniques (acoustic, demersal trawl, and nocturnal grab survey) to assess variation in sandeel Ammodytes marinus population biomass in the area over the period 1997–2003, a period that included the last three years that the fishery was operating and the first four years of the sandeel fishing moratorium. Temporal trends in estimates of sandeel biomass derived from these different assessment methods were inconsistent and, on the basis of these alone, it was not possible to determine whether sandeel population biomass in the area had increased following the closure of the fishery. The different survey methods assess different components of the sandeel population; acoustic survey and fishery cpue quantified sandeels active in the water column, whilst demersal trawl survey quantified sandeels buried in the sediments. These data were collected at a time of year when sandeels were moving between the seabed sediments and the overlying water column. A grab survey also quantified sandeels buried in the sediment, but these data were collected at a time of year when the entire population should have been buried in the sediment. Differences between the different time-series were reconciled by taking account of the cumulative total primary production in each year prior to the surveys. On the basis of this, a model was developed that utilized acoustic and demersal trawl survey data to estimate the total sandeel population biomass. This model was validated using the nocturnal grab-survey data. The modelled data indicated that the biomass of sandeels 1+ years old increased sharply in the first year of the closure and remained higher in all four of the closure years than in any of the preceding three years, when the fishery was operating. The biomass of 0-group sandeels in three of the four closure years exceeded the biomass present in the three years of commercial fishing. Whereas the response of 1+ sandeels may have been a direct consequence of the closure, this is not likely to have been the case in respect of 0-group sandeels. The closure appears to have coincided with a period of enhanced recruit production.}",
+    issn = {1054-3139},
+    doi = {10.1016/j.icesjms.2006.05.009},
+    url = {https://doi.org/10.1016/j.icesjms.2006.05.009},
+    eprint = {https://academic.oup.com/icesjms/article-pdf/63/8/1530/29126234/63-8-1530.pdf},
+}
 
+@article{yasuma2009density,
+  title={Density and sound-speed contrasts, and target strength of Japanese sandeel Ammodytes personatus},
+  author={Yasuma, Hiroki and Nakagawa, Ryo and Yamakawa, Takashi and Miyashita, Kazushi and Aoki, Ichiro},
+  journal={Fisheries Science},
+  volume={75},
+  number={3},
+  pages={545--552},
+  year={2009},
+  publisher={Springer}
+}
+
+@article{pedersen2009relative,
+  title={The relative frequency response derived from individually separated targets of northeast Arctic cod (Gadus morhua), saithe (Pollachius virens), and Norway pout (Trisopterus esmarkii)},
+  author={Pedersen, Geir and Korneliussen, Rolf J},
+  journal={ICES Journal of Marine Science},
+  volume={66},
+  number={6},
+  pages={1149--1154},
+  year={2009},
+  publisher={Oxford University Press}
+}
+
+
+@phdthesis{mohammed2006acoustic,
+  title={Acoustic identification of sandeel (Ammodytes marinus) using multi-frequency methods},
+  author={Mohammed, Z},
+  year={2006},
+  school={MSc thesis, Department of Biology, University of Bergen}
+}
+
+@article{korneliussen2008proposals,
+  title={Proposals for the collection of multifrequency acoustic data},
+  author={Korneliussen, Rolf J and Diner, Noel and Ona, Egil and Berger, Laurent and Fernandes, Paul G},
+  journal={ICES Journal of Marine Science},
+  volume={65},
+  number={6},
+  pages={982--994},
+  year={2008},
+  publisher={Oxford University Press}
+}
+
+@article{Forland2014Broadbandwidth,
+    author = {Forland, Tonje Nesse and Hobæk, Halvor and Ona, Egil and Korneliussen, Rolf J.},
+    title = "{Broad bandwidth acoustic backscattering from sandeel—measurements and finite element simulations}",
+    journal = {ICES Journal of Marine Science},
+    volume = {71},
+    number = {7},
+    pages = {1894-1903},
+    year = {2014},
+    month = {03},
+    abstract = "{Acoustic backscattering measurements were made of individual sandeel (Ammodytes marinus L.) at frequencies from 100 to 280 kHz in a laboratory tank. Measurements were made versus incidence angle, −30° to 30° relative to both dorsal and lateral aspect directions, for dead whole sandeel and for excised backbones. Backscatter spectra from whole fish have deep minima at frequencies that vary with fish length and shift to lower frequencies at higher incidence angles. The backscatter spectra from dorsal and lateral aspects differ both in amplitude and in positions of the minima. The backscatter from the excised backbone increases almost linearly with frequency and, below about 150 kHz, contributes only a minor amount to the total sandeel backscatter. A finite element model of sandeel backscatter, developed and compared with the measurements, indicates that shear waves in the backbone contribute little to the overall backscatter from sandeel.}",
+    issn = {1054-3139},
+    doi = {10.1093/icesjms/fsu010},
+    url = {https://doi.org/10.1093/icesjms/fsu010},
+    eprint = {https://academic.oup.com/icesjms/article-pdf/71/7/1894/29150089/fsu010.pdf},
+}
+
+
+
+@article{FREEMAN2004141,
+title = {Diel patterns in the habitat utilisation of sandeels revealed using integrated acoustic surveys},
+journal = {Journal of Experimental Marine Biology and Ecology},
+volume = {305},
+number = {2},
+pages = {141-154},
+year = {2004},
+issn = {0022-0981},
+doi = {https://doi.org/10.1016/j.jembe.2003.12.016},
+url = {https://www.sciencedirect.com/science/article/pii/S0022098104000188},
+author = {Steven Freeman and Steven Mackinson and Roger Flatt},
+keywords = {Sandeels, Diel behaviour, AGDS, Fisheries acoustics, Integrated surveys},
+abstract = {Tracking the movements of sandeels in relation to their habitat will provide an improved understanding of sandeel ecology, including their interrelationships with predators and fishing activity. We examined spatial and temporal changes in the behaviour and distribution of the lesser sandeel Ammodytes marinus by integrating the acoustic ground discrimination system QTC VIEW with a Simrad EK500 fisheries scientific echosounder. QTC VIEW was used to identify acoustic changes in the properties of the seabed in the presence of buried sandeels, whilst the EK500 simultaneously recorded temporal changes in their distribution throughout the water column. Our results suggest that high densities of sandeels buried in sediment give a different acoustic signal to that of its surroundings. This integrated approach showed that sandeels had a diurnal activity pattern that was strongly, although not exclusively, associated with day length. Using this integrated survey method will enable large-scale cost-effective surveys of sandeel behaviour, distribution and abundance to be conducted.}
+}
+
+@incollection{NEURIPS2019_9015,
+title = {PyTorch: An Imperative Style, High-Performance Deep Learning Library},
+author = {Paszke, Adam and Gross, Sam and Massa, Francisco and Lerer, Adam and Bradbury, James and Chanan, Gregory and Killeen, Trevor and Lin, Zeming and Gimelshein, Natalia and Antiga, Luca and Desmaison, Alban and Kopf, Andreas and Yang, Edward and DeVito, Zachary and Raison, Martin and Tejani, Alykhan and Chilamkurthy, Sasank and Steiner, Benoit and Fang, Lu and Bai, Junjie and Chintala, Soumith},
+booktitle = {Advances in Neural Information Processing Systems 32},
+pages = {8024--8035},
+year = {2019},
+publisher = {Curran Associates, Inc.},
+url = {http://papers.neurips.cc/paper/9015-pytorch-an-imperative-style-high-performance-deep-learning-library.pdf}
+} 
+
+@article{hassel2004influence,
+  title={Influence of seismic shooting on the lesser sandeel (Ammodytes marinus)},
+  author={Hassel, Arne and Knutsen, Tor and Dalen, John and Skaar, Kristian and L{\o}kkeborg, Svein and Misund, Ole Arve and {\O}stensen, {\O}ivind and Fonn, Merete and Haugland, Eli Kyrkjeb{\o}},
+  journal={ICES Journal of Marine Science},
+  volume={61},
+  number={7},
+  pages={1165--1173},
+  year={2004},
+  publisher={Oxford University Press}
+}
+@article{mosteiro2004dual,
+  title={A dual frequency algorithm for the identification of sandeel school echotraces},
+  author={Mosteiro, Alicia and Fernandes, Paul G and Armstrong, F and Greenstreet, SPR},
+  journal={ICES Document CM},
+  volume={12},
+  pages={1--13},
+  year={2004}
+}
+@article{mackinson2005using,
+  title={Using acoustics to investigate changes in efficiency of a sandeel dredge},
+  author={Mackinson, S and Turner, K and Righton, D and Metcalfe, JD},
+  journal={Fisheries Research},
+  volume={71},
+  number={3},
+  pages={357--363},
+  year={2005},
+  publisher={Elsevier}
+}
