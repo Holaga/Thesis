@@ -1,24 +1,5 @@
 \chapter{Results} \label{results}
-This section will first describe the hardware used, then the results from the experiments.
-
-\section{Hardware}
-    Two remote servers named \textit{janus} and \textit{birget} were provided by the university. Janus were used for data preparation, and birget for conducting the experiments. Hardware spesifications: 
-\begin{itemize}
-  \item \textbf{Birget}
-  \begin{itemize}
-    \item CPU: AMD EPYC 7742 64-Core Processor
-    \item GPU: 1 x A100-SXM-80GB
-  \end{itemize}
-  \item \textbf{Janus}
-  \begin{itemize}
-    \item CPU: Intel(R) Core(TM) i9-7900X CPU @ 3.30GHz
-    \item GPU: 1 x GeForce RTX 2080 Ti
-  \end{itemize}
-\end{itemize}
-
-
-
-
+This section will first describe the results from the experiments.
 
 \section{Result Exhaustive Search}
     
@@ -26,8 +7,10 @@ This section will first describe the hardware used, then the results from the ex
         In figure \ref{training_overveiw_fig} an example plot in illustrated of how the training process was monitored. This example is small, but the most important features will now be described. The example comes from the final logging of the model trained on all frequencies.
         \clearpage
         \begin{figure}[H]
-            \centering
-            \includegraphics[scale=0.3]{figures/epoch_50_test_38kHz_18kHz_70kHz_120kHz_200kHz_333kHz.png}
+             %scale=0.4,
+
+            \hspace*{-3.2cm}
+            \includegraphics[scale=0.45]{figures/epoch_50_test_38kHz_18kHz_70kHz_120kHz_200kHz_333kHz.png}
             \caption[Training example monitoring]{Example training monitoring. The upper row shows the network's output for each class on a validation sample, with and without a threshold applied. In the lower row, the labels for each, with the historical loss and F1-score plots. Yellow is values close to 1 and purple is 0.}
           	\medskip 
             \label{training_overveiw_fig}
@@ -96,7 +79,7 @@ This section will first describe the hardware used, then the results from the ex
         \begin{figure}[H]
             \centering
             %\includegraphics[scale=0.7]{figures/error_bar.png}
-            \includesvg[inkscapelatex=false,width=0.9\textwidth,keepaspectratio]{figures/error_bars.svg}
+            \includesvg[inkscapelatex=false,width=1\textwidth,keepaspectratio]{figures/error_bars.svg}
             \caption[Error bars per combination]{Each colored error bar is a frequency-combination. The error bar's top y-value value is the max value achieved, and the bottom is the lowest. A red circle encompasses the test containing only 18kHz, 38kHz and 200kHz. Blue vertical lines sections the error bars into groups where the number of frequencies in each combination are equal.}
           	\medskip 
             \label{errorbar_fig}
@@ -104,8 +87,8 @@ This section will first describe the hardware used, then the results from the ex
         
         
         
-    \subsection{Performance Trend Per Frequency}
-        Figure \ref{performance_trend_fig} illustrates the performance trend of each frequency. From right to left, the plot shows to that \textit{18kHz}, \textit{38khZ} and \textit{200kHz} all are part of many combinations with high F1-scores. The rest quickly fall in performance, most likely due to not being paired with any of the three previously mentioned. Looking further to the left, \textit{18kHz} seems to have participated in many combinations on average, resulting in high F1-scores. Followed closely by \textit{200kHz}.
+    \subsection{Performance Trend Per Frequency} 
+        Figure \ref{performance_trend_fig} illustrates the performance trend of each frequency. From right to left, the plot shows to that \textit{18kHz}, \textit{38kHz} and \textit{200kHz} all are part of many combinations with high F1-scores. The rest quickly fall in performance, most likely due to not being paired with any of the three previously mentioned. Looking further to the left, \textit{18kHz} seems to have participated in many combinations on average, resulting in high F1-scores. Followed closely by \textit{200kHz}.
         \begin{figure}[H]
             \centering
             %\includegraphics[scale=0.7]{figures/perfomance_trend.png}
@@ -114,6 +97,8 @@ This section will first describe the hardware used, then the results from the ex
           	\medskip 
             \label{performance_trend_fig}
         \end{figure}
+        
+        
     
 
     

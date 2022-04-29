@@ -1,4 +1,33 @@
 \chapter{Discussion}
+    
+    Interpretations: what do the results mean?
+    
+    Implications: why do the results matter?
+    
+    Limitations: what can’t the results tell us?
+    
+    Recommendations: what practical actions or scientific studies should follow?
+    
+    In this thesis, we have implemented an approach to find the subset of frequencies most applicable to classify sandeel in acoustic data, with the goal to give advice on how to equip smaller unmanned vessels. This was done by training a series of models with the same architecture on labels produced by an already existing acoustic sandeel classifier, where each model had different subsets of the frequencies available to it during training. The results in figure  \ref{increasing_freq_f1_score_fig} illustrates the best performing combination of frequencies per subset size, and would act as our advice for vessels which are to be equipped with a subset of echosounders.  For vessels using one frequency, \textit{200kHz} is advised and for the use of two, \textit{70kHz} and \textit{200kHz} is recommended. For the subset of three the recommendation is \textit{18kHz}, \textit{38kHz}, and \textit{200kHz}, but afterwards the performance only narrowly increases for larger subsets. However, it is important to remember that for the higher subsets, performance can still vary internally for each subset size as seen in figure \ref{errorbar_fig} and detailed in appendix \ref{test_per_freq_f1_appendix}. Hence, our advice follows the combinations illustrated for the larger subsets. 
+    
+
+    %The figures \ref{increasing_freq_f1_score_fig} (F1-score), \ref{increasing_freq_precision_score_fig} (precision), \ref{increasing_freq_recall_score_fig} (recall) can all be used to select frequencies for surveys depending on the nature of the task.
+    
+    The subset \textit{18kHz}, \textit{38kHz}, and \textit{200kHz} unique performance seen in figure \ref{errorbar_fig} supports the current methods applied by the \gls{imr} in section \ref{acoustic classification sandeel}, where the same frequencies are used for the classifications (\textit{18kHz} and \textit{38kHz}) and delineation (\textit{200kHz}) of sandeel schools. However, our results cannot tell how and in what magnitude each of the frequencies contribute to the classification process for this subset.
+    
+    Recall plays the largest part in our achieved F1-score (ref figure \ref{increasing_freq_recall_score_fig}), when compared to precision (ref figure \ref{increasing_freq_precision_score_fig}). The recall rises quickly from a subset size of one with a score of 0.51, to a score of 0.84 with a subset size of two. Afterwards, the performance  only slightly increases, while the precision (ref figure \ref{increasing_freq_precision_score_fig}) saturates its performance at subset size three. This implies that the task of finding instances of possible sandeel in the data requires fewer frequencies than accurately classifying it. \textit{200kHz} is not present in the two smallest sizes subsets of recall, but is part of its highest performing recall subsets three, four, and five. The high values of recall are in itself an easier task, as this can be triggered by simply classifying all high values of \gls{sv} as sandeel. 
+    
+    The choice of using the output from \citeauthor{brautaset2020acoustic} model as pseudo labels made our model inherit the same strength and weaknesses of their model. Our performance would likely never surpass, just approach, that of the model from \citeauthor{brautaset2020acoustic}. Due to the missing annotations, we could not perform the same test as their model 
+    
+    Our results' generalizability is reduced by the amount of data used during our experiments. In the works of \citeauthor{brautaset2020acoustic} described in section \ref{unet_paper_acoustic} they utilized a total of 12 years, and our work only used data from two years. This methodological choice was made because of the context of available hardware at the time of work. The server \textit{janus} (described in section \ref{hardware}) which were the only server enabled with docker to download and process the data was heavily in use by other students and employees at the university, greatly reducing the amount of data possible to generate for this work. Meanwhile, the performance was still acceptable for the subsets found under the greedy-search and showed that the models were able to generalize from 2018 to 2019 on a much smaller dataset than used in \citeauthor{brautaset2020acoustic}. 
+    
+
+    
+    
+
+
+
+
     \section{things}
         \begin{itemize}
             \item data, probability scheme

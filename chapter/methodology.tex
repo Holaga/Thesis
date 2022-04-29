@@ -1,13 +1,13 @@
 \chapter{Material and Methods} \label{methods}
     This chapter describes the steps taken in this thesis to answer the research question:
         \begin{itemize}
-            \item \textit{“As a lightweight vessel do not have the structural capacity to carry all the six echo sounders the \gls{imr} usually deploy, which ones should be prioritized when classifying sandeel in acoustic data?”}
+            \item \textit{“As a lightweight vessel do not have the capacity to carry all the six echo sounders the \gls{imr} usually deploy, which ones should be prioritized when classifying sandeel in acoustic data?”}
         \end{itemize}
     
-    The thesis follows the work of \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic}, which was outlined in section \ref{unet_paper_acoustic} and will be referenced throughout this chapter. In summary, this chapter will first look at the data itself and the tools and methods applied to prepare it for the training of machine learning models, with a following description of the experiment. The experiment focuses on training individual U-Net models with different amounts of frequencies and measuring the performance of each.
+    The thesis follows the work of \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic}, which was outlined in section \ref{unet_paper_acoustic} and will be referenced throughout this chapter. In summary, this chapter will first look at the data itself and the tools and methods applied to prepare it for the training of machine learning models, with a following description of the experiment. The experiment focuses on training individual models with different subsets of frequencies and measuring the performance of each.
     
     \section{The Data}
-        The data was split into yearly trawl missions, with each consisting of a collection of \textit{.raw} files with corresponding \textit{.work} files. The \textit{.raw} are the uncompressed raw output from the echo sounder. Because they are uncompressed, they do not lose any data, but unfortunately, this also makes them large. The data from 2020 alone which spanned three months took 240 GB of storage space and was accessed by downloading it through Windows Azure (described in appendix \ref{Windows Azure}). The \textit{.work} files are the annotations of the \textit{.raw} files done by operators using a system called the \Gls{lsss}\cite{lsss}. 
+        The data originates from the annual Norwegian acoustic trawl surveys using the Simrad EK60 system to measure sandeel abundance and was split into yearly trawl missions, with each consisting of a collection of \textit{.raw} files with corresponding \textit{.work} files. The \textit{.raw} are the uncompressed raw output from the echo sounder. Because they are uncompressed, they do not lose any data, but unfortunately, this also makes them large. The data from 2020 alone which spanned three months took 240 GB of storage space and was accessed by downloading it through Windows Azure (described in appendix \ref{Windows Azure}). The \textit{.work} files are the annotations of the \textit{.raw} files done by operators using the \gls{lsss} system. Backscatter was stored as \gls{sv} values in echograms for six frequencies \textit{18kHz}, \textit{38kHz}, \textit{70kHz}, \textit{120kHz}, \textit{200kHz}, and \textit{333kHz}. The ping rate was set to 1Hz\cite{choi2021semi}, with a pulse duration of 1.024 milliseconds and vessel speed of approximately 10 knots. This resulted in the length of each pixel being 1 second horizontally and 19.2 centimeters vertically.
     
     \section{Tool: The CRIMAC-Pipeline}
         Based on the work performed by \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic}, a pipeline for classifying the acoustic backscatter was created under \gls{imr}s project \gls{crimac}\cite{crimac_pipeline}, and used as a tool throughout this work. The pipeline could be run as one module, to directly get the predictions from the .raw data, or submodules (illustrated in figure \ref{Module_overview_fig}) could be accessed and run separately. All modules were accessed through docker (described in appendix \ref{Docker}), and a majority of their output is the \textit{.zarr} format. This is a format that is compatible with the Python package Zarr (described in appendix \ref{Zarr}), which facilitates NumPy array operations as well as loading of arrays from disk instead of memory, as these can be very large. This section will describe the function of each module used in this thesis.
@@ -203,7 +203,7 @@ Bottom               & Other                & 2815                             &
             \label{Data_loading_scheme_table}
         \end{longtable}
 
-        The data-augmentations performed was flipping along the vertical axis, and a multiplication applied to values in 5\% of pixels in an input \gls{sv} crop to act as noise. In this context, pixels refer to each \gls{sv} value in the crop. The intention behind the multiplication was to simulate real life noise, and consisted of multiplying the values with a random number in either the range [0,1] or [1, 10], with a 50\% change of each. Then the \gls{sv} crop would be transformed to the decibel scale, by applying $10*\log{(pixel)}$ to all pixels for all frequencies in the \gls{sv} crop, with cutoff values at minimum -75dB and maximum 0dB. As samples from the training data was provided to the model, each data augmentation method had a 50\% chance of occurring. All augmentations and transformations was based on \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic}. 
+        The data-augmentations performed were flipping along the vertical axis, and a multiplication applied to values in 5\% of pixels in an input \gls{sv} crop to act as noise. In this context, pixels refer to each \gls{sv} value in the crop. The intention behind the multiplication was to simulate real life noise, and consisted of multiplying the values with a random number in either the range [0,1] or [1, 10], with a 50\% change of each. Then the \gls{sv} crop would be transformed to the decibel scale, by applying $10\log{(pixel)}$ to all pixels for all frequencies in the \gls{sv} crop, with cutoff values at minimum -75dB and maximum 0dB. As samples from the training data were provided to the model, each data augmentation method had a 50\% chance of occurring. All augmentations and transformations were based on \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic}. 
 
         
         %\clearpage
@@ -249,7 +249,7 @@ Bottom               & Other                & 2815                             &
     
     \subsection{Exhaustive Frequency Search}
     
-        To find the most impactful frequencies and try to discover hidden synergies between them, a comprehensive test had to be enacted. This experiment would see all combinations of all frequencies being tested. This means to train a U-Net model using only the frequencies in the frequency combination and measure the performance. The experiment would be run ten times, to get enough results to estimate the mean,  reducing variance, and be able to display some statistical data for each combination of frequencies. Each test would have different random state seeds set to enable different data splits, and also model different initialization. The explicit random state also accommodates reproducibility. With 6 frequencies in total, the amount of possible frequency combinations for each of the tests is 63\footnote{Calculated as combinations without repetitions and without order, using formula $\frac{n!}{k!(n-k)!}$, where \textit{n} is elements to chose from and \textit{k} is how many to choose, both values as integers. Summarize for \textit{k} in range 1..6.}.
+        To find the most impactful frequencies and try to discover hidden synergies between them, a comprehensive test had to be enacted. This experiment would see all combinations of all frequencies being tested. This means to train a U-Net model using only the frequencies in the frequency combination and measure the performance. The experiment would be run ten times, to get enough results to estimate the mean,  reducing variance, and be able to display some statistical data for each combination of frequencies. Each test would have different random state seeds set to enable different data splits, and also model different initialization. The explicit random state also accommodates reproducibility. With 6 frequencies in total, the number of possible frequency combinations (subsets) for each of the tests is 63\footnote{Calculated as combinations without repetitions and without order, using formula $\frac{n!}{k!(n-k)!}$, where \textit{n} is elements to chose from and \textit{k} is how many to choose, both values as integers. Summarize for \textit{k} in range 1..6.}.
         
         The dataset for year 2019 in table \ref{data_distribution_2019_table} contained the most data, and this was used for training. 70\% of the 2019 dataset was selected as training dataset, and 30\% as validation dataset. The 2018 dataset was selected as test dataset. The total amount of data given to a model during training was set to 5,000 batches. With a batch size of 16 this corresponds to 80,000 samples, which matches the amount of data given to the model by \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic}.
         
@@ -265,14 +265,27 @@ Bottom               & Other                & 2815                             &
         
         After the training of each frequency combination, the network was evaluated on 500 batches from the test data, but without any noise added through augmentation. Finally, the F1-score, precision and recall would be calculated for each class and logged in a \textit{.csv} file. Then the next combination would start the entire process afresh with training.
         
-        With the results from the 5 separate experiments, each on all 63 possible combinations, the mean performance values of each frequency combination would be estimated. This would then be used to show these properties:
+        With the results from the separate experiments, each on all 63 possible combinations, the mean performance values of each frequency combination would be estimated. This would then be used to show these properties:
         \begin{itemize}
 
-            \item Greedy search among the best frequency combinations per number of frequencies possible. For example; The best from all combinations of three frequencies. One greedy search based on each metric; f1-score, precision, and recall.
+            \item Greedy search among the best frequency combinations per number of frequencies possible. For example; The best from all subsets of three frequencies. One greedy search based on each metric; f1-score, precision, and recall.
             \item To observe how unique the performance was for each combination, a plot to illustrate the statistical properties of each will be presented. This will be shown as an error bar, the top of the bar is the max F1-score achieved, and the bottom is the minimum. This presentation was chosen because we judged that too few tests had been run for a proper standard deviation to be calculated.
             \item The performance trend of each frequency. This meant we would, for all frequencies, filter out those sets it was a part of and sort these in increasing order. This would produce a line-plot illustrating what performance scores this frequency contributes to and its overall trend.
         \end{itemize}
     
 
 
-    
+\section{Hardware} \label{hardware}
+    Two remote servers named \textit{janus} and \textit{birget} were provided by the university. Janus were used for data preparation, and birget for conducting the experiments. Hardware spesifications: 
+\begin{itemize}
+  \item \textbf{Birget}
+  \begin{itemize}
+    \item CPU: AMD EPYC 7742 64-Core Processor
+    \item GPU: 1 x A100-SXM-80GB
+  \end{itemize}
+  \item \textbf{Janus}
+  \begin{itemize}
+    \item CPU: Intel(R) Core(TM) i9-7900X CPU @ 3.30GHz
+    \item GPU: 1 x GeForce RTX 2080 Ti
+  \end{itemize}
+\end{itemize}
