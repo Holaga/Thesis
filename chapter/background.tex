@@ -3,7 +3,7 @@
     
     
 \section{Marine advisory work}
-    The \gls{ices} is an intergovernmental science organization that is the primary provider of advice on marine ecosystems to the governments and international bodies that manage the North Atlantic Ocean and adjacent seas\cite{ICES2020}. It consists of over 6000 marine scientists, over 300 institutes and 20 member countries, where Norway is one of them. Advice is developed by expert groups who work towards better understanding of marine ecosystems and their sustainable use. The \gls{imr} is a large contributor, and one of its activities is to give input to these advices through research and monitoring. An important reserach area is the monitoring of a species known as the \textit{lesser sandeel}, which is the area in which this thesis seeks to contribute.
+    The \gls{ices} is an intergovernmental science organization that is the primary provider of advice on marine ecosystems to the governments and international bodies that manage the North Atlantic Ocean and adjacent seas\cite{ICES2020}. It consists of over 6000 marine scientists, over 300 institutes and 20 member countries, where Norway is one of them. Advice is developed by expert groups who work towards better understanding of marine ecosystems and their sustainable use. The \gls{imr} is a large contributor, and one of its activities is to give input to these advices through research and monitoring. An important research area is the monitoring of a species known as the \textit{lesser sandeel}, which is the area in which this thesis seeks to contribute.
     
 \subsection{Why the lesser sandeel?}
     The lesser sandeel (\textit{Ammodytes marinus}), from now just \textit{sandeel} is
@@ -241,7 +241,7 @@ Acoustic target classification is a major challenge in most acoustic surveys, an
         where D is the number dimension of the input space, $x$ is the input vector and $w$ is a set of weights that is of the same size as $x$, $b$ is the bias and {\textsigma} is the activation function. The single output value \textit{y} is a weighted sum of the input and weights plus the bias, also called the neurons' \textit{activation}. The perceptron is illustrated in figure \ref{Perceptron / MLP}.
     
     \subsection{Multi-Layered Perceptron} \label{MLP}
-        The neurons presented in section \ref{perceptron} are organized together in layers to form an \gls{ann}, which in turn forms what is called a \gls{mlp} \cite{razavi2021deep_exp_per}. If all neurons in each layer are connected to every neuron in the next layer, then they form a type of \gls{ann} called a \textit{fully connected} networks. A \gls{mlp} is depicted in figure \ref{Perceptron / MLP}.
+        The neurons presented in section \ref{perceptron} are organized together in layers to form an \gls{ann}, which in turn forms what is called a \gls{mlp} \cite{razavi2021deep_exp_per}. If all neurons in each layer are connected to every neuron in the next layer, then they form a type of \gls{ann} called \textit{fully connected} networks. A \gls{mlp} is depicted in figure \ref{Perceptron / MLP}.
         
             \begin{figure}[H]
                 \centering
@@ -565,7 +565,7 @@ Acoustic target classification is a major challenge in most acoustic surveys, an
     Regularization as described by \citeauthor{kukavcka2017_regularization}\cite{kukavcka2017_regularization} is any supplemental technique with the goal to increase the model generalization performance. Two techniques used in this thesis will be described here; \textit{batch normalization} and \textit{data-augmentation}.
     
 \subsection{Batch-Norm}
-    Batch normalization is a technique applied to reduce what is called \textit{internal  covariate shift}\cite{pmlr-v37-ioffe15_batch_norm}. This is defined as the change in the distribution of activations in hidden layers caused by the change in the networks parameters when training. During \textit{backpropagation}, the hidden layers depend on the activations of all layers before them, and this has been shown to slow down and destabilize the training process. The solution to this problem is the implementation of \textit{batch normalization}. By using the activations from all the neurons in a hidden layer, a \textit{mean} and \textit{variance} is calculated per batch. These values are then used to normalize the activations of the hidden layer. Each hidden layer are given two additional learnable parameters $\gamma$ and $\beta$, that perform a linear transformation of the normalized activations, defined as such:
+    Batch normalization is a technique applied to reduce what is called \textit{internal  covariate shift}\cite{pmlr-v37-ioffe15_batch_norm}. This is defined as the change in the distribution of activations in hidden layers caused by the change in the networks parameters when training. During \textit{backpropagation}, the hidden layers depend on the activations of all layers before them, and as each of them change their output distribution, the other layers have to adapt to this change. Research has shown that this slows down and destabilize the training process, and a solution to this problem is the implementation of \textit{batch normalization}. By using the activations from all the neurons in a hidden layer, a \textit{mean} and \textit{variance} is calculated per batch. These values are then used to normalize the activations of the hidden layer. Each hidden layer are given two additional learnable parameters $\gamma$ and $\beta$, that perform a linear transformation of the normalized activations, defined as such:
     
         \begin{equation} \label{batch_normalization}
             \hat{Z}^{(i)} =   \gamma Z^{(i)}_{norm} + \beta
@@ -576,8 +576,8 @@ Acoustic target classification is a major challenge in most acoustic surveys, an
     Recently, the poor understanding of batch normalization has come into question and \citet{batch_norm_not_work} has stressed that more investigation should be put into understanding its effectiveness. Their findings showing that it might not stem from internal covariate shift, but other factors. 
 
 \subsection{Data-Augmentation} \label{data-augmentation}
-    The previous regularization method is applied during training, but \textit{data-augmentation} is applied to the training dataset\cite{kukavcka2017_regularization}. This is done by applying some transformation to the training set, creating a new training set. There are several methods available, but the two used in this work are: \textit{adding noise} and \textit{vertical flipping}. One example of applying noise is to add Gaussian values with a mean of 0 and some user-defined variance to each pixel. This adds more randomness to the data, making the model learn more general features instead of specific, hence increasing generalization performance. Other methods of applying noise are described in \citeauthor{kukavcka2017_regularization}\cite{kukavcka2017_regularization}. The \textit{flipping} is a simple transformation where we flip the input and label along a certain axis. Thus, mapping the data to a new representation. During training, an echograms' orientation of the surface and bottom can never individually be changed, and so vertical flipping is justified in acoustic data. This is an important observation when applying data augmentation, as it can't change the meaning of the data. For example, when classifying numbers in images, rotating an image of the number \textit{9} clockwise 180 degrees will change its representation to now be more similar to a \textit{6}, but the label would still claim it belongs to the class \textit{9}. An example of each method mentioned can be seen in figure \ref{data augmentation fig}:
-    
+     \textit{Data-augmentation} is a regularization method that is directly applied to the training dataset\cite{kukavcka2017_regularization}. This is done by applying some transformation to the training set. There are several methods available, but the two used in this work are: \textit{adding noise} and \textit{vertical flipping}. One example of applying noise is to add Gaussian values with a mean of 0 and some user-defined variance to each pixel. This adds more randomness to the data, making the model learn more general features instead of specific. The network is less prone to overfit on certain samples, which in turn might increase generalization performance. Other methods of applying noise are described in \citeauthor{kukavcka2017_regularization}\cite{kukavcka2017_regularization}. Vertical flipping is a simple transformation where we flip the input and label along a certain axis. Thus, mapping the data to a new representation. An example of each method mentioned can be seen in figure \ref{data augmentation fig}:
+    % This is an important observation when applying data augmentation, as it can't change the meaning of the data. For example, when classifying numbers in images, rotating an image of the number \textit{9} clockwise 180 degrees will change its representation to now be more similar to a \textit{6}, but the label would still claim it belongs to the class \textit{9}.
     \begin{figure}[H]
         \centering
         
@@ -596,28 +596,10 @@ Acoustic target classification is a major challenge in most acoustic surveys, an
         
         \end{figure}
     
-\clearpage
 
+\section{U-Net} \label{unet}
 
-
-
-
-\chapter{Computer Vision} \label{computer vision}
-    \textbf{\gls{cv}} is a very popular field of research within deep learning\cite{voulodimos2018deep_computer_vision}. This is because it has mainly focused on tasks we humans do seemingly without training, while computers struggle with it. Examples are facial recognition and object detection in video and image data. There are also works that have gone beyond human capability, like \citeauthor{davis2014visual_deep_video_audio}s\cite{davis2014visual_deep_video_audio} work, where they recovered sounds from the vibrations they induced in objects captured on video. 
-
-    
-    In this section, we first focus on an application of \gls{cv} which introduces the architecture of U-Net which is used in this work, and then an application of this architecture on acoustic data. Following this, relevant work within deep learning and acoustic target classification is described. 
-    
-    
-    
-\section{Difference picture and acoustic data}
-\todo{DO THIS}
-    
-
-\section{U-Net: Convolutional Networks for Biomedical
-Image Segmentation} \label{unet}
-
-    In this section, we introduce the architecture of the model that is the foundation of the work in this thesis, and hence we will do this in more detail. U-Net is a fully convolutional state-of-the-art\cite{rajak2021segmentation} semantic segmentation \gls{cnn} and was initially developed for biomedical image analysis by \citeauthor{unet_ronneberger2015}\cite{unet_ronneberger2015}. 
+    In this section, we introduce the architecture of the model that is the backbone of the work in this thesis. U-Net is a fully convolutional, state-of-the-art\cite{rajak2021segmentation} semantic segmentation \gls{cnn} initially developed for biomedical image analysis by \citeauthor{unet_ronneberger2015}\cite{unet_ronneberger2015}. 
     
     \begin{figure}[H]
         \centering
@@ -629,177 +611,24 @@ Image Segmentation} \label{unet}
         \hspace*{15pt}\hbox{\scriptsize Credit: \citeauthor{unet_ronneberger2015}\cite{unet_ronneberger2015}}
     \end{figure}
     
-    U-Net utilized what \citeauthor{unet_ronneberger2015}\cite{unet_ronneberger2015} called a \textit{contracting path} to identify what was in a picture, while an \textit{expanding path} to localize where it was. These two branches were symmetrical, and together they formed a U-shape, giving the network its name. The contracting path can be looked at as five different stages of processing, from top to bottom, in figure \ref{unet_fig}. Each stage applied the same operations to its given input. For each stage, this consisted of two 3×3 valid convolutions with their individual ReLU activation functions. Initially, the feature channels would be increased to 64, and later doubled for each contracting stage. The convolutions were followed by a 2×2 max pooling operation with stride 2 to decrease the resolution of the output from the convolutional operations, and then send this feature map down to the next stage. At the bottom stage, the only change was the use of transpose convolutions instead of max pooling to now increase the resolution. At each subsequent stage going back up the expanding path, the number of feature channels were halved during the convolutional steps. The output of the previous stage would be concatenated with a crop from the output feature map of a stage from the contracting path with the same channel size, the cropping due to different resolutions. This step is crucial for the performance of the model, as it helps the network localize the abstract features in the expanding path to locations in the contracting. At the last stage, a 1×1 convolution was applied instead of increasing the resolution. The 1×1 convolution mapped the 64 feature channels to the 2 classes. The softmax was then calculated between these classes, giving each pixel a value between [0,1], summarized over all classes to 1. Hence, giving us a segmentation map of each class. In the field of biomedicine, data are scarce and so heavy use of data augmentation was applied, which made the U-Net able to train on very few samples.
+    %Each stage applied the same operations to its given input.
     
-    As of U-Net's development in \citeyear{unet_ronneberger2015}, it outperformed other networks in multiple biomedical challenges\cite{unet_ronneberger2015}. It's performance inspired new versions with enhanced performance that use the U-Net architecture as its backbone, as can be seen in NAS-Unet\cite{weng2019unet} from \citeyear{weng2019unet}, and Unet++\cite{zhou2018unet} from \citeyear{zhou2018unet}. U-Net has also been applied with success to other fields such as road extraction in satellite images by \citeauthor{zhang2018road}\cite{zhang2018road} in \citeyear{zhang2018road} and on acoustic classification by \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic} in \citeyear{brautaset2020acoustic}, which is the next article to be described in this thesis.
+    U-Net utilized what \citeauthor{unet_ronneberger2015}\cite{unet_ronneberger2015} called a \textit{contracting path} to identify what was in a picture, while an \textit{expanding path} localized where it was. These two branches were symmetrical, and together they formed a U-shape, giving the network its name. The contracting path can be looked at as five different stages of processing, from top to bottom, in figure \ref{unet_fig}. For each stage, this consisted of two 3×3 valid convolutions with their individual ReLU activation functions. Initially, the feature channels would be increased to 64, then the channel would be further doubled for each contracting stage. The convolutions were followed by a 2×2 max pooling operation with stride 2 to further decrease the resolution of the output from the convolutional operations, and then output a feature map to the next stage. After the bottom stage, the max pool operation is replaced with transpose convolutions to now increase the resolution. At each subsequent stage traveling back up the expanding path, the number of feature channels is halved by the convolutional steps down to 64. 
     
-\clearpage
+    The output of the previous stage would be concatenated with a crop from the output feature map of a stage from the contracting path with the same channel size, the cropping is due to different resolutions. This step allows the following convolutional operation to access both the high-resolution feature map from the contracting path, and the upsampled feature map, which in combination helps with localization of features. 
 
-%\subsection{Applications of CV methods on acoustic data} \label{applications of computer vision}
-
-\section{Applications of Deep Learning in Acoustic Target Classification}
-
-\subsection{Acoustic Classification In Multifrequency Echosounder Data Using Deep Convolutional Neural Networks} \label{unet_paper_acoustic}
+    At the final layer in the expanding path, a 1×1 convolution maps the 64 feature channels to the 2 classes. Finally, the softmax was then calculated between these classes, giving each pixel a probability distribution over the classes, with one channel for each class. Hence, giving us a segmentation map.
     
-        \begin{figure}[H]
-        \centering
-        %\includegraphics[scale=0.5]{figures/unet_arrows.png}
-        \includesvg[inkscapelatex=false,width=1.0\textwidth,keepaspectratio]{figures/unet_brautset.svg}
-        \caption[U-Net architecture]{U-Net architecture, the downwards facing arrow illustrates the contracting path and the one facing upwards is the expanding path. The color gets darker as the channels increase.}
-      	\medskip 
-        \label{unet__brautset_fig}
-        \hspace*{15pt}\hbox{\scriptsize Credit: \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic}}
-    \end{figure}
+    %Hence, these layers increase the resolution of the output. In order to localize, high resolution features from the contracting path are combined with the upsampled output. A successive convolution layer can then learn to assemble a more precise output based on this information.
     
     
-    \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic} had as objective to propose a deep learning method to classify and segment acoustic data gathered during acoustic trawl surveys, without using predefined features. This work is the backbone of this thesis and the data is the same or very similar, hence a more detailed description is provided\cite{korneliussen2016acoustic}.
+    When released, U-Net outperformed other networks in multiple biomedical challenges\cite{unet_ronneberger2015}. It's performance inspired new models that use the U-Net architecture as their backbone, as can be seen in NAS-Unet\cite{weng2019unet} from \citeyear{weng2019unet}, and Unet++\cite{zhou2018unet} from \citeyear{zhou2018unet}. U-Net has also been applied with success to other fields such as road extraction in satellite images by \citeauthor{zhang2018road}\cite{zhang2018road} in \citeyear{zhang2018road} and on acoustic classification by \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic} in \citeyear{brautaset2020acoustic}, which will be explained in the following chapter.
     
-    The deep learning architecture proposed was based on an altered version of \citeauthor{unet_ronneberger2015}\cite{unet_ronneberger2015} U-Net\cite{brautaset2020acoustic}. It is visualized in figure \ref{unet__brautset_fig}, and the difference is the use of \textit{same convolutions} and \textit{batch normalization}. Furthermore, as the resolution of the layers in the contracting and expanding path had the same size, when concatenating, cropping was no longer needed. 
+    %In the field of biomedicine, data are scarce and so heavy use of data augmentation was applied, which made the U-Net able to train on very few samples.
     
-    The data used by this work and in this thesis originated from the yearly \textit{Norwegian North Sea Sandeel} acoustic trawl mission spanning 2007-2018\cite{brautaset2020acoustic}. 2011-2016 was set as training and validation data, and 2007-2010 combined with 2017-2018 as test data. For all years, the \gls{lsss} system was used to categorize and annotate the data. The frequency channels extracted from each year was the 18kHz, 38kHz, 70kHz and 200kHz. Operator annotations initially contained the classes \textit{sandeel}, \textit{other}, \textit{0-group sandeel} and \textit{possible sandeel}, and were annotated by the same operator. \textit{0-group sandeel} and \textit{possible sandeel} was added to a new class \textit{ignore}, as both of them were edge cases, originated from an extraordinary event seen during a trawl or operator uncertainty. The annotations were converted to a pixel map of the same size as the \gls{sv} data (the output from the echosounder), and all pixels not allocated to a class were set as the \textit{background class}. Annotations were originally designed to summarize the \gls{sv} values over an area, to estimate quantity. Hence, they were usually square and larger than the actual school of fish, and not suitable as labels for a \gls{cnn} as pixels around the edges sometimes belonged to the \textit{background class}. As a result, the annotations were approximately reshaped to be more similar to real schools of fish. The outline of further methods applied is described in the methodology chapter (chapter \ref{methods}) as it is based on this article.
-    
-    Performance was measured using two different methods\cite{brautaset2020acoustic}. The first method extracted predictions in \textit{small regions} around existing annotations, and was applied due to  the observations of many schools lacking annotations. This would likely result in the decrease of many false positives being produced by the model, and would now reflect its actual performance. The second method was to measure the performance over \textit{entire echograms}. To have a benchmark to compare to, they used the pipeline developed by \citet{korneliussen2016acoustic} which use an acoustic feature library to identify species. The metric used was F1-score, where \textit{sandeel} was the \textit{positive}   while \textit{other} and \textit{background} was the \textit{negative}. \textit{Small regions} resulted in an overall F1-score of 0.87 on all the test data after a threshold of 0.8 was applied to the probabilities, while the benchmark achieved a F1 score of 0.77. When applying the model to \textit{entire echograms}, the performance decreased and ranged from 0.11-0.68 on individual test years. This was also mirrored by the benchmark method, which achieved 0.03-0.50. The decrease in performance over entire echograms was attributed to missing annotations, and many unidentified features in the data being allocated to the \textit{background} class. The training scheme later described in section \ref{Experiment settings} did not take many of these into account. The quality of the data from different years varied due to different weather conditions, fish populations and stages of development in software used during annotations. The model was concluded as able to be reliably trained to classify acoustic multifrequency measurements\cite{brautaset2020acoustic}.
-    
-%\subsection{Applications of Deep Learning in Acoustic Target Classification}
-\subsection{Related works}
-In \citeyear{korneliussen2018acoustic} \citet{korneliussen2018acoustic} reported the then most recent methods used for acoustic target classification. The mentioned methods applying \gls{ann}s all utilized the supervised learning approach, and were most frequently applied to single frequency channel data. Due to the supervised setting, they stressed the importance of high-quality annotations. Similar to the work detailed earlier in \citet{brautaset2020acoustic}, we will describe some newer research in this section.
-   
-\citet{marques2021detecting} compared different machine learning methods for automatically interpreting multi-frequency echograms, and proposed that a deep learning based end-to-end framework was best suited for the task. Their experiments handled the generation of square bounding boxes around schools of fish, and their results were comparable or better than those produced by human operators. The work was later improved upon by applying an instance segmentation method in \citeyear{marques2021instance}\cite{marques2021instance}. This produced more accurate predictions with pixel precision, and they described this as more befitting biological analysis.
- 
-\citet{semtantic-segm2021choi} proposed in \citeyear{semtantic-segm2021choi} a semi-supervised deep learning network, with the intent of solving the reliance supervised \gls{ann}s have on the correct manual annotation of the acoustic data. By using the same data as \citet{brautaset2020acoustic}, they utilized \textit{two} loss functions which in alternating order optimize the same \gls{cnn}. This \gls{cnn} was based on an \gls{cnn} architecture called VGG-16\cite{simonyan2014very}. The first loss function seeks to \textit{cluster} the data by finding intrinsic characteristics in the data. The second loss function uses classification based on the existing annotated data. This combined use of loss functions was, presumably, the first application to acoustic data. They showed that their model could outperform other traditional machine learning algorithms, both with or without missing annotations. Proving that we can efficiently process acoustic data with only a few annotated samples.
+    %At the last stage, a 1×1 convolution was applied instead of increasing the resolution.
 
 
 
 
 
-%        
-%    \end{itemize}
-
-% Setting the stage for the machine intelligence era in
-% marine science - Cigdem Beyan et al.
-%  - nevner brautaset, ikke noe mer innen acoustic categorization
-%  - 
-
-
-
-
-
-
-
-
-        
-        
-        
-        
-        
-
-        
-        
-        
-        
-        
-        
-        %\citeauthor{VERFUSS201917} \citeyear{VERFUSS201917}\cite{VERFUSS201917} reviewed the current status of the unmanned vehicles, in combinations with a variety of sensors, used to monitor marine fauna. They discussed the different aspects to be considered when selecting systems in the context of a task. The task specifies the technical requirements of the vehicle, and this again what information will be gain. Regarding population monitoring tasks, which is the focus of this thesis, they stated that it is especially important that this information enables us to assign recorded animals to the correct species. Signifying the importance of developing methods to correctly classify species, and those that already exists may only work in the environment for which they were created. The market can today provide commercial systems within this field and enables affordable products and increase availability. They emphasized that unmanned vehicles have the potential to improve mission safety, and measurements while decreasing costs. Although, at the same time, may increase the need for more support vessels and additional personnel with expertise system knowledge.
- 
-
-
-        
-        
-        %- Measure the ipopulation, mitigation, and focal animal monitoringmpact of underwater sound on marine animals we focus on population monitoring
-        %- population, mitigation, and focal animal monitoring
-       % - unnmaned systems "
-%The various methods require different information to be recorded
-%about detected animals, which will determine what specific sensors are
-%required for a given platform. Identification of animals to species or
-%species group level is essential for all methods.
- %       - The system needs to be tailored to the spesific task
- %       - Developed to commercial use, arial, surface/under surface vessels
- %       - Systems that classify marine animals only works in the context in which they weree created
- %       -~18 kHz through to ~500 kHz.
- %       - smaller platform, less nois
- %       - low power means mor suceptible to currents and weather effects
- %       - In the case of self-powered platforms, it may be that
-%the extended survey duration is a suitable trade-off for some disruption
-%to the planned survey
- %       -  However, despite these additional
-%considerations, autonomous vehicles' long deployment durations pre-
-%sent a major advantage for marine animal surveys and their ability to
-%move efficiently to other study areas make them a powerful asset.
-
-
-
-%    - goal, (i) develop a deep learning
-%        strategy that is suitable
-%        for segmenting and classifying echosounder data collected during acoustic trawl surveys %without prior feature extraction; (ii) demonstrate that the strategy devel-
-%        oped in (i) works on a real test case, and (iii) provide perspec- tives, e.g. pros and %cons, on the use of deep learning algorithms in the classification of acoustic %observations into acoustic catego-ries (e.g. species groups).
-% - modified architecture, same convs, batch norm
-% - trawl missions from 2007 - 2018, many classes, combined into three
-% - four frequencies used -> output segmantation map of sandeel, other and background
-% - preprocessing of the data, as we use the same approach this is described in the %AC-tool.
-%    - regrid to 200kHz
-% - modified the annotations to be more similar to actual schools of sandeel
-% - balanced sampling 256x256x4 crops with regard to the information contained in the crop % equal probability from the dataset
-% - a word about the classes.
-% - a thing about the annotations, not deemed fully compatible with semantic segmentation, one %ator
-%- Performance
-%    - Training scheme outlined in the methodology, 
-%    - stained by domain knowledge, and there could be more imacting performance
-%        - when calculating F1 score, compare only examined regions withing 20 pixels of an actual annoation (false positive)
-%        - 0.87 F1 at discriminate between sandeel (positive) and background and other as negative across the test data. Benchmark method got 0.77.
-%        
-%    - When evaluating entire echograms, was deem satisfactory for 2018 and 2017 at 0.78 and 0.68, benchmark (0.62 and 0.32)
-%    - Both on complete echograms,unet (0.11 - 0.68) and 0.03-0.5)
-%
-%Echograms contain (problems): 
-%- missing annotations, will confuse a pixel based classifier as there were clear signs of sandeel
-%- false positives near the surface as, and was speculated to be dense layers of plankton, resulting in high sv values hence being classified as sandeel, and was missed was not data the model had been exposed to earlier. (this causes my model to likely classify this as sandeel). The exact plankton "Phaeocystis" produces gases which have high intensity at 18 and 38kHz, and could be a reason why the. The backround class contains everything not related to the other and sandeel class so will maybe contain other noise inducing factors, as seen when trying to predict entire echograms  
-%
-%- large uncertainy across years, weather conditions and school populations,  which affects %the quality quality of labeling. Historical data was affected by tools being under %development.
-    
-    
-    
-    
-    
-    
-    %OBS! Må ha forklart U-net, accoustic klassifikasjon, F1 OBS, feature construction, statistical and machine learning methods!
-    
-    %To help assess the size of legal fishing quotas, acoustic trawls surveys are initiated to gather data. Before the data is of use, an operator manually needs to interpret the data in a time-consuming process to assign the acoustic back scattering to the correct category, but in turn often introduces bias. Several methods have been implemented to reduce this bias and with a goal to automate the process, but they all have a common weakness where they need a predefined feature space.  In 2020 a group of researchers implemented a U-net deep learning model to the problem and as this is an \gls{cnn} it does not need to have pre-designed features but learn them from the data. Sandeel  ~\cite{brautaset2020acoustic}. 
-    
-    %In this thesis, this will be a semantic segmentation of the classes \textit{background}, \textit{other } and most importantly \textit{sandeel}.
-    
-    
-    
-    %The \gls{crimac} used this model in their project (described in \ref{unet_paper_acoustic}) and had to do some small modifications to the network to fit their task. This modified U-Net is the one presented in this section, as this is the one used in the experiments. The core functionality of the network stays true to the original Unet, and the alterations done to the original will be explained later in this section.
-    
-    
-    
-    
-    %Minor changes were made to adapt\citeauthor{unet_ronneberger2015}s original U-Net to the acoustic data used in \ref{unet_paper_acoustic}, as the input now had the form 4 x 256 x 256. The four channels being the frequencies used. The convolutions were set to \textit{same} instead of \textit{valid}, as were the original setting. This was done to make the size of the input and output match. Further, batch normalization was added to each convolution. 
-    
- 
- 
- 
-
-%    @article{Marques2021InstanceSI,
-%  title={Instance Segmentation-based Identification of Pelagic Species in Acoustic Backscatter Data},
-%  author={Tunai Porto Marques and Melissa Cote and Alireza Rezvanifar and Alexandra Branzan Albu and Kaan %Ersahin and Todd Mudge and St{\'e}phane Gauthier},
-%  journal={2021 IEEE/CVF Conference on Computer Vision and Pattern Recognition Workshops (CVPRW)},
-%  year={2021},
-%  pages={4373-4382}
-%}
-%- instance segmentation
-%- automate the process, automatic bilogical analysis
-
-
-    
-
-    
-    
-
-    
-
-
-        
-
-    
-    

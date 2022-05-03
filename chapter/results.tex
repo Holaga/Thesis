@@ -1,5 +1,5 @@
 \chapter{Results} \label{results}
-This section will first describe the results from the experiments.
+This section will first describe the monitoring of the training process. Then a summary of the performance of each subset size, which is followed by a greedy search to find the subsets responsible for the highest performing combination of frequencies. Finally, all individuals subsets' performance are visualized to better find the most unique subsets.
 
 \section{Result Exhaustive Search}
     
@@ -31,17 +31,44 @@ This section will first describe the results from the experiments.
             
         \begin{figure}[H]
             \centering
-            \includegraphics[scale=0.6]{figures/SANDEEL_WITH_LABEL.png}
+            \includegraphics[scale=0.7]{figures/SANDEEL_WITH_LABEL.png}
             \caption[Examle output, threshold and label]{From left to right; Network output for the class \textit{sandeel}, same output threshold adjusted and finally the label for the current sample.}
           	\medskip 
             \label{sandeel_threshold_label}
         \end{figure}
     
     
-    These results also show that a model can successfully be trained on pseudo labels. The logs from training showed that some combinations with low amounts of frequencies would need more training to converge. More examples on logged output can be found in the appendixes, as there are too many to efficiently illustrate here.  (LEGG IN DETTE). 
+     The complete logs from training show that some combinations with low amounts of frequencies would need more training to converge. More examples can be found in the appendixes, as there are too many to efficiently illustrate here.  (LEGG IN DETTE). 
     
-    \subsection{Performance Metrics - Greedy Search}
-        In figure \ref{increasing_freq_f1_score_fig} the best frequency combinations based on F1-score is visualized. \textit{200kHz} dominates the results, and stays in all combinations. The most drastic increase in performance happens with the 3 frequencies \textit{18kHz}, \textit{38kHz} and \textit{200kHz} being used.
+
+\subsection{Summary of Performance Per Subset Size}
+    Table \ref{summary_per_subset_size_table} shows a summary of the performance for each size of subsets. Min and median increases with the subset size, but the max performance stagnates after a size of three. The mean performance of all individual subsets can be viewed in appendix \ref{result_all_subsets_table}.
+    % Please add the following required packages to your document preamble:
+% \usepackage{longtable}
+% Note: It may be necessary to compile the document several times to get a multi-page table to line up properly
+\begin{longtable}{llllllll}
+                  &      &      &      &      &      &      &  \\ \hline
+\endfirsthead
+%
+\endhead
+%
+\hline
+\endfoot
+%
+\endlastfoot
+%
+\textbf{Subset size:}      & \textbf{1}    & \textbf{2}    & \textbf{3}    & \textbf{4}    & \textbf{5}    & \textbf{6}    &  \\ \hline
+F1-score (min):   & 0.25 & 0.28 & 0.34 & 0.42 & 0.50 & 0.66 &  \\
+%F1-score (mean)   & 0.29 & 0.38 & 0.46 & 0.53 & 0.61 & 0.66 &  \\
+F1-score (median) & 0.28 & 0.37 & 0.45 & 0.54 & 0.62 & 0.66 &  \\
+F1-score (max):   & 0.34 & 0.46 & 0.65 & 0.67 & 0.67 & 0.66 &  \\ \hline
+\label{summary_per_subset_size_table}
+\end{longtable}
+    
+    
+    
+    \subsection{Greedy Search}
+        In figure \ref{increasing_freq_f1_score_fig} the highest performing frequency subset based on mean F1-score is visualized. The most drastic increase in performance happens with the 3 frequencies \textit{18kHz}, \textit{38kHz} and \textit{200kHz} being used.
         \begin{figure}[H]
             \centering
             %\includegraphics[scale=0.7]{figures/increasing_freq_f1.png}
@@ -51,7 +78,7 @@ This section will first describe the results from the experiments.
             \label{increasing_freq_f1_score_fig}
         \end{figure}
 
-        In figure \ref{increasing_freq_precision_score_fig} the best frequencies combinations based on precision is visualized. The trend is similar to the one based on F1-score.
+        In figure \ref{increasing_freq_precision_score_fig} the best performing frequency subset based on mean precision is visualized. The trend is similar to the one based on F1-score.
         % Precision
         \begin{figure}[H]
             \centering
@@ -62,7 +89,7 @@ This section will first describe the results from the experiments.
             \label{increasing_freq_precision_score_fig}
         \end{figure}
         
-        In figure \ref{increasing_freq_recall_score_fig} the best frequencies combinations based on precision is visualized. The steep increase in performance happens already at two frequencies. Indicating that the best combination at this stage already finds most of the \textit{sandeel} class.
+        In figure \ref{increasing_freq_recall_score_fig} the best performing frequency subset based on mean precision is visualized. The steep increase in performance happens already at two frequencies. Indicating that the best combination at this stage already finds most of the \textit{sandeel} class.
         %\clearpage
         \begin{figure}[H]
             \centering
@@ -73,14 +100,14 @@ This section will first describe the results from the experiments.
             \label{increasing_freq_recall_score_fig}
         \end{figure}
 
-    \subsection{All Combinations}
-        Figure \ref{errorbar_fig} illustrate a complete plot of all error bars, with sections for each test. The plot has no complete overview over what frequencies belong to what result, but only a red circle encompassing the error bar related to the combination \textit{18},\textit{38} and \textit{200kHz}. This combination outclasses all other combinations in the same and previous tests, as well as competes with all the results later achieved. In all other sections, no combinations stands out as the unique regarding F1-score.
+    \subsection{Individual subsets}
+        Figure \ref{errorbar_fig} illustrate a complete plot of all error bars, with sections for each test. The plot has no complete overview over what frequencies belong to what result, but only a red circle encompassing the error bar related to the subset \textit{18},\textit{38} and \textit{200kHz}. This combination outclasses all other subset in the same and previous tests, as well as competes with all the results later achieved. In all other sections, no subset stands out as the single unique regarding F1-score.
         
         \begin{figure}[H]
             \centering
             %\includegraphics[scale=0.7]{figures/error_bar.png}
             \includesvg[inkscapelatex=false,width=1\textwidth,keepaspectratio]{figures/error_bars.svg}
-            \caption[Error bars per combination]{Each colored error bar is a frequency-combination. The error bar's top y-value value is the max value achieved, and the bottom is the lowest. A red circle encompasses the test containing only 18kHz, 38kHz and 200kHz. Blue vertical lines sections the error bars into groups where the number of frequencies in each combination are equal.}
+            \caption[Error bars per combination]{Each colored error bar is a frequency-subset. The error bar's top y-value value is the max value achieved, and the bottom is the lowest. A red circle encompasses the test containing only 18kHz, 38kHz and 200kHz. Blue vertical lines sections the error bars into groups where the number of frequencies in each combination are equal.}
           	\medskip 
             \label{errorbar_fig}
         \end{figure}

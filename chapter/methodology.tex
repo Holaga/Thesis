@@ -203,8 +203,9 @@ Bottom               & Other                & 2815                             &
             \label{Data_loading_scheme_table}
         \end{longtable}
 
-        The data-augmentations performed were flipping along the vertical axis, and a multiplication applied to values in 5\% of pixels in an input \gls{sv} crop to act as noise. In this context, pixels refer to each \gls{sv} value in the crop. The intention behind the multiplication was to simulate real life noise, and consisted of multiplying the values with a random number in either the range [0,1] or [1, 10], with a 50\% change of each. Then the \gls{sv} crop would be transformed to the decibel scale, by applying $10\log{(pixel)}$ to all pixels for all frequencies in the \gls{sv} crop, with cutoff values at minimum -75dB and maximum 0dB. As samples from the training data were provided to the model, each data augmentation method had a 50\% chance of occurring. All augmentations and transformations were based on \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic}. 
-
+        The data-augmentations performed were flipping along the vertical axis, and a multiplication applied to values in 5\% of pixels in an input \gls{sv} crop to act as noise.  In this context, pixels refer to each \gls{sv} value in the crop. During training, an echograms' orientation of the surface and bottom can never individually be changed, and so vertical flipping is justified in acoustic data. The intention behind the multiplication was to simulate real life noise, and consisted of multiplying the values with a random number in either the range [0,1] or [1, 10], with a 50\% change of each.  As samples from the training data were provided to the model, each data augmentation method had a 50\% chance of occurring. Then the \gls{sv} crop would be transformed to the decibel scale, by applying $10\log{(pixel)}$ to all pixels for all frequencies in the \gls{sv} crop, with cutoff values at minimum -75dB and maximum 0dB. All augmentations and transformations were based on \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic}. 
+        
+        
         
         %\clearpage
         \begin{longtable}{lll}
