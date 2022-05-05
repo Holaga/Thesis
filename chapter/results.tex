@@ -1,5 +1,5 @@
 \chapter{Results} \label{results}
-This section will first describe the monitoring of the training process. Then a summary of the performance of each subset size, which is followed by a greedy search to find the subsets responsible for the highest performing combination of frequencies. Finally, all individuals subsets' performance are visualized to better find the most unique subsets.
+This section will first describe the monitoring of the training process. Then a summary of the exhaustive search, which is followed by the subsets responsible for the highest mean performance per subset size. Finally, all individuals subsets' performance are visualized to better find the most unique subsets. 
 
 \section{Result Exhaustive Search}
     
@@ -42,7 +42,7 @@ This section will first describe the monitoring of the training process. Then a 
     
 
 \subsection{Summary of Performance Per Subset Size}
-    Table \ref{summary_per_subset_size_table} shows a summary of the performance for each size of subsets. Min and median increases with the subset size, but the max performance stagnates after a size of three. The mean performance of all individual subsets can be viewed in appendix \ref{result_all_subsets_table}.
+    Table \ref{summary_per_subset_size_table} shows a summary of the performance for each size of subsets over the ten tests. Min and median increases with the subset size, but the max performance stagnates after a size of three. The mean performance of all individual subsets can be viewed in appendix \ref{result_all_subsets_table}.
     % Please add the following required packages to your document preamble:
 % \usepackage{longtable}
 % Note: It may be necessary to compile the document several times to get a multi-page table to line up properly
@@ -67,7 +67,7 @@ F1-score (max):   & 0.34 & 0.46 & 0.65 & 0.67 & 0.67 & 0.66 &  \\ \hline
     
     
     
-    \subsection{Greedy Search}
+    \subsection{Max F1-score subsets}
         In figure \ref{increasing_freq_f1_score_fig} the highest performing frequency subset based on mean F1-score is visualized. The most drastic increase in performance happens with the 3 frequencies \textit{18kHz}, \textit{38kHz} and \textit{200kHz} being used.
         \begin{figure}[H]
             \centering
@@ -89,7 +89,7 @@ F1-score (max):   & 0.34 & 0.46 & 0.65 & 0.67 & 0.67 & 0.66 &  \\ \hline
             \label{increasing_freq_precision_score_fig}
         \end{figure}
         
-        In figure \ref{increasing_freq_recall_score_fig} the best performing frequency subset based on mean precision is visualized. The steep increase in performance happens already at two frequencies. Indicating that the best combination at this stage already finds most of the \textit{sandeel} class.
+        In figure \ref{increasing_freq_recall_score_fig} the best performing frequency subset based on mean recall is visualized. The steep increase in performance happens already at two frequencies. Indicating that the best combination at this stage already finds most of the \textit{sandeel} class.
         %\clearpage
         \begin{figure}[H]
             \centering
@@ -102,7 +102,6 @@ F1-score (max):   & 0.34 & 0.46 & 0.65 & 0.67 & 0.67 & 0.66 &  \\ \hline
 
     \subsection{Individual subsets}
         Figure \ref{errorbar_fig} illustrate a complete plot of all error bars, with sections for each test. The plot has no complete overview over what frequencies belong to what result, but only a red circle encompassing the error bar related to the subset \textit{18},\textit{38} and \textit{200kHz}. This combination outclasses all other subset in the same and previous tests, as well as competes with all the results later achieved. In all other sections, no subset stands out as the single unique regarding F1-score.
-        
         \begin{figure}[H]
             \centering
             %\includegraphics[scale=0.7]{figures/error_bar.png}
@@ -111,15 +110,26 @@ F1-score (max):   & 0.34 & 0.46 & 0.65 & 0.67 & 0.67 & 0.66 &  \\ \hline
           	\medskip 
             \label{errorbar_fig}
         \end{figure}
+    
+    \subsubsection{The Subset 18kHz, 38kHz, and 200kHz}
+         We first plotted the mean F1-score of all subsets containing 18kHz, 38kHz, and 200kHz (Eight in total). Then we removed them from the set containing the mean performance from of all subsets, and plotted the eight highest performing from this new smaller set. Figure \ref{with_without_figure} illustrates that all the highest performing subsets included the frequencies \textit{18kHz}, \textit{38kHz}, and \textit{200kHz}.
         
+        \begin{figure}[H]
+            \centering
+            %\includegraphics[scale=0.7]{figures/error_bar.png}
+            \includesvg[inkscapelatex=false,width=0.7\textwidth,keepaspectratio]{figures/with_without.svg}
+            \caption[With and without unique subset]{Performance trend for the eight subsets that contain the subset 18kHz, 38kHz, and 200kHz (blue), and the eight highest performing subsets from a set without these frequencies(orange).}
+          	\medskip 
+            \label{with_without_figure}
+        \end{figure}
         
         
     \subsection{Performance Trend Per Frequency} 
-        Figure \ref{performance_trend_fig} illustrates the performance trend of each frequency. From right to left, the plot shows to that \textit{18kHz}, \textit{38kHz} and \textit{200kHz} all are part of many combinations with high F1-scores. The rest quickly fall in performance, most likely due to not being paired with any of the three previously mentioned. Looking further to the left, \textit{18kHz} seems to have participated in many combinations on average, resulting in high F1-scores. Followed closely by \textit{200kHz}.
+        Figure \ref{performance_trend_fig} illustrates the performance trend of each frequency. For each frequency, we found all subsets of it was part of and then sorted these in increasing order of mean F1-score. From right to left, the plot shows that \textit{18kHz}, \textit{38kHz} and \textit{200kHz} all are part of many combinations with high F1-scores, as seen earlier. The rest quickly fall in performance, most likely due to not being paired with any of the three previously mentioned. Looking further to the left, \textit{18kHz} seems to have participated in many combinations on average, resulting in high F1-scores. Followed closely by \textit{200kHz}.
         \begin{figure}[H]
             \centering
             %\includegraphics[scale=0.7]{figures/perfomance_trend.png}
-            \includesvg[inkscapelatex=false,width=1\textwidth,keepaspectratio]{figures/perfomance_trend.svg}
+            \includesvg[inkscapelatex=false,width=0.9\textwidth,keepaspectratio]{figures/perfomance_trend.svg}
             \caption[Performance trend per frequency]{For all combinations containing a certain frequency, the performance is plotted increasingly.}
           	\medskip 
             \label{performance_trend_fig}
