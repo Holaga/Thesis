@@ -15,7 +15,7 @@
 
     %\textbf{\gls{cv}} is a very popular field of research within deep learning\cite{voulodimos2018deep_computer_vision}. This is because it has mainly focused on tasks we humans do seemingly without training, while computers struggle with it. Examples are facial recognition and object detection in video and image data. There are also works that have gone beyond human capability, like \citeauthor{davis2014visual_deep_video_audio}s\cite{davis2014visual_deep_video_audio} work, where they recovered sounds from the vibrations they induced in objects captured on video. 
     
-    
+    \todo{Fytt sandeel og ices hit?????}
     
     
     \section{Relevance}
@@ -32,37 +32,47 @@
     \end{itemize}
 
 
+\section{Chapter Overview}
+    This section describes the outline of the thesis, and in short the content of each chapter.
+    \begin{itemize}
+        \item \textbf{Chapter 2 - Background: } Describes the concepts used in this thesis. First marine acoustics in section \ref{acoustics}, then machine learning and artificial neural networks in the following sections.
+        \item \textbf{Chapter 3 - Basis and related work:} Describes the basis work which we seek to further expand upon in section \ref{unet_paper_acoustic}, and then details on more recent related research in section \ref{related_work}.
+        \item \textbf{Chapter 4 - Material and Methods:} Describes our approach to answering our research question. First our data, and the tools utilized, then how we produced our labels combined with data generation, and finally, our experiment.
+        \item \textbf{Chapter 5 - Results:} Describes the results from our experiment, which starts with an evaluation of the training process. Then the results are summarized, followed by different findings in the results for our analysis. 
+        \item \textbf{Chapter 6 - Discussion:}  Analyses the results and discuss their implication. 
+        \item \textbf{Chapter 7 - Conclusion and Future Work:}  Describes our answer to the research question, summarizes our key findings, and our recommendations for future work.
+    \end{itemize}
 
 %You can do listings, like in Listing~\ref{ListingReference}
 %\begin{lstlisting}[caption={[Short caption]Look at this cool listing. Find the rest in %Appendix~\ref{Listing}},label=ListingReference]
 %$ java -jar myAwesomeCode.jar
 %\end{lstlisting}
 
-You can also do language highlighting for instance with Golang:
-And in line~\ref{LineThatDoesSomething} of Listing~\ref{ListingGolang} you can see that we can ref to lines in listings.
+%You can also do language highlighting for instance with Golang:
+%And in line~\ref{LineThatDoesSomething} of Listing~\ref{ListingGolang} you can see that we can ref to lines in listings.
 
-\begin{lstlisting}[caption={Hello world in Golang},label=ListingGolang,escapechar=|]
-package main
+%\begin{lstlisting}[caption={Hello world in Golang},label=ListingGolang,escapechar=|]
+%package main
 
-import "fmt"
+%import "fmt"
 
-func main() {
-    fmt.Println("hello world") |\label{LineThatDoesSomething}|
-}
+%func main() {
+%    fmt.Println("hello world") |\label{LineThatDoesSomething}|
+%}
 
-\end{lstlisting}
+%\end{lstlisting}
 
 
 
-Example of a centred figure
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.5]{figures/Flowchart}
-    \caption{Caption for flowchart}
-  	\medskip 
-	\hspace*{15pt}\hbox{\scriptsize Credit: Acme company makes everything \url{https://acme.com/}}
-    \label{FlowchartFigure}
-\end{figure}
+%Example of a centred figure
+%\begin{figure}[H]
+%    \centering
+%    \includegraphics[scale=0.5]{figures/Flowchart}
+%    \caption{Caption for flowchart}
+%  	\medskip 
+%	\hspace*{15pt}\hbox{\scriptsize Credit: Acme company makes everything %\url{https://acme.com/}}
+%    \label{FlowchartFigure}
+%\end{figure}
 
 
 
