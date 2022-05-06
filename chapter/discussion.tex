@@ -1,63 +1,67 @@
 \chapter{Discussion}
-    In this thesis, we have implemented an approach to find the subset of frequencies most applicable to classify sandeel in acoustic data, with the goal to give advice on how to equip smaller unmanned vessels. The results in figure  \ref{increasing_freq_f1_score_fig} illustrates the best performing combination of frequencies per subset size, and would act as our advice for vessels which are to be equipped with a subset of echosounders using the frequencies we tested. After the subset size of three, the performance does not increase significantly for larger subsets. 
+    %This section covers the key findings from the results and their implications.
+
+    In this thesis, an approach to find the subset of frequencies most applicable to classify sandeel in acoustic data have been implemented, with the goal to give advice on how to equip smaller unmanned vessels. The results in figure  \ref{increasing_freq_f1_score_fig} illustrates the best performing combination of frequencies per subset size, and would act as our advice for vessels which are to be equipped with a subset of echosounders using the frequencies we tested. After the subset size of three, the performance does not increase significantly for larger subsets. 
     
     % This was done by training a series of models with the same architecture on labels produced by an already existing acoustic sandeel classifier, where each model had different subsets of the frequencies available during training.
     
     
     %The figures \ref{increasing_freq_f1_score_fig} (F1-score), \ref{increasing_freq_precision_score_fig} (precision), \ref{increasing_freq_recall_score_fig} (recall) can all be used to select frequencies for surveys depending on the nature of the task.
     
-    Recall plays the largest part in our achieved F1-score (ref figure \ref{increasing_freq_recall_score_fig}), when compared to precision (ref figure \ref{increasing_freq_precision_score_fig}). The high values of recall are in itself an easier task, as this can be produced by simply classifying all pixels \gls{sv} as sandeel. The recall rises quickly from a subset size of one with a score of 0.51, to a score of 0.84 with a subset size of two. Afterwards, the performance  only slightly increases, while the precision (ref figure \ref{increasing_freq_precision_score_fig}) saturates its performance at subset size three. This implies that the task of finding instances of possible sandeel in the data requires fewer frequencies than accurately classifying it, which is to be expected as the latter is likely a more complex task, and need additional information. 
-    
-    The subset \textit{18kHz}, \textit{38kHz}, and \textit{200kHz} unique performance seen in figure \ref{errorbar_fig} supports the current methods applied by the \gls{imr} described in section \ref{acoustic classification sandeel}, where the same frequencies are important for the classifications (\textit{18kHz} and \textit{38kHz}) and delineation (\textit{200kHz}) of sandeel schools. However, our results cannot tell how and in what magnitude each of the frequencies contribute to the classification process for this subset. Which, is why this should be identified in future work. The \textit{200kHz} channel is present in all subsets in figure \ref{increasing_freq_f1_score_fig}, and for the subsets size of two, the \textit{70kHz}  is chosen over both \textit{18kHz} and \textit{38kHz} (\textit{although with a small margin to the other subsets as described in appendix \ref{test_per_freq_f1_appendix}}). Suggesting that there is synergy between the two latter frequencies. Furthermore, figure \ref{with_without_figure} shows that the unique subset of three is part of all the highest performing subsets, and a sharp drop in performance can be seen if they are not all present in a subset. This proposes that vessels equipped with three or more echo sounders should include \textit{18kHz}, \textit{38kHz}, and \textit{200kHz} as a minimum. 
-
-    Some bias towards the frequencies used in the basis work is likely to exist, as the features our additional two frequencies (\textit{70kHz and 333kHz)may have contained, which were not included in \citet{brautaset2020acoustic}}), played no part in forming the labels. This may be valid for the unique subset of three frequencies mentioned in the paragraph above. However, by viewing figure \ref{performance_trend_fig}, \textit{120kHz} can be interpreted as a frequency present in a high number of low performing subsets. The trend seeming close to the same as \textit{70kHz}, but worse than \textit{333kHz}. Suggesting that the information found in \textit{120kHz}, may also be found in \textit{70kHz} and \textit{333kHz}. In addition, we suggest that further work could look into removing the 120kHz frequency, and rerun the experiments of \citet{brautaset2020acoustic}, and observe the change in performance. 
-    %All our best subsets after, and including, three frequencies, compares to the performance they achieved on all but two years (\textit{2009 and 2018}).
-    
-    The choice of using the output from \citeauthor{brautaset2020acoustic} model as pseudo labels likely made our model inherit the same strength and weaknesses of their model. Our performance would likely never surpass, just approach, that of the model from \citeauthor{brautaset2020acoustic}. Our works' generalizability was likely reduced by the amount of data used during our experiments, and was limited because of litte computational power. In the works of \citeauthor{brautaset2020acoustic}, they utilized a total of 12 years, while our work only used data from two years (2018 and 2019). On entire echograms their highest F1-score was 0.78 on 2018 (\textit{our test dataset}), and our best subsets resulted in mean performance of 0.67. Meanwhile, our performance was still acceptable, and showed that some of our models were able to generalize from 2019 to 2018 on a much smaller training dataset than used in \citeauthor{brautaset2020acoustic}. The results from \citeauthor{brautaset2020acoustic} may indicate that the quality of the data itself increased in the more recent years. As quality of the data is crucial for the model, this may indicate that acoustic classifiers can be successfully trained using far fewer quantities of high-quality data. This assumes that the data contained in the 2019 dataset is of high-quality, which is hard for us to evaluate. Meanwhile, more data will likely make the classifier more robust to noise. Additionally, we suspect that information about range from the transducer in the crops evaluated by the model increase performance, and so should be evaluated as a feature to include in future work. Furthermore, future work should retrain, and test our model on the same years and amounts of data as described in \citeauthor{brautaset2020acoustic} to establish a better comparison.  
-
-    
-    Interpretations: what do the results mean?
-    
-    Implications: why do the results matter?
-    
-    Limitations: what can’t the results tell us?
-    
-    Recommendations: what practical actions or scientific studies should follow?
+    Recall plays the largest role in the F1-score (ref figure \ref{increasing_freq_recall_score_fig}), when compared to precision (ref figure \ref{increasing_freq_precision_score_fig}). The high values of recall are in itself an easier task, as this can be produced by simply classifying all pixels \gls{sv} as sandeel. The recall rises quickly from a subset size of one with a score of 0.51, to a score of 0.84 with a subset size of two. Afterwards, the performance  only slightly increases, while the precision (ref figure \ref{increasing_freq_precision_score_fig}) reaches its peak at subset size three. This implies that the task of finding instances of possible sandeel in the data requires fewer frequencies than accurately classifying it, which is to be expected as the latter is likely a more complex task, and requires additional information. 
     
 
-     
-     This is something that can be introduced in future works.
+    The unique performance of the subset containing \textit{18kHz}, \textit{38kHz}, and \textit{200kHz}, depicted in figure \ref{errorbar_fig}, supports the current methods applied by the \gls{imr} described in section \ref{acoustic classification sandeel}, where the same frequencies are important for the classifications (\textit{18kHz} and \textit{38kHz}) and delineation (\textit{200kHz}) of sandeel schools. However, our results cannot tell \textit{how} and in \textit{what magnitude} each of the frequencies contribute to the classification process for this subset, a clear possibility for future work. The \textit{200kHz} channel is present in all subsets in figure \ref{increasing_freq_f1_score_fig}, and for the subsets size of two, the \textit{70kHz}  is chosen over both \textit{18kHz} and \textit{38kHz} (\textit{although with a small margin to the other subsets as described in appendix \ref{test_per_freq_f1_appendix}}). This suggests that there is synergy between the two latter frequencies. Furthermore, figure \ref{with_without_figure} shows that the unique subset of three is part of all the highest performing subsets, and a sharp drop in performance can be seen if they are not all present in a subset. This leads to the proposition that vessels equipped with three or more echo sounders should include \textit{18kHz}, \textit{38kHz}, and \textit{200kHz} as a minimum. 
 
-    \section{things}
-        \begin{itemize}
-            \item More exposure to data unseen by Bratuseth, but labels are most likely wrong. 
-            \item data, probability scheme
-            \item hyperparameters for my work
-            \item problems introduces by pseudo labels and 
-            \item .zarr issue, not .mmemap? Utilize crimac pipeline
-            \item thresholding, sometimes all classes are 0, different threshold? Based og Brautaset
-            \item model biased towards brautseth frequencies??
-            \item folder structure instead of regions?? - more samples
-            \item regrid, possible errors in the preprocessor -nope
-            \item supervised/ semi - supervised? 
-            \item other options for training, early stopping...
-            \item Lightweigth vessel, no operator annotations from trawl cathes. Viability?
-            \item No imputation of the missing values, as I only focused on the values above the seafloor. - no
-            \item proportional increase/decrease in performance for each frequency combination \item \citet{mohammed2006acoustic}, translation invariance kanskje ikke så viktig???
-            \item residual connections??? \cite{zhang2018road}
-            \item plankton, top layer, false positive
-            \item Semi-supervised target classification in multi-frequency
-echosounder data - we assign the SE or OT class to the patch, where the num-
-ber of corresponding fish pixels is greater than or equal to 16 pixels
-which occupy 1.56% of the pixels in the patch. On the other hand,
-the patch without fish-annotated pixels is annotated to the BG class.
-        \end{itemize}
+    There is likely some bias toward the frequencies used in the basis work, as the features our additional two frequencies (\textit{70kHz and 333kHz) may have contained, which were not included in \citet{brautaset2020acoustic}}, played no part in forming the labels.  However, by viewing figure \ref{performance_trend_fig}, \textit{120kHz} can be interpreted as a frequency present in a high number of low performing subsets. The performance trend was almost as good as 70kHz, but worse than \textit{333kHz}. This suggests that the information found in \textit{120kHz} may also be found in \textit{70kHz} and \textit{333kHz}. In addition, we suggest that further work could look into removing the 120kHz frequency, rerun the experiments of \citet{brautaset2020acoustic}, and observe the change in performance. 
+    %All our best subsets after, and including, three frequencies, compares to the performance they achieved on all but two years (\textit{2009 and 2018}). ---- 
+    %This may be valid for the unique subset of three frequencies mentioned in the paragraph above.
+    
+    The choice of using the output from \citeauthor{brautaset2020acoustic} model as pseudo labels likely made our model inherit the same strengths and weaknesses of their model. The performance of the work in this thesis would likely never surpass, just approach, that of the model from \citeauthor{brautaset2020acoustic}. Furthermore, generalizability was likely reduced by the amount of data used during our experiments, and was limited because of litte computational power. In the works of \citeauthor{brautaset2020acoustic}, they utilized a total of 12 years, while our work only used data from two years (2018 and 2019). On entire echograms their highest F1-score was 0.78 on 2018 (\textit{our test dataset}), and our best subsets resulted in mean performance of 0.67. Meanwhile, our performance was still acceptable, and showed that some of our models were able to generalize from 2019 to 2018 on a much smaller training dataset than used in \citeauthor{brautaset2020acoustic}. The results from \citeauthor{brautaset2020acoustic} may indicate that the quality of the data itself increased in the more recent years. As quality of the data is crucial for the model, this may indicate that acoustic classifiers can be successfully trained using far fewer quantities of high-quality data. This assumes that the data contained in the 2019 dataset is of high-quality, which is hard for us to evaluate. Meanwhile, more data will likely make the classifier more robust to noise. Additionally, information about range from the transducer in the crops evaluated by the model would likely increase performance, and so should be evaluated as a feature to include in future work. Furthermore, future work should retrain, and test our model on the same years and amounts of data as described in \citeauthor{brautaset2020acoustic} to establish a better comparison.  
 
-    \section{Interpretations}
-    \section{Applied relevance}
-        things
     
-    
-    \section{Further work}
-        - Apply the model to more data, to verify its generalization performance.
-        - 
+%    Interpretations: what do the results mean?
+%    
+%    Implications: why do the results matter?
+%    
+%    Limitations: what can’t the results tell us?
+%    
+%    Recommendations: what practical actions or scientific studies should follow?
+%    
+%
+%     
+%     This is something that can be introduced in future works.
+%
+%    \section{things}
+%        \begin{itemize}
+%            \item More exposure to data unseen by Bratuseth, but labels are most likely %wrong. 
+%            \item data, probability scheme
+%            \item hyperparameters for my work
+%            \item problems introduces by pseudo labels and 
+%            \item .zarr issue, not .mmemap? Utilize crimac pipeline
+%            \item thresholding, sometimes all classes are 0, different threshold? Based og %Brautaset
+%            \item model biased towards brautseth frequencies??
+%            \item folder structure instead of regions?? - more samples
+%            \item regrid, possible errors in the preprocessor -nope
+%            \item supervised/ semi - supervised? 
+%            \item other options for training, early stopping...
+%            \item Lightweigth vessel, no operator annotations from trawl cathes. Viability?
+%            \item No imputation of the missing values, as I only focused on the values above %the seafloor. - no
+%            \item proportional increase/decrease in performance for each frequency %combination \item \citet{mohammed2006acoustic}, translation invariance kanskje %ikke så viktig???
+%            \item residual connections??? \cite{zhang2018road}
+%            \item plankton, top layer, false positive
+%            \item Semi-supervised target classification in multi-frequency
+%echosounder data - we assign the SE or OT class to the patch, where the num-
+%ber of corresponding fish pixels is greater than or equal to 16 pixels
+%which occupy 1.56% of the pixels in the patch. On the other hand,
+%the patch without fish-annotated pixels is annotated to the BG class.
+%        \end{itemize}
+%
+%    \section{Interpretations}
+%    \section{Applied relevance}
+%        things
+%    
+%    
+%    \section{Further work}
+%        - Apply the model to more data, to verify its generalization performance.
+%

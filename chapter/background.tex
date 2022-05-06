@@ -345,6 +345,8 @@ Acoustic target classification is a major challenge in most acoustic surveys, an
     \end{figure}
     
     The receptive field will start as small regions, but as we apply more convolutional layers, it will have access to increasing context in regard to the input\cite{Goodfellow-et-al-2016}. This is illustrated in figure \ref{receptive_field_fig}, and kernels in early layers learn to identify simple features while later combine these to identify complex features. The kernel utilizes what is called \textit{parameter sharing }, as the same weights are repeatedly used across the input. The kernel is often smaller than the input, resulting in \textit{sparse connections} as opposed to fully connected networks. The parameter sharing results in the \gls{cnn} having another useful attribute called \textit{equivariance}, which means that if the input changes, the output changes in the same way.
+    
+    The application of \gls{cnn}s on acoustic data can be motivated by the echograms being similar to regular images. However, the same object will be represented differently in echograms at varying ranges from the transducer, possibly being more similar to objects of another class at a given depth\cite{simmonds2008fisheries}. This likely increases the complexity of target classification in acoustic data, as in this work, the network handles crops from various ranges with no explicit range feature. 
     %which is that the location of the feature in the input is not relevant to a convolutional neural network. %Combined, this creates a layer able to detect features in an input with fewer learnable parameters than a normal \gls{ann}. 
     
     \begin{figure}[H]
