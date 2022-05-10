@@ -1,32 +1,12 @@
 \chapter{Background}
-    In this chapter, we introduce the context of the work to give the reader an understanding of its importance, and then the concepts used during the experiments both withing acoustics and machine learning.
+    In this chapter, we introduce the concepts used during the experiments, both withing acoustics and machine learning.
     
+    %In this chapter, we introduce the context of the work to give the reader an understanding of its importance, and then the concepts used during the experiments both withing acoustics and machine learning.
     
-\section{Marine advisory work}
-    The \gls{ices} is an intergovernmental science organization that is the primary provider of advice on marine ecosystems to the governments and international bodies that manage the North Atlantic Ocean and adjacent seas\cite{ICES2020}. It consists of over 6000 marine scientists, over 300 institutes and 20 member countries, where Norway is one of them. Advice is developed by expert groups who work towards better understanding of marine ecosystems and their sustainable use. The \gls{imr} is a large contributor, and one of its activities is to give input to these advices through research and monitoring. An important research area is the monitoring of a species known as the \textit{lesser sandeel}, which is the area in which this thesis seeks to contribute.
+\section{Acoustics}\label{acoustics}
+    %When fisheries conduct acoustic surveys of fish, they use \textit{echo sounders} to remotely detect and observe targets in the water. Echo sounders are a special variety of \textit{sonar}, where the acoustic beam is directed vertically downwards from the measuring platform. 
     
-\subsection{Why the lesser sandeel?}
-    The lesser sandeel (\textit{Ammodytes marinus}), from now just \textit{sandeel} is
-    a small pelagic \footnote{Pelagic fish inhabit in the pelagic zone of ocean or lake waters – living neither close to the bottom nor near the shore.} fish which resides in sandy-bottomed coastal and shallow ocean waters and feeds mainly on plankton. It plays a key role in the North Sea, as it has a major role in the marine ecosystem as forage fish\footnote{Forage fish are small pelagic fish which are preyed on by larger predators.} and catch for fisheries. Due to the high level of predation, it lives large parts of its life buried in a sandy seabed, but during the spring feeding season adults emerge each dawn to create large schools in the upper pelagic layer. Historic data show that changes in their abundance cause bottom-up effects of the ecosystem, causing for example breeding failure among several species of seabird \cite{johnsen2017collective}. 
-    
-    The North Sea is under pressures, stemming from a range of factors including fishing, coastal construction, maritime transport, oil and gas exploration and production, tourism and recreation, navigation dredging, aggregate\footnote{Raw materials such as gravel, crushed stone, or sand that are obtained from natural sources.} extraction, military activities, and wind farm construction \cite{ICES2021}. Because of the importance of sandeel, \gls{imr} has conducted yearly acoustic trawl missions since 2005 in sandeel areas of the North Sea\cite{johnsen2017collective}. The goal is to monitor the sandeel stock and create input and data to help the \gls{ices} create scientifically backed advice, one of which are recommendations for fishing quotas\cite{sizedependentfreqrespons2009johnsen}. 
-    
-    \begin{figure}[H]
-        \centering
-
-        \includegraphics[width=0.5\textwidth]{figures/Ammodytes_hexapterus.jpg} 
-
-        \caption[Sandeel]{A sandeel buried in sand.}
-        \medskip 
-        \hspace*{15pt}\hbox{\scriptsize Credit: Original image by Mandy Lindeberg\cite{sandeel_image}}
-        \label{sandeel_image}
-    \end{figure}
-
-
-
-    
-\section{Acoustics surveys}\label{acoustics}
-    When fisheries conduct acoustic surveys of fish, they use \textit{echo sounders} to remotely detect and observe targets in the water. Echo sounders are a special variety of \textit{sonar}, where the acoustic beam is directed vertically downwards from the measuring platform. The echo sounder consists of a \textit{transmitter} that produces a burst of electrical energy at some set frequency. Then a \textit{transducer} receives the output from the transmitter and converts it to an acoustic signal that is propagated through the water, this signal is also called a \textit{ping}. This forms a directional beam, akin to the light from a handheld flashlight. Targets in the water \textit{backscatters}/\textit{reflects} parts of the energy back towards the transducer. The backscattered sound or \textit{echo} is detected by the transducer, and the sound is converted back to electric energy as the received signal and is further amplified. The time when the signal is received determines the range to the target\cite{simmonds2008fisheries}.
+    The echo sounder consists of a \textit{transmitter} that produces a burst of electrical energy at some set frequency. Then a \textit{transducer} receives the output from the transmitter and converts it to an acoustic signal that is propagated through the water, this signal is also called a \textit{ping}. This forms a directional beam, akin to the light from a handheld flashlight. Targets in the water \textit{backscatters}/\textit{reflects} parts of the energy back towards the transducer. The backscattered sound or \textit{echo} is detected by the transducer, and the sound is converted back to electric energy as the received signal and is further amplified. The time when the signal is received determines the range to the target\cite{simmonds2008fisheries}.
     
     Pings are usually represented as columns in a 2-dimensional image, also called an \textit{echogram}, with range along the y-axis and time of ping along the x-axis. The columns represent how the acoustic reflections varies for each ping. Any targets detected in the ping will be visualized as a mark in the echogram, usually with different colors depending on the echo strength. In multi-frequency sonars, individual echograms are produced in parallel for each frequency in use, this is visualized in figure \ref{echogram_example_fig}. Because the echograms are constructed as $\text{time} \times \text{range}$, the vertical magnitude of a mark indicates the height of the target, while the horizontal position illustrate changes in \textit{time} if the echosounder is stationary or in \textit{space} if moving. When moving, the echogram thus represents a vertical cross-section of the water column as the transducer is in motion through the water at constant speed in one direction\cite{simmonds2008fisheries}.
     
@@ -71,12 +51,6 @@
     \end{equation}
     
     where a sum over all discrete targets returning echoes in the sampled volume ($V_{0}$) is taken. There is a linear relationship between the abundance of fish, and \gls{sv} as long as the species or group of species is known. For more details, see \citet{simmonds2008fisheries}.
-
-\subsection{IMRs acoustic trawl surveys}
-    \gls{imr}s acoustic trawl missions combine the gathering of acoustic data and biological data from trawl catches. The scrutiny of the data is done through the use of a post-processing software called \gls{lsss}, where acoustic target classification is done \textit{manually} with the biological samples as aid\cite{korneliussen2006large}. The echogram for each frequency channel used is stored as a 2-dimensional picture, where each pixel value is a \gls{sv} value.  Afterwards, the data and biological samples are input to a software called StoX.  This is an open-source software which is used to estimate the fish abundance and age distribution to be further used as support for \gls{ices} advice\cite{johnsen2019stox}. \cite{korneliussen2018acoustic}
-
-
-
 
 %    Hei,
 %Det finnes en del på dette (se under). Vi bruker 200 kHz når vi finner stimer, men vi %ser at 18KHz og 38 KhZ er viktige for klassifiseringen. 
@@ -135,98 +109,27 @@
 %\subsection{Large Scale Survey
 %System}
 
-\section{Unmanned Vehicles in Marine Science} \label{Unmanned Vehicles in Marine Science}
-        In \citeyear{VERFUSS201917} \citeauthor{VERFUSS201917}\cite{VERFUSS201917} reviewed the current status of unmanned vehicles that are suitable for monitoring marine life. The different types of vehicles can operate stationary or moving, on the ocean surface, as aerial or submerged.  They can either be remotely controlled, autonomous, or a combination of both. They can use a wide array of sensors, but in the case of the acoustic sensors, \citeauthor{VERFUSS201917} emphasized the need to be able to efficiently assign the correct species to the measured animal. This directly impacts the technical requirements of the vehicles purchased, as they need a minimum amount of information provided by the sensors to solve the given task. For example, the number of transducers and at what frequencies they can induce pings. Possibly, further increasing the need for more support vessels and personnel with expertise system knowledge. Many of the systems reviewed are commercially available, which has led to a growth in number and use.  The increase in unmanned vehicles, combined with the possibility to gather more complex data, will lead to an exponential increase in the data gathered in marine science\cite{malde2020machine}. This further increases the need to make automated programs or better tools to aid in the current manual data processing, which today is a major chokepoint. Furthermore,  the nature of the data gathered will change, possibly in decreasing quality, as humans will have less or no opportunities to actively engage in the information gathering processes that are autonomous.
-        
-        During the summer of \citeyear{johnsen2020measuring} an unmanned vessel was tested in Årdalsfjorden in Norway and involved a kayak with an electric motor and one 200kHz echosounder was installed to measure \textit{sprat} abundance. Earlier surveys had indicated that large numbers of sprat lives close to the surface, which the traditional research vessels have a acoustic blind zone\footnote{Echosounder are usually mounted on the bottom of the vessel, creating a blind zone up to the surface. Often on a retractable keel to get underneath a layer of bubbles that can be detrimental to the echosounder \cite{korneliussen2008proposals}.}. The kayak survey showed that the small vessel managed to measure high densities of sprat in the aforementioned blind zone. It were also less prone to scare away the fish as the kayak produce significantly less noise, and its size allowed it to travel shallower waters. The end result was positive for the continued use of unmanned vessels, but the manned vessels are still needed for biological samples\cite{johnsen2020measuring}. %Some fish species could not be distinguished from the sprat in the acoustic signal, and more echosounders could have given additional information about the species present\cite{korneliussen2008proposals}. 
-        
-        %Larger research vessels create a layer of noise consisting of turbulence and bubbles in the water, which can be detrimental to the performance of the echosounder\cite{korneliussen2008proposals}. Hence, the transducers are usually mounted on retractable keels to get below this layer, and as a consequence, vessels usually applied in this context have an 8-meter acoustic  blind zone. The kayak produces significantly less noise in the water, and the retractable keel was only 1.5 meters, and results showed that the vessel managed to measure fish that usually live closer to the surface. In addition, the kayak is less prone to scare away the fish. The lightweight kayak platform enabled it to collect data from shallower water, inaccessible to the larger vessels. However, 
 
-
-
-    
-
-%\subsection{Noise}
-    %Noise in acoustic data are split into two categories, either \textit{unwanted  targets} produced by the echosounder or signals already present in the medium. The first is defined by the \textit{goal} behind the observation. If we want to observe fish, then plankton is unwanted and vice versa. The latter source of noise originates from either physical (wind, waves...), biological (animals sounds...), or artificial (noise generated by the vessel). By using noise-filtering and 
-    
-%\subsection{Operatin frequency} ???
-    
-    
-    %\citet{simmonds2008fisheries}
-%\subsection{Acoustic data}
-
-
-%- etter å ha skrevet om SV kan jeg beskrive hvordan dette blir pixlene i bildene fra LSSS.
-
-
-
-%\subsection{Echograms and Image Data} \label{echosounder and image data acoustic }
-   %% Forsøk 2
-   %Echograms represent some visible observation of the water column below the echosounder, and measuring the backscatter of several frequencies channels in parallel, each frequency channel can be viewed as similar to color channels in a picture\cite{brautaset2020acoustic}. Hence, machine learning techniques usually applied to image data are also applicable to \textit{echograms}. Figure \ref{accoustic data and color channels fig} illustrates an example of this:
-
-    %% Forsøk 1
-    %This section describes the data gathered by the Simrad EK60 echosounder system produced during the yearly acoustic trawl surveys conducted by the \gls{imr}\cite{johnsen2017collective} and how it relates to image data. Echosounders are maritime instruments, in this case mounted below a ship, which emit acoustic waves into the water (\textit{ping}) and log the backscattered waves\cite{brautaset2020acoustic}. The logs record the \gls{sv}. The data is 2-dimensional, recording the \textit{date and time of the ping} and \textit{range} (\textit{depth}) of the backscattered waves, for each frequency channel used during the measurement. This output is called an \textit{echogram}. As the ping rate was set to 1Hz\cite{choi2021semi}, with a pulse duration of 1.024 milliseconds, the length of each pixel is 1 second horizontally and 19.2 centimeters vertically. These echograms represent some visible observation of the water column below the echosounder, and because of this, each frequency channel can be viewed as similar to color channels in a picture. Hence, machine learning techniques usually applied to image data are also applicable to \textit{echograms}. Figure \ref{accoustic data and color channels fig} illustrates an example of this:
-    
-    %% NYTT FORSØK
-    %This section describes the data gathered by the Simrad EK60 echosounder system produced during the yearly acoustic trawl surveys conducted by the \gls{imr}\cite{johnsen2017collective} and how it relates to image data. Using six frequencies simultaneously to produce pings, they generated multidimensional echograms where each channel is the \gls{sv} values for each frequency. Hence, each frequency channel can be viewed as similar to the color channels in a picture, as these are similarly, varying representations of the same observations. Figure \ref{accoustic data and color channels fig} illustrates an example of this:
-    
-    % HER ELLER OVER ER DEN JEG VIL BRUKE
-    %This section describes the data gathered by the Simrad EK60 echosounder system produced during the yearly acoustic trawl surveys conducted by the \gls{imr}\cite{johnsen2017collective} and how it relates to image data. Using six frequencies simultaneously to produce pings, they generated multidimensional echograms where each channel is the \gls{sv} values for each frequency. Hence, each frequency channel can be viewed as similar to the color channels in a picture, as these are similarly, varying representations of the same observations. Figure \ref{accoustic data and color channels fig} illustrates an example of this:
-    
-    %The data is 2-dimensional, recording the \textit{date and time of the ping} and \textit{range} (\textit{depth}) of the backscattered waves, for each frequency channel used during the measurement. This output is called an \textit{echogram}. As the ping rate was set to 1Hz\cite{choi2021semi}, with a pulse duration of 1.024 milliseconds, the length of each pixel is 1 second horizontally and 19.2 centimeters vertically. These echograms represent some visible observation of the water column below the echosounder, and because of this, each frequency channel can be viewed as similar to color channels in a picture. Hence, machine learning techniques usually applied to image data are also applicable to \textit{echograms}. Figure \ref{accoustic data and color channels fig} illustrates an example of this:
-    
-    %\cite{choi2021semi}
-    % Forsøk 3
-    %This section describes how the data from multifrequency echoosounders translates to image data\cite{brautaset2020acoustic}. These produces pings using several frequencies simultaneously, each capturing different information about the water column beneath the transducer. Hence, each frequency channel can be viewed as similar to color channels in a picture, as these are similarly, varying representations of the same observations. 
-    
-    %This section describes how echograms relates to image data. Echosounders are maritime instruments, in this case mounted below a ship, which emit acoustic waves into the water (\textit{ping}) and log the backscattered waves. The logs record the \gls{sv}. With the use of   As the ping rate was set to 1Hz\cite{choi2021semi}, with a pulse duration of 1.024 milliseconds, the length of each pixel is 1 second horizontally and 19.2 centimeters vertically. These echograms represent some visible observation of the water column below the echosounder, and because of this, each frequency channel can be viewed as similar to color channels in a picture. Hence, machine learning techniques usually applied to image data are also applicable to \textit{echograms}. Figure \ref{accoustic data and color channels fig} illustrates an example of this:
-    
-    % - produced by LSSS
-    
-   % \begin{figure}[H]
-       % \centering
-       % 
-       % \subfloat[Frequency channels that form an echogram. This example show an example %\gls{sv} data crop with six frequencies, on the log scale.]{
-       % 	\includesvg[inkscapelatex=false,width=0.4\textwidth,keepaspectratio]{figures/freq_%stacked.svg}}
-       % 	%\includegraphics[width=1\textwidth]{figures/data_sample.png} } 
-       % 
-       % \subfloat[Color channels RGB that forms a picture.]{
-       % 	\includesvg[inkscapelatex=false,width=0.9\textwidth,keepaspectratio]{figures/color%s_and_OG.svg}}
-       % 
-       % 
-       % \caption[Frequency channels and color channels]{(a) and (b) both consist of several %channels that together represent some visual observation. \textbf{Credit:} Charles J. %Sharp, CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>, via Wikimedia %Commons}
-       % \label{accoustic data and color channels fig}
-       % 
-       % \end{figure}
-    
-    %More information about the acoustic data used in this thesis is contained in section %\ref{unet_paper_acoustic}. 
-    
-    
-\section{Acoustic Classification of Sandeel} \label{acoustic classification sandeel}
-
-Acoustic target classification is a major challenge in most acoustic surveys, and the sandeel is known to be difficult to interpret\cite{sizedependentfreqrespons2009johnsen}. It has been shown that large schools of sandeel likely have a connection to the seabed, resulting in severe underestimates of such schools by conventional echosounders\cite{johnsen2017collective}. The earlier mentioned Norwegian sandeel surveys use the \textit{200kHz} frequency to delineate schools, while the \textit{18kHz} and \textit{38kHz} are the most important frequencies for classification when measurements were taken at \textit{18kHz}, \textit{38kHz}, \textit{120kHz}, and \textit{200kHz}\cite{sizedependentfreqrespons2009johnsen}. Some earlier work have had trouble identifying sandeel using \gls{sv} at \textit{38kHz} and \textit{120kHz}\cite{hassel2004influence,mackinson2005using,mosteiro2004dual}, while some have had success using combinations of the four frequencies \textit{18kHz, 38kHz, 120kHz, and 200kHz} to specifically separate sandeel from herring, and mackerel\cite{mohammed2006acoustic}. This thesis goal is to find the subset of frequencies that capture most information about the sandeel, and will perform the analysis through the use of \textit{deep learning}, a field within \textit{machine learning}.
-
-%The sandeels lack of swim bladder gives it a low \gls{ts}, and a swimming pattern that is usually not horizontal, which causes problems as the angle of the fish can change the backscattered signal\cite{Forland2014Broadbandwidth}.
-
-%Greenstreet
 
 
 \section{Machine Learning} \label{Machine Learning}
-    Machine learning can be split into four parts; the \textit{algorithm}, \textit{empirical data}, a \textit{task} and a \textit{performance} measure\cite{Goodfellow-et-al-2016_ML}. A machine learning algorithm is designed to increase performance on a task, given data. During this process also called \textit{training}, the algorithm is said to be \textit{learning} by fitting a \textit{model} to the data. The two machine learning approaches used in this thesis are: supervised learning, unsupervised\cite{Goodfellow-et-al-2016_E}. 
-    
+    Machine learning can be split into four parts; the \textit{algorithm}, \textit{empirical data}, a \textit{task} and a \textit{performance} measure\cite{Goodfellow-et-al-2016}. A machine learning algorithm is designed to increase performance on a task, given data. During this process also called \textit{training}, the algorithm is said to be \textit{learning} by fitting a \textit{model} to the data. The two machine learning approaches used in this thesis are: supervised learning, unsupervised\cite{Goodfellow-et-al-2016}. 
+    %Goodfellow-et-al-2016_ML
+    %Goodfellow-et-al-2016_E
     
     \subsection{Algorithm approaches} \label{Algorithm types}
         \subsection{Supervised learning}
-            Supervised learning  algorithms are defined by the training data consisting of an input and a desired output\cite{Goodfellow-et-al-2016_E}. This means that the algorithm will have to learn a function, mapping from input to correct output. In classification problems, the output would be a class label, which could be classifying pictures of cats from other animals. While in regression problems, the output is a value within a numerical range. For example, predicting the height of a person.
+            Supervised learning  algorithms are defined by the training data consisting of an input and a desired output\cite{Goodfellow-et-al-2016}. This means that the algorithm will have to learn a function, mapping from input to correct output. In classification problems, the output would be a class label, which could be classifying pictures of cats from other animals. While in regression problems, the output is a value within a numerical range. For example, predicting the height of a person.
+            %Goodfellow-et-al-2016_E
             
         \subsection{Unsupervised Learning}
-            Unlike supervised leaning, unsupervised learning algorithms only receive the input and learn properties contained in the data\cite{Goodfellow-et-al-2016_E}. A practical example is clustering, where the samples in a dataset are divided into clusters of similar properties. 
-                
+            Unlike supervised leaning, unsupervised learning algorithms only receive the input and learn properties contained in the data\cite{Goodfellow-et-al-2016}. A practical example is clustering, where the samples in a dataset are divided into clusters of similar properties. 
+                %Goodfellow-et-al-2016_E
         %\subsection{Reinforcement Learning}
             %In reinforcement learning \cite{Goodfellow-et-al-2016_E}, the algorithm does not learn from a given dataset, but acts in an environment. In some cases, this is a feedback loop, giving either a positive or negative reward for performing certain actions. Examples can be seen in the AlphaZero software that beat professional chess players\cite{silver2017mastering}.
     
     \subsection{Data and Features}
-    The quality of the input data to a machine learning algorithm will likely affect its performance\cite{najafabadi2015deep}. Hence, time allocated to increase quality of the data can exceed the time spent learning.  Data must be gathered, integrated, cleaned of errors, preprocessed, and features extracted before being used in learning. The process of extracting features is often referred to as \textit{feature engineering}. It constructs a representation of the data with the most important factors to solve the task. This is often domain specialized, and usually requires human involvement. In section \ref{neural networks}, \gls{ann} are introduced, which is one avenue within machine learning to automate the extraction of complicated features representations.
+    The quality of the input data to a machine learning algorithm will likely affect its performance\cite{najafabadi2015deep}. Hence, time allocated to increase quality of the data can exceed the time spent learning.  Data must be gathered, integrated, cleaned of errors, preprocessed, and features extracted before being used in learning. The process of extracting features is often referred to as \textit{feature engineering}. It constructs a representation of the data with the most important factors to solve the task. This is often domain specialized, and usually requires human involvement. In section next section, \gls{ann} are introduced, which is one avenue within machine learning to automate the extraction of complicated features representations.
 
 
 \section{Artificial Neural Networks} \label{neural networks}
@@ -255,12 +158,12 @@ Acoustic target classification is a major challenge in most acoustic surveys, an
                 
                 \caption[The perceptron and multi-layer perceptron]{Illustration of a single neuron and a deep learning network of neurons.}
               	\medskip 
-                \hspace*{15pt}\hbox{\scriptsize Credit: \citeauthor{razavi2021deep_exp_DL}\cite{razavi2021deep_exp_DL}}
+                \hspace*{15pt}\hbox{\scriptsize Credit: \citeauthor{razavi2021deep_exp_per}\cite{razavi2021deep_exp_per}}
                 \label{Perceptron / MLP}
             \end{figure}
         
-        The \textit{architecture} of any \gls{ann} consist of an input layer, a user-defined number of \textit{hidden layers} and finally an output layer\cite{razavi2021deep_exp_per}. More hidden layers form a \textit{deeper} network, hence the name \textbf{deep learning}. An \gls{mlp} is a type of network called a \textit{feed-forward} \gls{ann} because the data flows from the input to the output layer and each layer is a function of the previous layer. During training, the weights between every neuron and the bias are optimized in a process which is further explained in section \ref{training neural networks}. In the MLP depicted in \ref{Perceptron / MLP}, different neurons will activate with varying strengths depending on the input, resulting in different outputs. The architecture of the \gls{mlp} in figure \ref{Perceptron / MLP} can be expressed as\cite{Goodfellow-et-al-2016_architecture}:
-        
+        The \textit{architecture} of any \gls{ann} consist of an input layer, a user-defined number of \textit{hidden layers} and finally an output layer\cite{razavi2021deep_exp_per}. More hidden layers form a \textit{deeper} network, hence the name \textbf{deep learning}. An \gls{mlp} is a type of network called a \textit{feed-forward} \gls{ann} because the data flows from the input to the output layer and each layer is a function of the previous layer. During training, the weights between every neuron and the bias are optimized in a process which is further explained in section \ref{training neural networks}. In the MLP depicted in \ref{Perceptron / MLP}, different neurons will activate with varying strengths depending on the input, resulting in different outputs. The architecture of the \gls{mlp} in figure \ref{Perceptron / MLP} can be expressed as\cite{Goodfellow-et-al-2016}:
+        %Goodfellow-et-al-2016_architecture
         \begin{align}\label{mlp outputlayer eq}
             \textbf{h}^{(1)} &= \sigma^{(1)}(\textbf{W}^{(1)T}\textbf{x} + \textbf{b}^{(1)})\\
             \textbf{h}^{(2)} &= \sigma^{(2)}(\textbf{W}^{(2)T}\textbf{h}^{(1)} + \textbf{b}^{(2)})\\
@@ -283,7 +186,8 @@ Acoustic target classification is a major challenge in most acoustic surveys, an
         
         
     \subsection{Activation Function} \label{activation function}
-        The activation function enables \gls{ann}s to learn non-linear features \cite{razavi2021deep_exp_per}. The reason it is needed is that a network consisting of only linear layers will be the same as a single linear layer \cite{razavi2021deep_exp_per}. Hence, it won't be able to capture non-linearities in the data, and therefore an activation function is required in the hidden layers. Some activation functions can also be applied to the output of a network to solve the task the network is set to perform, and must be suited for the task at hand \cite{Goodfellow-et-al-2016_out_activation}. The activation function commonly used in the hidden layers is ReLU, which stands for \textit{rectified linear unit}\cite{sharma2019new_activation_func}. ReLU takes a real number as input, and outputs this number if it is above zero,  otherwise it will output zero. Letting $\sigma$ denote the activation function, and $x$ the input, the ReLU activation function can be formulated as follows:
+    %Goodfellow-et-al-2016_out_activation
+        The activation function enables \gls{ann}s to learn non-linear features \cite{razavi2021deep_exp_per}. The reason it is needed is that a network consisting of only linear layers will be the same as a single linear layer \cite{razavi2021deep_exp_per}. Hence, it won't be able to capture non-linearities in the data, and therefore an activation function is required in the hidden layers. Some activation functions can also be applied to the output of a network to solve the task the network is set to perform, and must be suited for the task at hand \cite{Goodfellow-et-al-2016}. The activation function commonly used in the hidden layers is ReLU, which stands for \textit{rectified linear unit}\cite{sharma2019new_activation_func}. ReLU takes a real number as input, and outputs this number if it is above zero,  otherwise it will output zero. Letting $\sigma$ denote the activation function, and $x$ the input, the ReLU activation function can be formulated as follows:
             \begin{equation} \label{relu_eq}
                 \sigma(x) = max(0,x)
             \end{equation}
@@ -327,8 +231,8 @@ Acoustic target classification is a major challenge in most acoustic surveys, an
     \subsubsection{Convolutional Layer}
     
     
-     \citeauthor{o2015introduction_convolutions}\cite{o2015introduction_convolutions} describe the convolutional layer as consisting of a number of learnable multidimensional weight matrices which slides over the input. We will refer to such a matrix as a kernel. The height and the width of the kernel are parameters defined by the user, but the depth will always be equal the number of channels in the input. This results in kernels being described only by $height \times width$. The kernel slides over the input, and is applied to different locations of the input, also called the current \textit{receptive field}. When applied, a single scalar value is computed which is the weighted sum of the kernel's weights and the corresponding values in the receptive field. If we have a 2-dimensional image $I(i,j)$ as input, a convolutional operation would be expressed as\cite{Goodfellow-et-al-2016_convolution}:
-     
+     \citeauthor{o2015introduction_convolutions}\cite{o2015introduction_convolutions} describe the convolutional layer as consisting of a number of learnable multidimensional weight matrices which slides over the input. We will refer to such a matrix as a kernel. The height and the width of the kernel are parameters defined by the user, but the depth will always be equal the number of channels in the input. This results in kernels being described only by $height \times width$. The kernel slides over the input, and is applied to different locations of the input, also called the current \textit{receptive field}. When applied, a single scalar value is computed which is the weighted sum of the kernel's weights and the corresponding values in the receptive field. If we have a 2-dimensional image $I(i,j)$ as input, a convolutional operation would be expressed as\cite{Goodfellow-et-al-2016}:
+     %Goodfellow-et-al-2016_convolution
         \begin{equation}
             (I*K)(i,j) = \sum_{height}\sum_{width}I(i+height,j+width)K(height,width)
         \end{equation}
@@ -431,8 +335,8 @@ Acoustic target classification is a major challenge in most acoustic surveys, an
 \subsection{Forward-Propagation and The Loss Function}
     %    A \gls{ann} can be  described as an unknown function \textit{\^{f}} that maps an input \textbf{x} to an output \textbf{y}\cite{Goodfellow-et-al-2016_NN}. 
 
-    The objective of an \gls{ann} is to approximate some optimal function \textit{f}, and in this thesis, we focus on classifiers, $\textbf{y} = f(\textbf{x})$ which maps an input \textbf{x} to an output category \textbf{y}. The \gls{ann} approximates this function by defining a mapping, $\textbf{\^{y}} = \hat{f}(\textbf{x},\theta)$ and learns the values of the parameters \textit{$\theta$} (weights and biases) through training using examples. In supervised tasks, the labels instruct the output layer exactly how to perform given the input data. However, the data does not inform the individual \textit{hidden layers} how to behave to produce this desired output. When the data flow through the network using the parameters $\theta$, it produces outputs \textbf{\^{y}}, this is called the \textit{forward-propagation step}. How the parameters are initialized can heavily affect the training process, and different strategies are further described in \citeauthor{Goodfellow-et-al-2016_param_init}\cite{Goodfellow-et-al-2016_param_init}. By using a \textit{loss function} to compare the true \textbf{y} values to the estimated values \textbf{\^{y}}, we get a measurement of the network's \textit{error}, also called \textit{loss}. The network uses this loss to then alter $\theta$ to best approximate \textit{f}, which will be explained later in section \ref{backpropagation}. In classification tasks, the network is trained to output the probability of each class given an input\cite{ho2019real_weighted_cross_entropy}. To train such a model, we can use a loss function called \textit{weighted cross entropy}. This function outputs a loss based on the probabilities, weights classification of certain classes differently, and is often used when dealing with data containing class imbalance as you can apply more weight to the minority class. Expressed as:
-    
+    The objective of an \gls{ann} is to approximate some optimal function \textit{f}, and in this thesis, we focus on classifiers, $\textbf{y} = f(\textbf{x})$ which maps an input \textbf{x} to an output category \textbf{y}. The \gls{ann} approximates this function by defining a mapping, $\textbf{\^{y}} = \hat{f}(\textbf{x},\theta)$ and learns the values of the parameters \textit{$\theta$} (weights and biases) through training using examples. In supervised tasks, the labels instruct the output layer exactly how to perform given the input data. However, the data does not inform the individual \textit{hidden layers} how to behave to produce this desired output. When the data flow through the network using the parameters $\theta$, it produces outputs \textbf{\^{y}}, this is called the \textit{forward-propagation step}. How the parameters are initialized can heavily affect the training process, and different strategies are further described in \citet{Goodfellow-et-al-2016}. By using a \textit{loss function} to compare the true \textbf{y} values to the estimated values \textbf{\^{y}}, we get a measurement of the network's \textit{error}, also called \textit{loss}. The network uses this loss to then alter $\theta$ to best approximate \textit{f}, which will be explained later in section \ref{backpropagation}. In classification tasks, the network is trained to output the probability of each class given an input\cite{ho2019real_weighted_cross_entropy}. To train such a model, we can use a loss function called \textit{weighted cross entropy}. This function outputs a loss based on the probabilities, weights classification of certain classes differently, and is often used when dealing with data containing class imbalance as you can apply more weight to the minority class. Expressed as:
+    %Goodfellow-et-al-2016_param_init
         \begin{equation} \label{cross_entropy}
             loss(\theta) = - \sum^{n}_{i=1} w_{y_{i}}y_{i}\log(\hat{y_{i}})
         \end{equation}
@@ -444,13 +348,14 @@ Acoustic target classification is a major challenge in most acoustic surveys, an
 \subsection{Mini-batch Stochastic Gradient Decent} \label{batch learning}
         \begin{quote}
         "\textit{A recurring problem in machine learning is that large training sets are necessary for good generalization, but large training sets are also more computationally
-        expensive."} - (\citeauthor{Goodfellow-et-al-2016_SGD}\citeyear{Goodfellow-et-al-2016_SGD}, page 152)
+        expensive."} - (\citeauthor{Goodfellow-et-al-2016}\citeyear{Goodfellow-et-al-2016}, page 152)
     \end{quote}
+    %Goodfellow-et-al-2016_SGD
     
     Calculating the total loss of the whole dataset is often unfeasible, and depending on the hardware, this could lead to a crash or slow learning due to
     heavy memory demands. A solution is to sample a set of examples, called a \textit{mini-batch}, from the entire dataset, with the intent to approximately estimate
-    the true loss using this smaller fraction of the dataset. Then we update the parameters of our network based on this and repeat on a new batch. This is called mini-batch \textit{\gls{sgd}}, which is a common \textit{optimization} algorithm\cite{Goodfellow-et-al-2016_SGD}. The size of this mini-batch can vary from one example (\textit{also called true \gls{sgd}}), to hundreds, and the size chosen can heavily affect training\cite{wilson2001need_learning_rate}
-    
+    the true loss using this smaller fraction of the dataset. Then we update the parameters of our network based on this and repeat on a new batch. This is called mini-batch \textit{\gls{sgd}}, which is a common \textit{optimization} algorithm\cite{Goodfellow-et-al-2016}. The size of this mini-batch can vary from one example (\textit{also called true \gls{sgd}}), to hundreds, and the size chosen can heavily affect training. When we have run this process on all the data, we say that an \textit{epoch} has passed.\cite{wilson2001need_learning_rate}
+    %Goodfellow-et-al-2016_SGD
     
     
     
@@ -464,8 +369,8 @@ Acoustic target classification is a major challenge in most acoustic surveys, an
     
     
 \subsection{Backpropagation and Gradient-based Learning}\label{backpropagation}
-    To update the parameters of the network, we use the loss from a mini-batch, and iteratively step back through the layers in a process called \textit{back-propagation}\cite{rumelhart1986learning_backprop}. In each step, we calculate a value called the \textit{gradient} for each parameter. The gradient is the partial derivative of the \textit{loss} function with respect to each weight and bias in the current layer, and is computed using the chain rule. This is in order to determine how changes to each parameter will affect the \textit{loss}. Using the gradient, \gls{sgd} performs \textit{gradient descent}\cite{Goodfellow-et-al-2016_gradient_descent} by updating all parameters in the opposite direction of the gradient to reduce the loss. In what magnitude a parameter is adjusted by the optimizing algorithm is determined by the \textit{learning rate}, usually a value between 0 and 1. The parameter update is expressed as\cite{pmlr-v37-ioffe15_batch_norm}:
-    
+    To update the parameters of the network, we use the loss from a mini-batch, and iteratively step back through the layers in a process called \textit{back-propagation}\cite{rumelhart1986learning_backprop}. In each step, we calculate a value called the \textit{gradient} for each parameter. The gradient is the partial derivative of the \textit{loss} function with respect to each weight and bias in the current layer, and is computed using the chain rule. This is in order to determine how changes to each parameter will affect the \textit{loss}. Using the gradient, \gls{sgd} performs \textit{gradient descent}\cite{Goodfellow-et-al-2016} by updating all parameters in the opposite direction of the gradient to reduce the loss. In what magnitude a parameter is adjusted by the optimizing algorithm is determined by the \textit{learning rate}, usually a value between 0 and 1. The parameter update is expressed as\cite{pmlr-v37-ioffe15_batch_norm}:
+    %Goodfellow-et-al-2016_gradient_descent
     \begin{equation}
     \theta^{(j)} \leftarrow \theta^{(j)} - \eta \dfrac{1}{m}\sum_{i=1}^{m} \dfrac{\partial loss (\theta^{(j)})}{\partial \theta^{(j)}}
     \end{equation}
@@ -496,8 +401,8 @@ Acoustic target classification is a major challenge in most acoustic surveys, an
     \endlastfoot
     %
     \multicolumn{7}{l}{Loop:}                                                                       \\
-    1.   & \multicolumn{6}{l}{Sample batch of data.}                                                \\
-    2.   & \multicolumn{6}{l}{Forward propagate the batch through the network and compute the loss.} \\
+    1.   & \multicolumn{6}{l}{Sample a mini-batch of data.}                                                \\
+    2.   & \multicolumn{6}{l}{Forward propagate the mini-batch through the network and compute the loss.} \\
     3.   & \multicolumn{6}{l}{Back propagate to calculate the gradients.}                            \\
     4.   & \multicolumn{6}{l}{Update the parameters based on the gradients.}                         \\ \hline
     \end{longtable}
@@ -507,7 +412,7 @@ Acoustic target classification is a major challenge in most acoustic surveys, an
 %\subsection{Vanishing and exploding gradient} \label{}
     %By repeatedly applying forward-propagation, back-propagation and some optimizing algorithm on new examples as stated by \citeauthor{Goodfellow-et-al-2016_NN}, you train a network to approximate the optimal function \textit{f}.
 \section{Model Evaluation}
-    To evaluate a machine learning algorithm, we need a performance measure. First, the \textit{performance metric} itself will be described, followed by a technique applied to make unbiased measures of the model by leaving our parts of the data. Finally, two central challenges that appear in machine learning.
+    To evaluate a machine learning algorithm, we need a performance measure. First, the \textit{performance metric} itself will be described, followed by a technique applied to make unbiased measures of the model by leaving out parts of the data. Finally, two central challenges that appear in machine learning.
     
     \subsection{Performance Metrics} \label{f1_score}
         This section describes the performance metrics used in this thesis. Consider a binary classification system that classifies samples into either the \textit{positive} or \textit{negative} class. Predictions by the classifier can thus be sorted into the following four categories\cite{powers2020evaluation_f1_recall_precision}:
@@ -544,18 +449,20 @@ Acoustic target classification is a major challenge in most acoustic surveys, an
         \end{equation}
         
     \subsection{Train-Validation-Test Split}
-        The goal when a machine learning model is learning, is to achieve the lowest \textit{generalization error}\cite{Goodfellow-et-al-2016_generalization}. This means to not only perform well on data seen during training, but also on new unseen data. To measure this error, it is normal to split our data into three parts\cite{Goodfellow-et-al-2016_train_val_test_split}: the \textit{training}, \textit{validation} and \textit{test} dataset, and we measure some error on each. As the name suggests, the training data is used during the training process of the model. The validation dataset, is extracted from the training dataset and gives an unbiased estimate of the models' performance and can be used to guide the training process. The last mentioned could be to select the best model from a selection of many. Finally, the test dataset is used to get an unbiased estimate of the final model's \textit{generalization error}.
-        
+        The goal when a machine learning model is learning, is to achieve the lowest \textit{generalization error}. This means to not only perform well on data seen during training, but also on new unseen data. To measure this error, it is normal to split our data into three parts: the \textit{training}, \textit{validation} and \textit{test} dataset, and we measure some error or metric on each. As the name suggests, the training data is used during the training process of the model. The validation dataset, is extracted from the training dataset and gives an unbiased estimate of the models' performance and can be used to guide the training process. The last mentioned could be to select the best model from a selection of many. Finally, the test dataset is used to get an unbiased estimate of the final model's \textit{generalization error}\cite{Goodfellow-et-al-2016}.
+        %Goodfellow-et-al-2016_generalization
+        %Goodfellow-et-al-2016_train_val_test_split
     
     \subsection{Overfitting Vs. Underfitting}
-        The performance of a model is dependent on its \textit{training error}, and the difference between this \textit{training error} and the \textit{test error}. \textit{Underfitting} happens when a model fails to achieve a low training error, while \textit{overfitting} happens when the difference between the test error is significantly lower than the training error. To manipulate this behavior, we adjust the models \textit{capacity}. Capacity represents the variety of functions the model is able to learn, and by adjusting it one can increase and decrease the likelihood of underfitting and overfitting. The capacity can be controlled by, for example, changing the number of layers in a neural network, and further details can be seen in \citeauthor{Goodfellow-et-al-2016}\cite{Goodfellow-et-al-2016}. Low \textit{capacity} means that the model may fail to capture patterns contained in the data. High \textit{capacity} translates to adjusting to the training data to such an extent that the model performs may be worse when given unseen test data. The optimal solution, depicted in the center plot of figure \ref{over/under fit fig}, is to have a model with a balanced capacity that is as close to the true function as possible\cite{Goodfellow-et-al-2016}. 
+        The performance of a model is dependent on its \textit{training error}, and the difference between this \textit{training error} and the \textit{test error}. \textit{Underfitting} happens when a model fails to achieve a low training error, while \textit{overfitting} happens when the difference between the test error is significantly lower than the training error. To manipulate this behavior, we adjust the models \textit{capacity}. Capacity represents the variety of functions the model is able to learn, and by adjusting it one can increase and decrease the likelihood of underfitting and overfitting. The capacity can be controlled by, for example, changing the number of layers in a neural network, and further details can be seen in \citeauthor{Goodfellow-et-al-2016}\cite{Goodfellow-et-al-2016}. Low \textit{capacity} means that the model may fail to capture patterns contained in the data. High \textit{capacity} translates to adjusting to the training data to such an extent that the model performance may be worse when given unseen test data. The optimal solution, depicted in the center plot of figure \ref{over/under fit fig}, is to have a model with a balanced capacity that is as close to the true function as possible\cite{Goodfellow-et-al-2016}. 
         
        % \citeauthor{Goodfellow-et-al-2016}\cite{Goodfellow-et-al-2016}
         
         \begin{figure}[H]
             \centering
             %\includegraphics[scale=0.5]{figures/perceptron.png}
-            \includesvg[inkscapelatex=false,width=1\textwidth,keepaspectratio]{figures/overunderfit.svg}
+            \hspace*{-3.2cm}
+            \includesvg[inkscapelatex=false,width=1.3\textwidth,keepaspectratio]{figures/overunderfit.svg}
             \caption[Over/under-fit]{Training data is generated with random noise around a sinus wave (True function). Model \textit{capacity} increases from left to right. The center plot illustrates a model that have learned an almost perfect fit to the actual true function.}
           	\medskip 
             \label{over/under fit fig}
@@ -617,9 +524,9 @@ Acoustic target classification is a major challenge in most acoustic surveys, an
     
     U-Net utilized what \citeauthor{unet_ronneberger2015}\cite{unet_ronneberger2015} called a \textit{contracting path} to identify what was in a picture, while an \textit{expanding path} localized where it was. These two branches were symmetrical, and together they formed a U-shape, giving the network its name. The contracting path can be looked at as five different stages of processing, from top to bottom, in figure \ref{unet_fig}. For each stage, this consisted of two 3×3 valid convolutions with their individual ReLU activation functions. Initially, the feature channels would be increased to 64, then the channel would be further doubled for each contracting stage. The convolutions were followed by a 2×2 max pooling operation with stride 2 to further decrease the resolution of the output from the convolutional operations, and then output a feature map to the next stage. After the bottom stage, the max pool operation is replaced with transpose convolutions to now increase the resolution. At each subsequent stage traveling back up the expanding path, the number of feature channels is halved by the convolutional steps down to 64. 
     
-    The output of the previous stage would be concatenated with a crop from the output feature map of a stage from the contracting path with the same channel size, the cropping is due to different resolutions. This step allows the following convolutional operation to access both the high-resolution feature map from the contracting path, and the upsampled feature map, which in combination helps with localization of features. 
+    In the expanding path, the output of the previous stage would be concatenated with a crop from the output feature map of a stage from the contracting path with the same channel size, the cropping is due to different resolutions. This step allows the following expanding convolutional operation to access both the high-resolution feature map from the contracting path, and the upsampled feature map, which in combination helps with localization of features\cite{unet_ronneberger2015}. 
 
-    At the final layer in the expanding path, a 1×1 convolution maps the 64 feature channels to the 2 classes. Finally, the softmax was then calculated between these classes, giving each pixel a probability distribution over the classes, with one channel for each class. Hence, giving us a segmentation map.
+    At the final layer in the expanding path, a 1×1 convolution maps the 64 feature channels to the 2 classes. Finally, the softmax was then calculated between these classes, giving each pixel a probability distribution over the classes, with one channel for each class. Hence, giving us a segmentation map\cite{unet_ronneberger2015}.
     
     %Hence, these layers increase the resolution of the output. In order to localize, high resolution features from the contracting path are combined with the upsampled output. A successive convolution layer can then learn to assemble a more precise output based on this information.
     
