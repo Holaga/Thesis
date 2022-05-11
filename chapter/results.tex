@@ -73,7 +73,9 @@ F1-score (max):   & 0.34 & 0.46 & 0.65 & 0.67 & 0.67 & 0.66 &  \\ \hline
         \begin{figure}[H]
             \centering
             %\includegraphics[scale=0.7]{figures/increasing_freq_f1.png}
-            \includesvg[inkscapelatex=false,width=0.9\textwidth,keepaspectratio]{figures/increasing_freq_f1.svg}
+            %\includesvg[inkscapelatex=false,width=0.9\textwidth,keepaspectratio]{figures/increasing_freq_f1.svg}
+            %\hspace*{-2.0cm}
+            \input{figures/increasing_freq_f1.pgf}
             \caption[Best frequency combination - F1-score]{The highest performing frequency subset based on mean F1-score is visualized. The most drastic increase in performance happens with the three frequencies \textit{18kHz}, \textit{38kHz} and \textit{200kHz}.}
           	\medskip 
             \label{increasing_freq_f1_score_fig}
@@ -84,7 +86,9 @@ F1-score (max):   & 0.34 & 0.46 & 0.65 & 0.67 & 0.67 & 0.66 &  \\ \hline
         \begin{figure}[H]
             \centering
             %\includegraphics[scale=0.7]{figures/increasing_freq_precision.png}
-            \includesvg[inkscapelatex=false,width=0.9\textwidth,keepaspectratio]{figures/increasing_freq_precision.svg}
+            %\includesvg[inkscapelatex=false,width=0.9\textwidth,keepaspectratio]{figures/increasing_freq_precision.svg}
+            %\hspace*{-2.0cm}
+            \input{figures/increasing_freq_precision.pgf}
             \caption[Best frequency combination - Precision]{The best performing frequency subset based on mean precision is visualized. The trend is similar to the one based on F1-score.}
           	\medskip 
             \label{increasing_freq_precision_score_fig}
@@ -95,18 +99,23 @@ F1-score (max):   & 0.34 & 0.46 & 0.65 & 0.67 & 0.67 & 0.66 &  \\ \hline
         \begin{figure}[H]
             \centering
             %\includegraphics[scale=0.7]{figures/increasing_freq_recall.png}
-            \includesvg[inkscapelatex=false,width=0.9\textwidth,keepaspectratio]{figures/increasing_freq_recall.svg}
+            %\includesvg[inkscapelatex=false,width=0.9\textwidth,keepaspectratio]{figures/increasing_freq_recall.svg}
+            %\hspace*{-2.0cm}
+            \input{figures/increasing_freq_recall.pgf}
             \caption[Best frequency combination - Recall]{The best performing frequency subset based on mean recall is visualized. The steep increase in performance happens already at two frequencies. Indicating that the best combination at this stage already finds most of the \textit{sandeel} class.}
           	\medskip 
             \label{increasing_freq_recall_score_fig}
         \end{figure}
 
     \subsection{Individual Subsets}
-        Figure \ref{errorbar_fig} illustrates a complete plot of all error bars, with sections for each test. The plot has no complete overview over which frequencies belong to which result, only a red circle encompassing the error bar related to the subset \textit{18},\textit{38} and \textit{200kHz}. This combination outclasses all other subset in the same and previous tests, and competes with all the results later achieved. In all other sections, no subset stands out in regard to F1-score.
+        Figure \ref{errorbar_fig} illustrates a complete plot of all error bars, with sections for each subset size. The plot has no complete overview over which frequencies belong to which result, only a red circle encompassing the error bar related to the subset \textit{18},\textit{38} and \textit{200kHz}. This combination outclasses all other subset in the same and previous tests, and competes with all the results later achieved. In all other sections, no subset stands out in regard to F1-score.
+        \clearpage
         \begin{figure}[H]
             \centering
             %\includegraphics[scale=0.7]{figures/error_bar.png}
-            \includesvg[inkscapelatex=false,width=1\textwidth,keepaspectratio]{figures/all_combinations.svg}
+            %\includesvg[inkscapelatex=false,width=1\textwidth,keepaspectratio]{figures/all_combinations.svg}
+            %\hspace*{-2.0cm}
+            \input{figures/all_combinations.pgf}            
             \caption[Error bars per combination]{Each colored error bar represents a frequency-subset. The error bar's highest y-value is the max value achieved for this subset from all 10 tests, and the bottom the lowest. Blue vertical lines group the error bars by the subsets size, and the black dots are the mean performance of the subset.}
           	\medskip 
             \label{errorbar_fig}
@@ -117,7 +126,8 @@ F1-score (max):   & 0.34 & 0.46 & 0.65 & 0.67 & 0.67 & 0.66 &  \\ \hline
         \begin{figure}[H]
             \centering
             %\includegraphics[scale=0.7]{figures/error_bar.png}
-            \includesvg[inkscapelatex=false,width=0.7\textwidth,keepaspectratio]{figures/with_without.svg}
+            %\includesvg[inkscapelatex=false,width=0.7\textwidth,keepaspectratio]{figures/with_without.svg}
+            \input{figures/with_without.pgf}
             \caption[With and without unique subset]{In this figure, the mean F1-score of all subsets containing 18kHz, 38kHz, and 200kHz is plotted as a blue line (Eight in total). The orange line is the eight highest performing subsets from a set where the subset 18kHz, 38kHz, and 200kHz is not included in any subset. The figure show that all the highest performing subsets include the frequencies \textit{18kHz}, \textit{38kHz}, and \textit{200kHz}.}
           	\medskip 
             \label{with_without_figure}
@@ -130,14 +140,11 @@ F1-score (max):   & 0.34 & 0.46 & 0.65 & 0.67 & 0.67 & 0.66 &  \\ \hline
         \begin{figure}[H]
             \centering
             %\includegraphics[scale=0.7]{figures/perfomance_trend.png}
-            \includesvg[inkscapelatex=false,width=0.9\textwidth,keepaspectratio]{figures/perfomance_trend.svg}
+            %\includesvg[inkscapelatex=false,width=0.9\textwidth,keepaspectratio]{figures/perfomance_trend.svg}
+            \input{figures/perfomance_trend.pgf}
             \caption[Performance trend per frequency]{This figure illustrates the performance trend of each frequency. From right to left, the plot shows that \textit{18kHz}, \textit{38kHz} and \textit{200kHz} all are part of many combinations with high F1-scores, as seen earlier in figure \ref{increasing_freq_f1_score_fig}. The remaining frequencies quickly fall in performance, most likely due to not being paired with any of the three previously mentioned. Looking further to the left, \textit{18kHz} seems to have participated in many combinations on average, resulting in high F1-scores, followed closely by \textit{200kHz}.}
           	\medskip 
             \label{performance_trend_fig}
         \end{figure}
         
-        
-    
 
-    
-    

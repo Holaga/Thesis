@@ -1,21 +1,21 @@
 \chapter{Background}
-    In this chapter, we introduce the concepts used during the experiments, both withing acoustics and machine learning.
+    This chapter introduces the concepts used during the experiments, both within acoustics and machine learning.
     
     %In this chapter, we introduce the context of the work to give the reader an understanding of its importance, and then the concepts used during the experiments both withing acoustics and machine learning.
     
 \section{Acoustics}\label{acoustics}
     %When fisheries conduct acoustic surveys of fish, they use \textit{echo sounders} to remotely detect and observe targets in the water. Echo sounders are a special variety of \textit{sonar}, where the acoustic beam is directed vertically downwards from the measuring platform. 
     
-    The echo sounder consists of a \textit{transmitter} that produces a burst of electrical energy at some set frequency. Then a \textit{transducer} receives the output from the transmitter and converts it to an acoustic signal that is propagated through the water, this signal is also called a \textit{ping}. This forms a directional beam, akin to the light from a handheld flashlight. Targets in the water \textit{backscatters}/\textit{reflects} parts of the energy back towards the transducer. The backscattered sound or \textit{echo} is detected by the transducer, and the sound is converted back to electric energy as the received signal and is further amplified. The time when the signal is received determines the range to the target\cite{simmonds2008fisheries}.
+    The echo sounder consists of a \textit{transmitter} that produces a burst of electrical energy at some set frequency. Then a \textit{transducer} receives the output from the transmitter and converts it to an acoustic signal that is propagated through the water, which is also called a \textit{ping}. This forms a directional beam akin to the light from a handheld flashlight. Targets in the water \textit{backscatter}/\textit{reflect} parts of the energy back towards the transducer. The transducer detects the backscattered sound or \textit{echo}, and the sound is converted back to electric energy as the received signal and is further amplified. The time when the signal is received determines the range to the target\cite{simmonds2008fisheries}.
     
-    Pings are usually represented as columns in a 2-dimensional image, also called an \textit{echogram}, with range along the y-axis and time of ping along the x-axis. The columns represent how the acoustic reflections varies for each ping. Any targets detected in the ping will be visualized as a mark in the echogram, usually with different colors depending on the echo strength. In multi-frequency sonars, individual echograms are produced in parallel for each frequency in use, this is visualized in figure \ref{echogram_example_fig}. Because the echograms are constructed as $\text{time} \times \text{range}$, the vertical magnitude of a mark indicates the height of the target, while the horizontal position illustrate changes in \textit{time} if the echosounder is stationary or in \textit{space} if moving. When moving, the echogram thus represents a vertical cross-section of the water column as the transducer is in motion through the water at constant speed in one direction\cite{simmonds2008fisheries}.
+    Pings are usually represented as columns in a 2-dimensional image, also called an \textit{echogram}, with range along the y-axis and time of ping along the x-axis. The columns represent how the acoustic reflections vary for each ping. Any targets detected in the ping will be visualized as a mark in the echogram, usually with different colors depending on the echo strength. In multi-frequency sonars, individual echograms are produced in parallel for each frequency in use, and this is visualized in figure \ref{echogram_example_fig}. Because the echograms are constructed as $\text{time} \times \text{range}$, the vertical magnitude of a mark indicates the height of the target. At the same time,  the horizontal position illustrates changes in \textit{time} if the echosounder is stationary or in \textit{space} if moving. When moving, the echogram thus represents a vertical cross-section of the water column as the transducer is in motion through the water at constant speed in one direction\cite{simmonds2008fisheries}.
     
     %If the echosounder was stationary, the echogram would be a time-series representation of the same volume. Combined with trawl samples and knowledge of species composition, the mark can be assigned to a specific or group of species.
     
     \begin{figure}[H]
         \centering
             \includesvg[inkscapelatex=false,width=1\textwidth,keepaspectratio]{figures/echogram-echosounder.svg}
-        \caption[Echosounder]{Concept of an echosounder: Pings generates echoes from a school of fish and the seabed. The echoes are displayed in an echogram.}
+        \caption[Echosounder]{Concept of an echosounder: Pings generate echoes from a school of fish and the seabed, and the echoes are displayed in an echogram.}
       	\medskip 
         \label{echogram}
     \end{figure}
@@ -31,7 +31,7 @@
 %\subsection{Acoustic Propagation and Noise}
     
 \subsection{Acoustics and Fish}
-    To measure the force of backscattered sound received from a target, the backscattered cross-section or the \gls{ts} are used. They are defined as:
+    To measure the force of backscattered sound received from a target, the backscattered cross-section or the \gls{ts} is used. They are defined as:
     
     \begin{equation}
         \sigma_{bs} = r^{2}\frac{I_{b}}{I_{i}},
@@ -41,16 +41,16 @@
     \begin{equation}
         \textrm{TS} = 10 \log_{10}(\sigma_{bs}),
     \end{equation}
-    where $I_{b}$ is sound intensity backscattered from the target, $I_{i}$ is the intensity of the ping at some arbitrary distance (usually 1m) and \textit{r} is the distance away from the transducer($\sigma_{bs}$ in units $m^{2}$). $\sigma_{bs}$ can vary greatly depending on the frequency used, or the composition, angle and shape of the target and several other factors as described in \citet{simmonds2008fisheries}. 
+    where $I_{b}$ is sound intensity backscattered from the target, $I_{i}$ is the intensity of the ping at some arbitrary distance (usually 1m), and \textit{r} is the distance away from the transducer($\sigma_{bs}$ in units $m^{2}$). $\sigma_{bs}$ can vary greatly depending on the frequency used, the composition, angle and shape of the target, and several other factors as described in \citet{simmonds2008fisheries}. 
 
 \subsection{The Volume Backscattering Coefficient}
-    Individual targets in some sampled volume may be small and plentiful, resulting in their echoes combining and forming a continuous backscattered signal with varying amplitude. Single targets are no longer possible to distinguish, but the signal itself is a measure of the biomass in the water watercolumn. This is measured using the \gls{sv} defined as:
+    Individual targets in some sampled volume may be small and plentiful, resulting in their echoes combining and forming a continuous backscattered signal with varying amplitude. Single targets are no longer possible to distinguish, but the signal itself is a measure of the biomass in the water column. This is measured using the \gls{sv}, defined as:
     
     \begin{equation}
         s_{v} = \sum \sigma_{bs} / V_{0},
     \end{equation}
     
-    where a sum over all discrete targets returning echoes in the sampled volume ($V_{0}$) is taken. There is a linear relationship between the abundance of fish, and \gls{sv} as long as the species or group of species is known. For more details, see \citet{simmonds2008fisheries}.
+    where a sum over all discrete targets returning echoes in the sampled volume ($V_{0}$) is taken. There is a linear relationship between the abundance of fish and \gls{sv} as long as the species or group of species is known. For more details, see \citet{simmonds2008fisheries}.
 
 %    Hei,
 %Det finnes en del på dette (se under). Vi bruker 200 kHz når vi finner stimer, men vi %ser at 18KHz og 38 KhZ er viktige for klassifiseringen. 
@@ -113,38 +113,38 @@
 
 
 \section{Machine Learning} \label{Machine Learning}
-    Machine learning can be split into four parts; the \textit{algorithm}, \textit{empirical data}, a \textit{task} and a \textit{performance} measure\cite{Goodfellow-et-al-2016}. A machine learning algorithm is designed to increase performance on a task, given data. During this process also called \textit{training}, the algorithm is said to be \textit{learning} by fitting a \textit{model} to the data. The two machine learning approaches used in this thesis are: supervised learning, unsupervised\cite{Goodfellow-et-al-2016}. 
+    Machine learning can be split into four parts; the \textit{algorithm}, \textit{empirical data}, a \textit{task}, and a \textit{performance} measure\cite{Goodfellow-et-al-2016}. A machine learning algorithm is designed to increase performance on a task, given data. During this process, also called \textit{training}, the algorithm is said to be \textit{learning} by fitting a \textit{model} to the data. The two machine learning approaches used in this thesis are supervised learning and unsupervised\cite{Goodfellow-et-al-2016}. 
     %Goodfellow-et-al-2016_ML
     %Goodfellow-et-al-2016_E
     
     \subsection{Algorithm approaches} \label{Algorithm types}
         \subsection{Supervised learning}
-            Supervised learning  algorithms are defined by the training data consisting of an input and a desired output\cite{Goodfellow-et-al-2016}. This means that the algorithm will have to learn a function, mapping from input to correct output. In classification problems, the output would be a class label, which could be classifying pictures of cats from other animals. While in regression problems, the output is a value within a numerical range. For example, predicting the height of a person.
+            Supervised learning  algorithms are defined by the training data consisting of an input and the desired output\cite{Goodfellow-et-al-2016}. The algorithm will have to learn a function, mapping from input to correct output. In classification problems, the output would be a class label, which could be classifying pictures of cats from other animals. While in regression problems, the output is a value within a numerical range. For example, predicting the height of a person.
             %Goodfellow-et-al-2016_E
             
         \subsection{Unsupervised Learning}
-            Unlike supervised leaning, unsupervised learning algorithms only receive the input and learn properties contained in the data\cite{Goodfellow-et-al-2016}. A practical example is clustering, where the samples in a dataset are divided into clusters of similar properties. 
+            Unlike supervised learning, unsupervised learning algorithms only receive the input and learn properties contained in the data\cite{Goodfellow-et-al-2016}. A practical example is clustering, where the samples in a dataset are divided into clusters of similar properties. 
                 %Goodfellow-et-al-2016_E
         %\subsection{Reinforcement Learning}
             %In reinforcement learning \cite{Goodfellow-et-al-2016_E}, the algorithm does not learn from a given dataset, but acts in an environment. In some cases, this is a feedback loop, giving either a positive or negative reward for performing certain actions. Examples can be seen in the AlphaZero software that beat professional chess players\cite{silver2017mastering}.
     
     \subsection{Data and Features}
-    The quality of the input data to a machine learning algorithm will likely affect its performance\cite{najafabadi2015deep}. Hence, time allocated to increase quality of the data can exceed the time spent learning.  Data must be gathered, integrated, cleaned of errors, preprocessed, and features extracted before being used in learning. The process of extracting features is often referred to as \textit{feature engineering}. It constructs a representation of the data with the most important factors to solve the task. This is often domain specialized, and usually requires human involvement. In section next section, \gls{ann} are introduced, which is one avenue within machine learning to automate the extraction of complicated features representations.
+    The quality of the input data to a machine learning algorithm will likely affect its performance\cite{najafabadi2015deep}. Hence, time allocated to increase the data quality can exceed the time spent learning.  Data must be gathered, integrated, cleaned of errors, preprocessed, and features extracted before being used in learning. The process of extracting features is often referred to as \textit{feature engineering}. It constructs a representation of the data with the most important factors to solve the task. This is often domain specialized and usually requires human involvement. In section next section, \gls{ann} are introduced, which is one avenue within machine learning to automate the extraction of complicated feature representations.
 
 
 \section{Artificial Neural Networks} \label{neural networks}
-    In this section, we introduce the basic components of an \gls{ann} and how these are combined to create a \textit{deep learning} network/ model. 
+    This section introduces the basic components of an \gls{ann} and how these are combined to create a \textit{deep learning} network/ model. 
 
     \subsection{Perceptron} \label{perceptron}
-        The \gls{ann}s fundamental building block is called an artificial \textit{neuron} or perceptron. It consists of a linear regression with the tunable parameters $w$ and $b$ inside a non-linear activation function, which will be explained later in \ref{activation function}. The perceptron is formulated in the following way\cite{razavi2021deep_exp_per}:
+        The \gls{ann}s fundamental building block is called an artificial \textit{neuron} or perceptron. It consists of a linear regression with the tunable parameters $w$ and $b$ inside a non-linear activation function, explained later in \ref{activation function}. The perceptron is formulated in the following way\cite{razavi2021deep_exp_per}:
             \begin{equation} \label{eq_perceptron}
                 y = \sigma(\sum_{i=1}^{D}w_ix_i + b)
             \end{equation}
             
-        where D is the number dimension of the input space, $x$ is the input vector and $w$ is a set of weights that is of the same size as $x$, $b$ is the bias and {\textsigma} is the activation function. The single output value \textit{y} is a weighted sum of the input and weights plus the bias, also called the neurons' \textit{activation}. The perceptron is illustrated in figure \ref{Perceptron / MLP}.
+        where D is the number dimension of the input space, $x$ is the input vector, $w$ is a set of weights of the same size as $x$, $b$ is the bias, and {\textsigma} is the activation function. The single output value \textit{y} is a weighted sum of the input and weights plus the bias, also called the neurons' \textit{activation}. The perceptron is illustrated in figure \ref{Perceptron / MLP}.
     
     \subsection{Multi-Layered Perceptron} \label{MLP}
-        The neurons presented in section \ref{perceptron} are organized together in layers to form an \gls{ann}, which in turn forms what is called a \gls{mlp} \cite{razavi2021deep_exp_per}. If all neurons in each layer are connected to every neuron in the next layer, then they form a type of \gls{ann} called \textit{fully connected} networks. A \gls{mlp} is depicted in figure \ref{Perceptron / MLP}.
+        The neurons presented in section \ref{perceptron} are organized together in layers to form an \gls{ann}, which in turn forms what is called a \gls{mlp} \cite{razavi2021deep_exp_per}. If all neurons in each layer are connected to every neuron in the next layer, they form a type of \gls{ann} called \textit{fully connected} networks. An \gls{mlp} is depicted in figure \ref{Perceptron / MLP}.
         
             \begin{figure}[H]
                 \centering
@@ -152,7 +152,7 @@
                 \subfloat[Perceptron/neuron.]{
         	\includesvg[inkscapelatex=false,width=0.4\textwidth,keepaspectratio]{figures/neuron.svg} \label{perceptron fig}}
         	
-        	       \subfloat[A \gls{mlp} with four inputs in the input-layer(arrows to the left), two hidden layers(\textbf{h}), and three outputs in the output-layer($\hat{\textbf{y}}$).]{
+        	       \subfloat[An \gls{mlp} with four inputs in the input layer(arrows to the left), two hidden layers(\textbf{h}), and three outputs in the output layer($\hat{\textbf{y}}$).]{
         	\includesvg[inkscapelatex=false,width=0.5\textwidth,keepaspectratio]{figures/mlp.svg}\label{mlp fig}}
                 %\includegraphics[scale=0.5]{figures/perceptron.png}
                 
@@ -162,7 +162,7 @@
                 \label{Perceptron / MLP}
             \end{figure}
         
-        The \textit{architecture} of any \gls{ann} consist of an input layer, a user-defined number of \textit{hidden layers} and finally an output layer\cite{razavi2021deep_exp_per}. More hidden layers form a \textit{deeper} network, hence the name \textbf{deep learning}. An \gls{mlp} is a type of network called a \textit{feed-forward} \gls{ann} because the data flows from the input to the output layer and each layer is a function of the previous layer. During training, the weights between every neuron and the bias are optimized in a process which is further explained in section \ref{training neural networks}. In the MLP depicted in \ref{Perceptron / MLP}, different neurons will activate with varying strengths depending on the input, resulting in different outputs. The architecture of the \gls{mlp} in figure \ref{Perceptron / MLP} can be expressed as\cite{Goodfellow-et-al-2016}:
+        The \textit{architecture} of any \gls{ann} consists of an input layer, a user-defined number of \textit{hidden layers}, and finally, an output layer\cite{razavi2021deep_exp_per}. More hidden layers form a \textit{deeper} network, hence the name \textbf{deep learning}. An \gls{mlp} is a type of network called a \textit{feed-forward} \gls{ann} because the data flow from the input to the output layer, and each layer is a function of the previous layer. During training, the weights between every neuron and the bias are optimized in a process that is  further explained in section \ref{training neural networks}. In the MLP depicted in \ref{Perceptron / MLP}, different neurons will activate with varying strengths depending on the input, resulting in different outputs. The architecture of the \gls{mlp} in figure \ref{Perceptron / MLP} can be expressed as\cite{Goodfellow-et-al-2016}:
         %Goodfellow-et-al-2016_architecture
         \begin{align}\label{mlp outputlayer eq}
             \textbf{h}^{(1)} &= \sigma^{(1)}(\textbf{W}^{(1)T}\textbf{x} + \textbf{b}^{(1)})\\
@@ -187,11 +187,11 @@
         
     \subsection{Activation Function} \label{activation function}
     %Goodfellow-et-al-2016_out_activation
-        The activation function enables \gls{ann}s to learn non-linear features \cite{razavi2021deep_exp_per}. The reason it is needed is that a network consisting of only linear layers will be the same as a single linear layer \cite{razavi2021deep_exp_per}. Hence, it won't be able to capture non-linearities in the data, and therefore an activation function is required in the hidden layers. Some activation functions can also be applied to the output of a network to solve the task the network is set to perform, and must be suited for the task at hand \cite{Goodfellow-et-al-2016}. The activation function commonly used in the hidden layers is ReLU, which stands for \textit{rectified linear unit}\cite{sharma2019new_activation_func}. ReLU takes a real number as input, and outputs this number if it is above zero,  otherwise it will output zero. Letting $\sigma$ denote the activation function, and $x$ the input, the ReLU activation function can be formulated as follows:
+        The activation function enables \gls{ann}s to learn non-linear features \cite{razavi2021deep_exp_per}. It is needed because a network consisting of only linear layers will be the same as a single linear layer\cite{razavi2021deep_exp_per}. Hence, it won't be able to capture non-linearities in the data, and therefore an activation function is required in the hidden layers. Some activation functions can also be applied to the network's output to solve the task the network is set to perform and must be suited for the task at hand \cite{Goodfellow-et-al-2016}. The activation function commonly used in the hidden layers is ReLU, which stands for \textit{rectified linear unit}\cite{sharma2019new_activation_func}. ReLU takes a real number as input and outputs this number if it is above zero,  otherwise, it will output zero. Letting $\sigma$ denote the activation function, and $x$ the input, the ReLU activation function can be formulated as follows:
             \begin{equation} \label{relu_eq}
                 \sigma(x) = max(0,x)
             \end{equation}
-        ReLU is also visualized in figure \ref{activation_fig}. This activation function allows some neurons to propagate their input, while preventing others from doing so. This can result in greater efficiency and faster training, as not all neurons are active, further detailed in \citeauthor{sharma2019new_activation_func}\cite{sharma2019new_activation_func}. 
+        ReLU is also visualized in figure \ref{activation_fig}. ReLU some neurons to propagate their input while preventing others from doing so. This can result in greater efficiency and faster training, as not all neurons are active, further detailed in \citeauthor{sharma2019new_activation_func}\cite{sharma2019new_activation_func}. 
         
         The logistic sigmoid activation function transforms all input values to values in the range [0…1].\cite{sharma2019new_activation_func}. It could be applied to the output to solve binary classification problems, as the values can be treated as probabilities. The formula for logistic sigmoid is:
             \begin{equation} \label{sigmoid_eq}
@@ -212,10 +212,10 @@
             \sigma(\textbf{x})_{j} = \dfrac{e^{x_{j}}}{\sum^{K}_{k=1}e^{x_{k}}} \textrm{ for j = 1,...,K.}
         \end{equation}
         
-        where K is the number of classes and the output summarizes to 1 over all classes. For a network solving multiclass classification, the output layer will have size equal to K. This would corresponds to 3 classes in figure \ref{Perceptron / MLP}. The \textit{softmax} would then be used as the last transformation ($\sigma^{(3)}$ in equation \ref{mlp outputlayer eq}) and output the probability of an input belonging to one of the three classes.
+        where K is the number of classes, and the output summarizes to 1 over all classes. For a network solving multiclass classification, the output layer will have size equal to K. This corresponds to 3 classes in figure \ref{Perceptron / MLP}. The \textit{softmax} would then be used as the last transformation ($\sigma^{(3)}$ in equation \ref{mlp outputlayer eq}) and output the probability of an input belonging to one of the three classes.
         
 \subsection{Convolutional Neural Network} \label{cnn}
-    The \gls{cnn} is a type of \gls{ann} that is primarily used in machine learning tasks concerning images\cite{o2015introduction_convolutions}. One of the reasons for why the \gls{cnn} emerged was because images input to a regular \gls{ann} produces a large amount of learnable parameters. For example, a low-resolution image with $512\times512$ pixels passed to an input layer containing only one neuron would have $1\times512\times512 = 262144$ weights alone.  To solve this issue and have fewer learnable parameters, the modern \gls{cnn} is built around 3 main components\cite{o2015introduction_convolutions}; \textit{convolutional layer}, \textit{pooling layer} and a \textit{fully-connected layer}. An example \gls{cnn} is illustrated in figure \ref{convolutional_neural_network_fig} and each main component will be explained later in this section.
+    The \gls{cnn} is a type of \gls{ann}s that is primarily used in machine learning tasks concerning images\cite{o2015introduction_convolutions}. One of the reasons why the \gls{cnn} emerged was because images input to a regular \gls{ann} produces a large number of learnable parameters. For example, a low-resolution image with $512\times512$ pixels passed to an input layer containing only one neuron would have $1\times512\times512 = 262144$ weights alone.  To solve this issue and have fewer learnable parameters, the modern \gls{cnn} is built around 3 main components\cite{o2015introduction_convolutions}; \textit{convolutional layer}, \textit{pooling layer} and a \textit{fully-connected layer}. An example \gls{cnn} is illustrated in figure \ref{convolutional_neural_network_fig} and each main component will be explained later in this section.
 
     \begin{figure}[H]
         \centering
@@ -461,8 +461,9 @@
         \begin{figure}[H]
             \centering
             %\includegraphics[scale=0.5]{figures/perceptron.png}
-            \hspace*{-3.2cm}
-            \includesvg[inkscapelatex=false,width=1.3\textwidth,keepaspectratio]{figures/overunderfit.svg}
+            %\hspace*{-3.2cm}
+            %\includesvg[inkscapelatex=false,width=1.3\textwidth,keepaspectratio]{figures/overunderfit.svg}
+            \input{figures/overunderfit.pgf}
             \caption[Over/under-fit]{Training data is generated with random noise around a sinus wave (True function). Model \textit{capacity} increases from left to right. The center plot illustrates a model that have learned an almost perfect fit to the actual true function.}
           	\medskip 
             \label{over/under fit fig}
