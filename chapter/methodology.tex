@@ -7,25 +7,25 @@
     The thesis follows the work of \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic}, which was outlined in section \ref{unet_paper_acoustic} and will be referenced throughout this chapter. In summary, this chapter will first look at the data itself and the tools and methods applied to prepare it for the training of machine learning models, with a following description of the experiment. The experiment focuses on training individual models with different subsets of frequencies and measuring the performance of each.
     
     \section{The Data}
-        The data originates from the annual Norwegian acoustic trawl surveys using the Simrad EK60 system to measure sandeel abundance and was split into yearly trawl missions, with each consisting of a collection of \textit{.raw} files with corresponding \textit{.work} files. The \textit{.raw} are the uncompressed raw output from the echo sounder. Because they are uncompressed, they do not lose any data, but unfortunately, this also makes them large. The data from 2020 alone which spanned three months took 240 GB of storage space and was accessed by downloading it through Windows Azure (described in appendix \ref{Windows Azure}). The \textit{.work} files are the annotations of the \textit{.raw} files made by operators using the \gls{lsss} system. Backscatter was stored as \gls{sv} values in echograms for six frequencies \textit{18kHz}, \textit{38kHz}, \textit{70kHz}, \textit{120kHz}, \textit{200kHz}, and \textit{333kHz}. The settings on the echosounder resulted in the size of each pixel representing 1 second horizontally and 19.2 centimeters vertically\cite{choi2021semi}.
+        The data originates from the annual Norwegian acoustic trawl surveys using the Simrad EK60 system to measure sandeel abundance and was split into yearly trawl missions, each consisting of a collection of \textit{.raw} files with corresponding \textit{.work} files. The \textit{.raw} file is the uncompressed raw output from the echo sounder. Because they are uncompressed, they do not lose any data, but unfortunately, this also makes them large. The data from 2020 alone which spanned three months took 240 GB of storage space and was accessed by downloading it through Windows Azure (described in appendix \ref{Windows Azure}). The \textit{.work} files are the annotations of the \textit{.raw} files made by operators using the \gls{lsss} system. Backscatter was stored as \gls{sv} values in echograms for six frequencies \textit{18kHz}, \textit{38kHz}, \textit{70kHz}, \textit{120kHz}, \textit{200kHz}, and \textit{333kHz}. The settings on the echosounder resulted in the size of each pixel representing 1 second horizontally and 19.2 centimeters vertically\cite{choi2021semi}.
     
     \section{Tool: The CRIMAC-Pipeline}
-        Based on the work performed by \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic}, a pipeline for classifying the acoustic backscatter was created under \gls{imr}s project \gls{crimac}\cite{crimac_pipeline}, and used as a tool throughout this work. The pipeline could be run as one whole module, to directly get the predictions from the .raw data, or submodules of the pipeline (illustrated in figure \ref{Module_overview_fig}) could be accessed and run separately. A majority of the outputs from modules in the pipeline is of the \textit{zarr} format. This is a format that stems from the Python Zarr package (described in appendix \ref{Zarr}), which facilitates NumPy array loading and operations on data that is too large to be loaded completely in computer memory. This section will describe the function of each module used in this thesis.
+        Based on the work performed by \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic}, a pipeline for classifying the acoustic backscatter was created under \gls{imr}s project \gls{crimac}\cite{crimac_pipeline} and used as a tool throughout this work. The pipeline could be run as one whole module to get the predictions from the .raw data directly, or submodules of the pipeline (illustrated in figure \ref{Module_overview_fig}) could be accessed and run separately. Most of the outputs from modules in the pipeline are of the \textit{zarr} format. This format stems from the Python Zarr package (described in appendix \ref{Zarr}), which facilitates NumPy array loading and operations on data that is too large to be loaded completely in computer memory. This section will describe the function of each module used in this thesis.
         
             \subsection{CRIMAC-Pipeline Modules} \label{CRIMAC-pipeline}
               \begin{figure}[H]
                 \centering
                 \includesvg[inkscapelatex=false,width=0.9\textwidth,keepaspectratio]{figures/module_overveiw.svg}
-                \caption[Module overview]{Module overview and output flowchart. The colors of modules and  their output will stay the same for later illustrations. The white modules were unavailable.}
+                \caption[Module overview]{Module overview and output flowchart. The modules' colors and output will stay the same for later illustrations. The white modules were unavailable.}
               	\medskip 
                 \label{Module_overview_fig}
             \end{figure}
 
             \begin{description}
-              \item[$\bullet$ CRIMAC/Preprocessor:] Preprocesses the \textit{.raw} and \textit{.work} to respectively \textit{.zarr} and \textit{.parquet} files. The output \textit{.zarr} file contained several types of measurements from the trawl missions, like location, echograms (\gls{sv}), and temperature. The data extracted for this thesis was the \gls{sv} data and was represented as a multidimensional array of size $frequency \times ping \times range$ in the  \textit{.zarr} format (Range is equivalent to depth in the water from the transducer).  The .parquet file would act as bitmaps for each class, but the current version of this module was unable to produce this file, and our solution to this problem is described in section \ref{Pseudo label}. The output \gls{sv} file is illustrated in figure \ref{Module_outputs_illustration_fig}:
+              \item[$\bullet$ CRIMAC/Preprocessor:] Preprocesses the \textit{.raw} and \textit{.work} to respectively \textit{.zarr} and \textit{.parquet} files. The output \textit{.zarr} file contained several measurements from the trawl missions, like location, echograms (\gls{sv}), and temperature. The data extracted for this thesis was the \gls{sv} data and was represented as a multidimensional array of size $frequency \times ping \times range$ in the  \textit{.zarr} format (Range is equivalent to depth in the water from the transducer).  The .parquet file would act as bitmaps for each class, but the current version of this module could not produce this file, and our solution to this problem is described in section \ref{Pseudo label}. The output \gls{sv} file is illustrated in figure \ref{Module_outputs_illustration_fig}:
                 %As the ping rate was set to 1Hz\cite{choi2021semi}, with a pulse duration of 1.024 milliseconds, the length of each pixel is 1 second horizontally and 19.2 centimeters vertically.
                 
-              \item[$\bullet$ Pretrained CRIMAC/U-Net:] Using a pretrained U-Net model, it produces a segmentation map of spatial size $class \times ping \times range$. Output classes were \textit{sandeel}, \textit{other} and \textit{background}. The \textit{ignore} class is excluded. The pixel maps are illustrated in figure \ref{Module_outputs_illustration_fig}. By changing the settings, we have the option to train a new U-Net model with the same scheme setup in \citeauthor{brautaset2020acoustic}, but was incompatible with the \textit{.zarr} format and could not be used.
+              \item[$\bullet$ Pretrained CRIMAC/U-Net:] Using a pretrained U-Net model, it produces a segmentation map of spatial size $class \times ping \times range$ (\textit{The pixel maps are illustrated in figure \ref{Module_outputs_illustration_fig}}). Output classes were \textit{sandeel}, \textit{other}, and \textit{background}. The \textit{ignore} class is excluded. By changing the settings, we have the option to train a new U-Net model with the same scheme setup in \citeauthor{brautaset2020acoustic}, but it was incompatible with the \textit{.zarr} format and could not be used.
               
               \item[$\bullet$ CRIMAC/Bottom detection:] Identifies the bottom and generates a binary pixel-based map stored as \textit{.zarr}. This is a 2D array of size $ping \times range$. The output is shown in figure \ref{Module_outputs_illustration_fig}:
 
@@ -35,13 +35,13 @@
         \begin{figure}[H]
             \centering
             \includesvg[inkscapelatex=false,width=1\textwidth,keepaspectratio]{figures/output_illustration.svg}
-            \caption[Module outputs illustration]{Illustrations of the output from the different modules with one enlarged example from each output. This example is a $500\times500$ crop, while the real data contained millions of pings. The \textit{200kHz} has been transformed to the decibel scale to make the data observable. The color scale is set to be purple at 0, and yellow at 1. White denotes missing values.}
+            \caption[Module outputs illustration]{Illustrations of the output from the different modules with one enlarged example from each output. This example is a $500\times500$ crop, while the real data contained millions of pings. The \textit{200kHz} has been transformed to the decibel scale to make the data observable. The color scale is set to be purple at 0 and yellow at 1. White denotes missing values.}
           	\medskip 
             \label{Module_outputs_illustration_fig}
         \end{figure}
 
     \section{Pseudo Labels} \label{Pseudo label}
-        The operator annotations used as labels by \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic} was unavailable at the time of writing this thesis, but their method still relied on supervised learning, where each sample has a corresponding label. To solve this, pseudo labels were created by using the aforementioned pretrained CRIMAC/U-Net (section \ref{CRIMAC-pipeline}) module. The data was processed by the module and the segmentation map of pixel-based probabilities for each class was produced. A hard threshold of 0.8 was then applied to the predictions, and all values below was set to 0, and above to 1, hence resulting in a hard mask for each class. This threshold was applied to only include the most certain predictions of the pretrained CRIMAC/U-Net. Below is an example pseudo label:
+        The operator annotations used as labels by \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic} were unavailable when writing this thesis, but their method still relied on supervised learning, where each sample has a corresponding label. Pseudo labels were created using the aforementioned pretrained CRIMAC/U-Net (section \ref{CRIMAC-pipeline}) module to solve this issue. The module processed the data and produced a segmentation map of pixel-based probabilities for each class. A hard threshold of 0.8 was then applied to the predictions, and all values below were set to 0, and above to 1, resulting in a hard mask for each class. This threshold was applied to only include the most certain predictions of the pretrained CRIMAC/U-Net. Below is an example pseudo label:
         
         %These labels will contain some noise, as the model they originate from was not perfect. In the next section, I will explain how I handled this. Due to the weighted cross-entropy loss used during training of the model seen in section \ref{unet_paper_acoustic} the background class were usually very noisy, as this class was lowly weighted. This low weight caused the model to care less about classifying the background correctly, and the two samples in figure \ref{data sample fig} illustrates this. As I was to use the same weighting, this did not pose a large problem but explains noise in later illustrations of the background class, and therefore mentioned.
 
@@ -57,7 +57,7 @@
         	%\includesvg[inkscapelatex=false,width=0.9\textwidth,keepaspectratio]{figures/data_sample_noisy.svg}}
         
         
-        \caption[Pseudo label]{An example pseudo label displaying the mask of all three classes present in a 256×256 crop: \textit{Sandeel}, \textit{Other} and \textit{Background}.} %The upper (a) without much noise in the background and the lower (b) containing severe noise.}
+        \caption[Pseudo label]{An example pseudo label displaying the mask of all three classes present in a 256×256 crop: \textit{Sandeel}, \textit{Other}, and \textit{Background}.} %The upper (a) without much noise in the background and the lower (b) containing severe noise.}
         \label{data sample fig}
         
         \end{figure}
@@ -65,41 +65,41 @@
 
         
     \section{Data Preparation}
-        This section explains the process of preparing the dataset, which was built to enable a sampling scheme during training equal to the one developed by \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic}. In short, the preprocessing consists of creating samples with corresponding pseudo labels from the input data, and storing the samples in a folder structure dependent on the sample's features.
+        This section explains the process of preparing the dataset, which was built to enable a sampling scheme during training equal to the one developed by \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic}. In short, the preprocessing consists of creating samples with corresponding pseudo labels from the input data and storing the samples in a folder structure dependent on the sample's features.
         
         \clearpage
         \begin{figure}[H]
             \centering
             \includesvg[inkscapelatex=false,width=0.75\textwidth,keepaspectratio]{figures/flow_data_gen.svg}
             %\includegraphics[scale=0.75]{figures/flow_data_gen.png}
-            \caption[Data preparation process]{An overview of the data preparation process. CRIMAC pipeline modules (black), data.raw (blue), SV data.zarr (green), pseudo labels.zarr (yellow), bottom.zarr (red), the finished file containing two tensors (gray), storing the file with pickle (white).}
+            \caption[Data preparation process]{An overview of the data preparation process. CRIMAC pipeline modules (black), data.raw (blue), SV data.zarr (green), pseudo labels.zarr (yellow), bottom.zarr (red), the finished file containing two tensors (gray), storing the file with Python pickle (white).}
           	\medskip 
             \label{data_generation_flowchart_fig}
         \end{figure}
         
-        The entire process is illustrated in figure \ref{data_generation_flowchart_fig} and starts with the utilization of \gls{crimac} preprocessor module as described in \ref{CRIMAC-pipeline}. This takes in the entire \textit{.raw} dataset and outputs the \gls{sv} data in the \textit{.zarr} format. The \gls{sv} dataset was then sent to both the pretrained U-Net and bottom detection modules from the \gls{crimac} pipeline. The pretrained U-Net outputs pseudo labels, and the bottom detection outputs a mask of the seafloor, as arrays equal in spatial size to the \gls{sv} data array.
+        The entire process is illustrated in figure \ref{data_generation_flowchart_fig} and starts with utilizing the \gls{crimac} preprocessor module as described in \ref{CRIMAC-pipeline}. This takes in the entire \textit{.raw} dataset and outputs the \gls{sv} data in the \textit{.zarr} format. The \gls{sv} dataset was then sent to both the pretrained U-Net and bottom detection modules from the \gls{crimac} pipeline. The pretrained U-Net outputs pseudo labels, and the bottom detection outputs a mask of the seafloor as arrays equal in spatial size to the \gls{sv} data array.
         
         \begin{figure}[H]
             \centering
             %\includegraphics[scale=0.5]{figures/crop_extract_illustration.png}
             \includesvg[inkscapelatex=false,width=0.9\textwidth,keepaspectratio]{figures/data_errors_nans.svg}
-            \caption[Missing values and bottom]{Example crop from the 18kHz \gls{sv} data (decibel scale). It illustrates two clear sections of data where the depth (range) is changed, and the gap is filled with missing values (white). The bottom can clearly be observed by the strong line of \gls{sv} values, and there are multiple bottom echoes in certain parts if the crop.}
+            \caption[Missing values and bottom]{Example crop from the 18kHz \gls{sv} data (decibel scale). It illustrates two clear sections of data where the depth (range) is changed, and the gap is filled with missing values (white). The bottom can be observed by the strong line of \gls{sv} values, and there are multiple bottom echoes in certain parts of the crop.}
           	\medskip 
             \label{data_bottom_nans_fig}
         \end{figure}
         
         
-        The generated \gls{sv} dataset was then split into non-overlapping crops of size 256x256, ignoring crops of mismatching size at the edges of the array. Each crop was checked for any missing values or the crop being located entirely below the seafloor, and then ignored if any of them were true. This was because missing values can be detrimental to the training process, and crops below the seafloor was excluded as done by \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic}. An illustration of the missing data is illustrated in figure \ref{data_bottom_nans_fig}, also showcasing multiple seabfloors that could confuse the model during training. Using the vertical and horizontal coordinates for all the \gls{sv} data crops, a corresponding crop from both the seafloor mask and the pseudo labels were extracted. The two new crops were then used together to remove predictions that appeared under the bottom, thus cleaning and preprocessing the pseudo labels. The steps explained in this paragraph are also visualized in figure \ref{crop_extract_fig}.
+        The generated \gls{sv} dataset was then split into non-overlapping crops of size 256x256, ignoring crops of mismatching size at the edges of the array. Each crop was checked for any missing values or the crop being located entirely below the seafloor and then ignored if any of them were true. This was because missing values can be detrimental to the training process, and crops below the seafloor were excluded as done by \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic}. An illustration of the missing data is illustrated in figure \ref{data_bottom_nans_fig}, also showcasing multiple seabfloors that could confuse the model during training. Using the vertical and horizontal coordinates for all the \gls{sv} data crops, a corresponding crop from both the seafloor mask and the pseudo labels was extracted. The two new crops were then used together to remove predictions that appeared under the bottom, thus cleaning and preprocessing the pseudo labels. The steps explained in this paragraph are also visualized in figure \ref{crop_extract_fig}.
         \begin{figure}[H]
             \centering
             %\includegraphics[scale=0.5]{figures/crop_extract_illustration.png}
             \includesvg[inkscapelatex=false,width=0.7\textwidth,keepaspectratio]{figures/crop_extract_illustration.svg}
-            \caption[Data, label and bottom crop extraction and interaction]{Example of how the data, pseudo labels and bottom crops would look during data generation. For the pseudo label, purple is values of 0 and yellow values of 1. In the pseudo labels, we can see that some predictions under the seafloor are removed.  Size is shown in the lower-left corner to make it clear that it is a crop of the same size, and from the same location, but from different arrays.}.
+            \caption[Data, label and bottom crop extraction and interaction]{Example of how the data, pseudo labels, and bottom crops would look during data generation. For the pseudo label, purple is values of 0 and yellow values of 1. In the pseudo labels, we can see that some predictions under the seafloor are removed.  Size is shown in the lower-left corner to clarify that it is a crop of the same size and from the same location but from different arrays.}.
           	\medskip 
             \label{crop_extract_fig}
         \end{figure}
         
-        After the crop containing the \gls{sv} data and cleaned pseudo labels were generated, they were both converted to tensors and stored as a single file using pickle\todo{skriv om pickle}. The storage folder of the file would depend on a set of criteria, which are illustrated in figure \ref{data_hierarchy_fig}. The criteria would be checked from top to bottom, and the first triggered would set the destination folder, hence creating a folder structure visualized in figure \ref{data_hierarchy_fig}. This also blocked the same crop from appearing in several folders, potentially causing data leakage between training, validation and test datasets.
+        After the crop containing the \gls{sv} data and cleaned pseudo labels were generated, they were both converted to tensors and stored as a single file using Python pickle. The storage folder of the file would depend on a set of criteria, which are illustrated in figure \ref{data_hierarchy_fig}. The criteria would be checked from top to bottom, and the first triggered would set the destination folder, creating a folder structure visualized in figure \ref{data_hierarchy_fig}. This also blocked the same crop from appearing in several folders, potentially causing data leakage between training, validation, and test datasets.
         
         
         %\clearpage
@@ -114,7 +114,7 @@
             
 
 
-            \caption[Criteria and folder structure]{An overview of the criteria and folder structure. The structure consists of two main branches, one with the bottom present and one without.}
+            \caption[Criteria and folder structure]{An overview of the criteria and folder structure. The structure consists of two main branches, one with the bottom present and one without the bottom present.}
             
             
           	\medskip 
@@ -123,9 +123,9 @@
         
 
         
-        The folder structure and criterions were based on the data classes made by \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic}. One major difference was that they used the real operator annotations to detect instances of classes in a crop, while we only have the pseudo labels. Since these pseudo labels could contain misclassifications made by the pretrained model, a class abundance measurement was performed. When evaluating the crops against the criteria, if 100 or more pixels in a crop contained either \textit{sandeel} or \textit{other}, it would be set to present in the crop. 100 was chosen after trying different criteria and evaluating the amount of crops stored in each folder. This would hopefully remove crops with low class abundance and where the pretrained model had potentially misclassified single or few pixels. If there were not enough pixels of either class, the crop would be set to contain \textit{background} only. The crop from the \gls{sv} data would be checked against its corresponding crop from the bottom detector output, splitting the data into folders with or without bottom.
+        The folder structure and criteria were based on the data classes made by \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic}. One significant difference was that they used the actual operator annotations to detect instances of classes in a crop, while we only have the pseudo labels. Since these pseudo labels could contain misclassifications made by the pretrained model, a class abundance measurement was performed. When evaluating the crops against the criteria, if 100 or more pixels in a crop contained either \textit{sandeel} or \textit{other}, it would be set to present in the crop. 100 was chosen after trying different criteria and evaluating the number of crops stored in each folder. This would hopefully remove crops with low class abundance and where the pretrained model had potentially misclassified single or few pixels. If there were not enough pixels of either class, the crop would be set to contain \textit{background} only. The crop from the \gls{sv} data would be checked against its corresponding crop from the bottom detector output, splitting the data into folders with or without the bottom present.
         
-        The years 2018 and 2019 were processed in the aforementioned way individually, and the final data distribution can be seen in respectively table \ref{data_distribution_2018_table} and \ref{data_distribution_2019_table}.
+        The years 2018 and 2019 were processed in the way mentioned above individually, and the final data distribution can be seen in respectively table \ref{data_distribution_2018_table} and \ref{data_distribution_2019_table}.
 
 
 
@@ -172,16 +172,16 @@ Bottom               & Other                & 2815                             &
 \\ \label{data_distribution_2019_table}
 \end{longtable}  
 
-        From the tables above, we observe that as in \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic} most of the data will contain no fish, here represented as \textit{background}.
+        From the tables above, we observe that, as in \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic}, most of the data will contain no fish, here represented as \textit{background}.
 
 \clearpage
 \section{Experiment} \label{Experiment}
-    This section describes how the experiments were performed, and how performance was measured. First by describing the settings, then the experiment itself in detail.
+    This section describes how the experiments were performed and how performance was measured, first by describing the settings, then the experiment itself in detail.
     
     \subsection{Experiment Settings} \label{Experiment settings}
-        The experiment would use the same U-Net architecture as described in section \ref{unet} with the alteration developed by \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic}. The difference in this work was to adjust the amount of frequency channels in the input layer. This would range from 1 to 6 depending on the number of frequencies in a subset. All machine learning was performed by using the Python library PyTorch\cite{NEURIPS2019_9015}. %(described in appendix \ref{Pytorch}).
+        The experiment would use the same U-Net architecture as described in section \ref{unet} with the alteration developed by \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic}. The change to the architecture in this work was to adjust the number of frequency channels in the input layer. This would range from 1 to 6, depending on the number of frequencies in a subset. All machine learning was implemented using the Python library PyTorch\cite{NEURIPS2019_9015}. %(described in appendix \ref{Pytorch}).
         
-        Data loaded to the model started with first selecting a folder from the folder structure, with a set probability for each. Then a sample and a label would be extracted at random from this folder, with all samples in each folder being allocated to either training, validation or test datasets. This imitates the sampling strategy from \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic}, and the probabilities originate from this work.
+        Data loaded to the model started with first selecting a folder from the folder structure, with a set probability for each. Then a sample and a label would be extracted at random from this folder, with all samples in each folder being allocated to either training, validation, or test datasets. This imitates the sampling strategy from \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic}, and the probabilities originate from this work.
         
         %\clearpage
         \begin{longtable}{lcl}
@@ -202,7 +202,7 @@ Bottom               & Other                & 2815                             &
             \label{Data_loading_scheme_table}
         \end{longtable}
 
-        The data-augmentations performed were flipping along the vertical axis, and a multiplication applied to values in 5\% of pixels in an input \gls{sv} crop to act as noise.  In this context, pixels refer to each \gls{sv} value in the crop. During training, an echograms' orientation of the surface and bottom can never individually be changed, and so vertical flipping is justified in acoustic data. The intention behind the multiplication was to simulate real life noise, and consisted of multiplying the values with a random number in either the range [0,1] or [1, 10], with a 50\% change of each.  As samples from the training data were provided to the model, each data augmentation method had a 50\% chance of occurring. Then the \gls{sv} crop would be transformed to the decibel scale, by applying $10\log{(pixel)}$ to all pixels for all frequencies in the \gls{sv} crop, with cutoff values at minimum -75dB and maximum 0dB. All augmentations and transformations were based on \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic}. 
+        The data-augmentations performed were flipping along the vertical axis, and a multiplication applied to values in 5\% of pixels in an input \gls{sv} crop to act as noise. An echogram’s orientation of the surface and bottom can never individually be changed during training, so only vertical flipping is justified in acoustic data. The intention behind the multiplication was to simulate real-life noise and consisted of multiplying the values with a random number in either the range [0,1] or [1, 10], with a 50\% chance of each.  As samples from the training data were provided to the model, each data augmentation method had a 50\% chance of occurring. Then the \gls{sv} crop would be transformed to the decibel scale by applying $10\log{(pixel)}$ to all pixels for all frequencies in the \gls{sv} crop, with cutoff values at minimum -75dB and maximum 0dB. All augmentations and transformations were based on \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic}. 
         
         
         
@@ -217,7 +217,7 @@ Bottom               & Other                & 2815                             &
             \endhead
             %
             \textit{Add noise to 5\% of pixels.}      &       & 50\% of occurring upon loading sample \\ \hline
-            \textit{Flip along vertical axis}        &       & 50\% of occurring upon loading sample \\ \hline
+            \textit{Flip along the vertical axis}        &       & 50\% of occurring upon loading sample \\ \hline
 
             \label{data_augmentation_table}
         \end{longtable}
@@ -242,46 +242,46 @@ Bottom               & Other                & 2815                             &
         \label{hyperparameter_table}
         \end{longtable}
 
-        To evaluate the performance of the models, we utilized the F1 score mentioned in section \ref{f1_score}. We also included the precision and recall, as these provide greater insight to the model's performance.
+        To evaluate the performance of the models, we utilized the F1 score mentioned in section \ref{f1_score}. We also included the precision and recall, as these provide greater insight into the model's performance.
         
     %\subsection{Experiment: Training on pseudo labels}
     %  This was a preliminary test to establish that training a model on pseudo labels was possible and would achieve acceptable performance. All frequencies would be included, and this would then produce a baseline performance for the later experiments. 
     
     \subsection{Exhaustive Frequency Search}
         \subsubsection{Description}
-        To find the most impactful frequencies and try to discover hidden synergies between them, a comprehensive experiment was enacted. This experiment would see all combinations of all frequencies being tested. This means to train a U-Net model using only the frequency combination in the frequency subset and measure the performance. The experiment would be run ten times, to get enough results to estimate the mean,  reducing variance, and be able to display some statistical data for each subset of frequencies. Each test would have different random state seeds set to enable different data splits, and also  varying model initialization. The explicit random state also accommodates reproducibility. With 6 frequencies in total, the number of possible frequency combinations (subsets) for each of the tests is 63\footnote{Calculated as combinations without repetitions and without order, using formula $\frac{n!}{k!(n-k)!}$, where \textit{n} is elements to chose from and \textit{k} is how many to choose, both values as integers. Summarize for \textit{k} in range 1..6.}.
+        A comprehensive experiment was enacted to find the most impactful frequencies and try to discover hidden synergies between them. This experiment would see all combinations of all frequencies being evaluated. This means training a U-Net model using only the frequency combination in the frequency subset and measuring  the performance. The experiment would be run ten times to get enough results to estimate the mean, reduce variance, and display some statistical data for each subset of frequencies. Each experiment would have different random state seeds set to enable different data splits and  varying model initialization. The explicit random state also accommodates reproducibility. With six frequencies in total, the number of possible frequency combinations (\textit{subsets}) for each experiment is 63\footnote{Calculated as combinations without repetitions and without order, using formula $\frac{n!}{k!(n-k)!}$, where \textit{n} is elements to chose from and \textit{k} is how many to choose, both values as integers. Summarize for \textit{k} in range 1..6.}.
         
-        The dataset for year 2019 in table \ref{data_distribution_2019_table} contained the most data, and chosen for training. 30\% of the training dataset was assigned as the validation dataset. Meanwhile, the 2018 dataset was selected as test dataset. The total amount of data given to a model during training was set to 5,000 batches. With a mini-batch size of 16 this corresponds to 80,000 samples, which matches the amount of data given to the model by \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic}.
+        The dataset for the year 2019 in table \ref{data_distribution_2019_table} contained the most data and was chosen for training. 30\% of the training dataset was assigned as the validation dataset. Meanwhile, the 2018 dataset was selected as the test dataset. The total amount of data given to a model during training was 5,000 batches. A mini-batch size of 16 corresponds to 80,000 samples, which matches the amount of data given to the model by  \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic}.
         
         \subsubsection{Monitoring Training}
         Logging of metrics would occur at different stages during the training process;
             \begin{itemize}
                 \item Every minibatch: Calculate running average training loss.
                 \item Every minibatch: Logg the running average for both training and validation loss.
-                \item Every 500 mini-batch: Run model on 100 mini-batches from the validation data, plot one sample output, its label and record running validation loss on each minibatch. Furthermore, calculate F1-score on both training and validation data for where sandeel is positive.
+                \item Every 500 mini-batch: Run model on 100 mini-batches from the validation data, plot one sample output and its label, and record running validation loss on each minibatch. Furthermore, calculate F1-score on both training and validation data for where the sandeel class is positive.
             \end{itemize}
             
-        To accommodate this logging scheme, we split the training process into 50 epochs, with 100 mini-batches in each. This epoch only related to the logging scheme, and not to the data itself. Hence, each epoch is not the entire dataset, but a part of a sequence of data. This is mentioned to not confuse the reader observing the results.
+        The training process was split into 50 epochs to accommodate this logging scheme, with 100 mini-batches in each. This epoch is only related to the logging scheme, not the data itself. Hence, each epoch is not the entire dataset but a part of a sequence of data. This is mentioned to not confuse a reader observing the results.
     
-        As the logging and random state was unique for each of the 10 experiments, this would create good comparison illustrations of how each frequency subset performed on the same sample. The metrics loss and F1-score would give an indication towards convergence, over-/under-fitting problems and performance. A sanity check would also be performed by observing a prediction of the sandeel class, against its label.
+        The logging and random state were unique for each of the ten experiments; this would create good comparison illustrations of how each frequency subset performed on the same sample during training.  The metrics loss and F1-score indicate convergence, over-/under-fitting problems, and performance. A sanity check would also be performed by observing and judging a prediction of the sandeel class against its label.
         
         \subsubsection{Generalization Performance per Subset}
-        After the training of each frequency subset, the subset’s model was evaluated on 500 batches from the test dataset, but without any noise added through augmentation. From these predictions, the F1-score, precision and recall would be calculated for where sandeel is the positive class and stored in a \textit{.csv} file, giving an estimate of its generalization performance. Then the next frequency subset would start the entire process afresh with training.
+        After the training of each frequency subset, the subset’s model was evaluated on 500 batches from the test dataset but without any noise added through augmentation. From these predictions, the F1-score, precision, and recall would be calculated for where sandeel is the positive class and stored in a \textit{.csv} file, giving an estimate of its generalization performance. Then the next frequency subset would start the entire process afresh with training.
         
-        With the generalization results from the 10 separate experiments, each on all 63 possible combinations, the mean test performance values of each frequency subset would be estimated. This would then be used to show these properties:
+        With the results from the ten separate experiments, each on all 63 possible combinations, each frequency subset's mean test performance (\textit{generalization performance}) values would be estimated. This would then be used to show these properties:
         
         
         \begin{itemize}
             \item A summary of the performance achieved by each subset size.
             \item Finding the best performing frequency combinations per size. One max search based on each metric; f1-score, precision, and recall.
             \item To observe the uniqueness of each subset, a plot to illustrate the statistical properties of each will be presented. This will be shown as an error bar, the top of the bar is the max F1-score achieved, and the bottom is the minimum. %This presentation was chosen because we judged that too few tests had been run for a proper standard deviation to be calculated.
-            \item The performance trend of each frequency. This meant we would, for all frequencies, filter out those subsets it was a part of and sort these in increasing order. This would produce a line-plot illustrating what performance scores each particular frequency contributes to and its overall trend.
+            \item The performance trend of each frequency. This meant, for all frequencies, filtering out those subsets it was a part of and sorting these in increasing order. Producing a line plot illustrating what performance scores each particular frequency contributes to and its overall trend.
         \end{itemize}
     
 
 
 \section{Hardware} \label{hardware}
-    Two remote servers named \textit{janus} and \textit{birget} were provided by the university. Janus were used for data preparation, and birget for conducting the experiments. Hardware spesifications: 
+    Two remote servers named \textit{Janus} and \textit{Birget} were provided by the university. Janus was used for data preparation and Birget for conducting the experiments. Hardware spesifications: 
 \begin{itemize}
   \item \textbf{Birget}
   \begin{itemize}
