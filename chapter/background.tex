@@ -136,12 +136,12 @@
     This section introduces the basic components of an \gls{ann} and how these are combined to create a \textit{deep learning} network/ model. 
 
     \subsection{Perceptron} \label{perceptron}
-        The \gls{ann}s fundamental building block is called an artificial \textit{neuron} or perceptron. It consists of a linear regression with the tunable parameters $w$ and $b$ inside a non-linear activation function, explained later in \ref{activation function}. The perceptron is formulated in the following way\cite{razavi2021deep_exp_per}:
+        The \gls{ann}s fundamental building block is called an artificial \textit{neuron} or \textit{perceptron}. It consists of a linear regression with the tunable parameters $w$ and $b$ inside a non-linear activation function, explained later in \ref{activation function}. The perceptron is formulated in the following way\cite{razavi2021deep_exp_per}:
             \begin{equation} \label{eq_perceptron}
                 y = \sigma(\sum_{i=1}^{D}w_ix_i + b)
             \end{equation}
             
-        where D is the number dimension of the input space, $x$ is the input vector, $w$ is a set of weights of the same size as $x$, $b$ is the bias, and {\textsigma} is the activation function. The single output value \textit{y} is a weighted sum of the input and weights plus the bias, also called the neurons' \textit{activation}. The perceptron is illustrated in figure \ref{Perceptron / MLP}.
+        where D is the number dimension of the input space, $x$ is the input vector, $w$ is a set of weights of the same size as $x$, $b$ is the bias, and {\textsigma} is the activation function. The single output value \textit{y}, also called the neurons' \textit{activation}, is a weighted sum of the input and weights plus the bias, transformed by the activation function. The perceptron is illustrated in figure \ref{Perceptron / MLP}.
     
     \subsection{Multi-Layered Perceptron} \label{MLP}
         The neurons presented in section \ref{perceptron} are organized together in layers to form an \gls{ann}, which in turn forms what is called a \gls{mlp} \cite{razavi2021deep_exp_per}. If all neurons in each layer are connected to every neuron in the next layer, they form a type of \gls{ann} called \textit{fully connected} networks. An \gls{mlp} is depicted in figure \ref{Perceptron / MLP}.
@@ -156,13 +156,13 @@
         	\includesvg[inkscapelatex=false,width=0.5\textwidth,keepaspectratio]{figures/mlp.svg}\label{mlp fig}}
                 %\includegraphics[scale=0.5]{figures/perceptron.png}
                 
-                \caption[The perceptron and multi-layer perceptron]{Illustration of a single neuron and a deep learning network of neurons.}
+                \caption[The perceptron and multi-layer perceptron]{Illustration of a single neuron and a fully connected deep learning network of neurons.}
               	\medskip 
                 \hspace*{15pt}\hbox{\scriptsize Credit: \citeauthor{razavi2021deep_exp_per}\cite{razavi2021deep_exp_per}}
                 \label{Perceptron / MLP}
             \end{figure}
         
-        The \textit{architecture} of any \gls{ann} consists of an input layer, a user-defined number of \textit{hidden layers}, and finally, an output layer\cite{razavi2021deep_exp_per}. More hidden layers form a \textit{deeper} network, hence the name \textbf{deep learning}. An \gls{mlp} is a type of network called a \textit{feed-forward} \gls{ann} because the data flow from the input to the output layer, and each layer is a function of the previous layer. During training, the weights between every neuron and the bias are optimized in a process that is  further explained in section \ref{training neural networks}. In the MLP depicted in \ref{Perceptron / MLP}, different neurons will activate with varying strengths depending on the input, resulting in different outputs. The architecture of the \gls{mlp} in figure \ref{Perceptron / MLP} can be expressed as\cite{Goodfellow-et-al-2016}:
+        The \textit{architecture} of any \gls{ann} consists of an input layer, a user-defined number of \textit{hidden layers}, and finally, an output layer\cite{razavi2021deep_exp_per}. More hidden layers form a \textit{deeper} network, hence the name deep learning. An \gls{mlp} is a type of network called a \textit{feed-forward} \gls{ann} because the data flow from the input to the output layer, and each layer is a function of the previous layer. During training, the weights between every neuron and the bias are optimized in a process that is  further explained in section \ref{training neural networks}. In the MLP depicted in \ref{Perceptron / MLP}, different neurons will activate with varying strengths depending on the input, resulting in different outputs. The architecture of the \gls{mlp} in figure \ref{Perceptron / MLP} can be expressed as\cite{Goodfellow-et-al-2016}:
         %Goodfellow-et-al-2016_architecture
         \begin{align}\label{mlp outputlayer eq}
             \textbf{h}^{(1)} &= \sigma^{(1)}(\textbf{W}^{(1)T}\textbf{x} + \textbf{b}^{(1)})\\
@@ -234,7 +234,7 @@
      \citeauthor{o2015introduction_convolutions}\cite{o2015introduction_convolutions} describe the convolutional layer as consisting of many learnable multidimensional weight matrices that slide over the input. We will refer to such a matrix as a kernel. The kernel's height and width are parameters defined by the user, but the depth will always be equal to the number of channels in the input. This results in kernels being described only by $height \times width$. The kernel slides over the input, and is applied to different locations of the input, also called the current \textit{receptive field}. A single scalar value is computed when applied, which is the weighted sum of the kernel's weights and the corresponding values in the receptive field. If we have a 2-dimensional image $I(i,j)$ as input, a convolutional operation would be expressed as\cite{Goodfellow-et-al-2016}:
      %Goodfellow-et-al-2016_convolution
         \begin{equation}
-            (I*K)(i,j) = \sum_{height}\sum_{width}I(i+height,j+width)K(height,width)
+            (I*K)(i,j) = \sum_{height}\sum_{width}I(i-height,j-width)K(height,width)
         \end{equation}
      
      where $*$ is the convolutional operation, \textit{I(i,j)} is the image pixel at \textit{(i,j)}, and \textit{K} is the kernel.
@@ -327,7 +327,7 @@
         \label{segmentation_fig}
     \end{figure}
 
-    Segmentation is a task where the objective is to assign one or several classification masks to the input\cite{He_2017_ICCV_segmentation}. This is further split into two different categories: \textit{semantic} and \textit{instance} segmentation. In semantic segmentation, we assign each pixel in the input to predefined classes. The output would have the same resolution as  the input but with channels equal to the number of classes. A softmax would then be calculated for each pixel across the depth, and the pixel would be assigned to the class with the highest probability. Hence, producing a mask for each class. In instance segmentation, we increase the complexity by applying semantic segmentation while simultaneously assigning a bounding box to each object, as visualized in figure \ref{segmentation_fig}.
+    Segmentation is a task where the objective is to assign one or several classification masks to the input, usually a picture\cite{He_2017_ICCV_segmentation}. This is further split into two different categories: \textit{semantic} and \textit{instance} segmentation. In semantic segmentation, we assign each pixel in the input to predefined classes. The output would have the same resolution as  the input but with channels equal to the number of classes. A softmax would then be calculated for each pixel across the depth, and the pixel would be assigned to the class with the highest probability. Hence, producing a mask for each class. In instance segmentation, we increase the complexity by applying semantic segmentation while simultaneously assigning a bounding box to each object, as visualized in figure \ref{segmentation_fig}.
     
 \section{Training Neural Networks} \label{training neural networks}
     This section will describe the main concepts behind how neural networks are trained to perform on various tasks. 
@@ -338,7 +338,7 @@
     The objective of an \gls{ann} is to approximate some optimal function \textit{f}, and in this thesis, we focus on classifiers, $\textbf{y} = f(\textbf{x})$, which maps an input \textbf{x} to an output category \textbf{y}. The \gls{ann} approximates this function by defining a mapping, $\textbf{\^{y}} = \hat{f}(\textbf{x},\theta)$, and learns the values of the parameters \textit{$\theta$} (weights and biases) through training using examples. In supervised tasks, the labels instruct the output layer exactly how to perform given the input data. However, the data does not inform the individual \textit{hidden layers} how to behave to produce this desired output. When the data flow through the network using the parameters $\theta$, it produces outputs \textbf{\^{y}}, called the \textit{forward-propagation step}. How the parameters are initialized can heavily affect the training process, and different strategies are further described in \citet{Goodfellow-et-al-2016}. Using a \textit{loss function} to compare the true \textbf{y} values to the estimated values \textbf{\^{y}}, we measure the network's \textit{error}, also called \textit{loss}. The network uses this loss to then alter $\theta$ to best approximate \textit{f}, which will be explained later in section \ref{backpropagation}. In classification tasks, the network is trained to output the probability of each class given an input\cite{ho2019real_weighted_cross_entropy}. We can use a loss function called \textit{weighted cross entropy} to train such a model. This function outputs a loss based on the probabilities, weights classification of certain classes differently, and is often used when dealing with data containing class imbalance as more weight can be applied to the minority class. Expressed as:
     %Goodfellow-et-al-2016_param_init
         \begin{equation} \label{cross_entropy}
-            loss(\theta) = - \sum^{n}_{i=1} w_{y_{i}}y_{i}\log(\hat{y_{i}})
+            loss(x,y) = - \sum^{n}_{i=1} w_{y_{i}}y_{i}\log(\hat{y_{i}}), \quad \hat{y_{i}} = \hat{f}(x_i,\theta)
         \end{equation}
     
     where \textit{n} is the number of classes, $y_{i}$ is 1 if the $i^{th}$ class is true (\textit{else 0}), $\hat{y_{i}}$ is the output from the softmax for the $i^{th}$ class, and $w_{y_{i}}$ is the weight of the class to which $y_{i}$ belongs. More examples of loss functions can be viewed in \citeauthor{mishra2017deep}\cite{mishra2017deep}.
@@ -372,7 +372,7 @@
     To update the network parameters, we use the loss from a mini-batch and iteratively step back through the layers in a process called \textit{back-propagation}\cite{rumelhart1986learning_backprop}. In each step, we calculate a value called the \textit{gradient} for each parameter. The gradient is the partial derivative of the \textit{loss} function with respect to each weight and bias in the current layer and is computed using the chain rule. This is to determine how changes to each parameter will affect the \textit{loss}. Using the gradient, \gls{sgd} performs \textit{gradient descent}\cite{Goodfellow-et-al-2016} by updating all parameters in the opposite direction of the gradient to reduce the loss. In what magnitude a parameter is adjusted by the optimizing algorithm is determined by the \textit{learning rate}, usually a value between 0 and 1. The parameter update is expressed as\cite{pmlr-v37-ioffe15_batch_norm}:
     %Goodfellow-et-al-2016_gradient_descent
     \begin{equation}
-    \theta^{(j)} \leftarrow \theta^{(j)} - \eta \dfrac{1}{m}\sum_{i=1}^{m} \dfrac{\partial loss (\theta^{(j)})}{\partial \theta^{(j)}}
+    \theta^{(j)} \leftarrow \theta^{(j)} - \eta \dfrac{1}{m}\sum_{i=1}^{m} \dfrac{\partial loss (x_i,y_i)}{\partial \theta^{(j)}}
     \end{equation}
     
     where $\theta$ is the parameters of the network, \textit{m} is the batch size, $\eta$ is the learning rate, and \textit{j} is the layer. In figure \ref{learning_rates} an example loss function is illustrated with one global \textit{loss} minima and different learning rates applied with \gls{sgd}. Low learning rate values usually have a long training time and may cause the \gls{sgd} to converge to a local minima instead of the global\cite{farsal2018deep}. However, too high values can overshoot the global minima and diverge. Both can be prevented by applying a method to adapt the learning rate to the \textit{topography} of the loss function. This thesis applied \textit{momentum}, which only acts as a \textit{velocity} to the update step. The \textit{velocity} is based on past steps, and the update will step in the \textit{velocities'} direction, not the current \textit{gradient}. More detail on \textit{momentum} can be found in \citeauthor{pmlr-v28-sutskever13}\cite{pmlr-v28-sutskever13}.
