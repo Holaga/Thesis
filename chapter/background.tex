@@ -138,10 +138,10 @@
     \subsection{Perceptron} \label{perceptron}
         The \gls{ann}s fundamental building block is called an artificial \textit{neuron} or \textit{perceptron}. It consists of a linear regression with the tunable parameters $w$ and $b$ inside a non-linear activation function, explained later in \ref{activation function}. The perceptron is formulated in the following way\cite{razavi2021deep_exp_per}:
             \begin{equation} \label{eq_perceptron}
-                y = \sigma(\sum_{i=1}^{D}w_ix_i + b)
+                y = g (\sum_{i=1}^{D}w_ix_i + b)
             \end{equation}
             
-        where D is the number dimension of the input space, $x$ is the input vector, $w$ is a set of weights of the same size as $x$, $b$ is the bias, and {\textsigma} is the activation function. The single output value \textit{y}, also called the neurons' \textit{activation}, is a weighted sum of the input and weights plus the bias, transformed by the activation function. The perceptron is illustrated in figure \ref{Perceptron / MLP}.
+        where D is the number dimension of the input space, $x$ is the input vector, $w$ is a set of weights of the same size as $x$, $b$ is the bias, and $g$ is the activation function. The single output value \textit{y}, also called the neurons' \textit{activation}, is a weighted sum of the input and weights plus the bias, transformed by the activation function. The perceptron is illustrated in figure \ref{Perceptron / MLP}.
     
     \subsection{Multi-Layered Perceptron} \label{MLP}
         The neurons presented in section \ref{perceptron} are organized together in layers to form an \gls{ann}, which in turn forms what is called a \gls{mlp} \cite{razavi2021deep_exp_per}. If all neurons in each layer are connected to every neuron in the next layer, they form a type of \gls{ann} called \textit{fully connected} networks. An \gls{mlp} is depicted in figure \ref{Perceptron / MLP}.
@@ -165,9 +165,9 @@
         The \textit{architecture} of any \gls{ann} consists of an input layer, a user-defined number of \textit{hidden layers}, and finally, an output layer\cite{razavi2021deep_exp_per}. More hidden layers form a \textit{deeper} network, hence the name deep learning. An \gls{mlp} is a type of network called a \textit{feed-forward} \gls{ann} because the data flow from the input to the output layer, and each layer is a function of the previous layer. During training, the weights between every neuron and the bias are optimized in a process that is  further explained in section \ref{training neural networks}. In the MLP depicted in \ref{Perceptron / MLP}, different neurons will activate with varying strengths depending on the input, resulting in different outputs. The architecture of the \gls{mlp} in figure \ref{Perceptron / MLP} can be expressed as\cite{Goodfellow-et-al-2016}:
         %Goodfellow-et-al-2016_architecture
         \begin{align}\label{mlp outputlayer eq}
-            \textbf{h}^{(1)} &= \sigma^{(1)}(\textbf{W}^{(1)T}\textbf{x} + \textbf{b}^{(1)})\\
-            \textbf{h}^{(2)} &= \sigma^{(2)}(\textbf{W}^{(2)T}\textbf{h}^{(1)} + \textbf{b}^{(2)})\\
-            \hat{\textbf{y}} &= \sigma^{(3)}(\textbf{W}^{(3)T}\textbf{h}^{(2)} + \textbf{b}^{(3)})
+            \textbf{h}^{(1)} &= g^{(1)}(\textbf{W}^{(1)T}\textbf{x} + \textbf{b}^{(1)})\\
+            \textbf{h}^{(2)} &= g^{(2)}(\textbf{W}^{(2)T}\textbf{h}^{(1)} + \textbf{b}^{(2)})\\
+            \hat{\textbf{y}} &= g^{(3)}(\textbf{W}^{(3)T}\textbf{h}^{(2)} + \textbf{b}^{(3)})
         \end{align}
 
         
@@ -187,15 +187,15 @@
         
     \subsection{Activation Function} \label{activation function}
     %Goodfellow-et-al-2016_out_activation
-        The activation function enables \gls{ann}s to learn non-linear features \cite{razavi2021deep_exp_per}. It is needed because a network consisting of only linear layers will be the same as a single linear layer\cite{razavi2021deep_exp_per}. Hence, it won't be able to capture non-linearities in the data, and therefore an activation function is required in the hidden layers. Some activation functions can also be applied to the network's output to solve the task the network is set to perform and must be suited for the task at hand \cite{Goodfellow-et-al-2016}. The activation function commonly used in the hidden layers is ReLU, which stands for \textit{rectified linear unit}\cite{sharma2019new_activation_func}. ReLU takes a real number as input and outputs this number if it is above zero,  otherwise, it will output zero. Letting $\sigma$ denote the activation function, and $x$ the input, the ReLU activation function can be formulated as follows:
+        The activation function enables \gls{ann}s to learn non-linear features \cite{razavi2021deep_exp_per}. It is needed because a network consisting of only linear layers will be the same as a single linear layer\cite{razavi2021deep_exp_per}. Hence, it won't be able to capture non-linearities in the data, and therefore an activation function is required in the hidden layers. Some activation functions can also be applied to the network's output to solve the task the network is set to perform and must be suited for the task at hand \cite{Goodfellow-et-al-2016}. The activation function commonly used in the hidden layers is ReLU, which stands for \textit{rectified linear unit}\cite{sharma2019new_activation_func}. ReLU takes a real number as input and outputs this number if it is above zero,  otherwise, it will output zero. Letting $g$ denote the activation function, and $x$ the input, the ReLU activation function can be formulated as follows:
             \begin{equation} \label{relu_eq}
-                \sigma(x) = max(0,x)
+                g(x) = max(0,x)
             \end{equation}
         ReLU is also visualized in figure \ref{activation_fig}. ReLU activate some neurons to propagate their input while preventing others from doing so. This can result in greater efficiency and faster training, as not all neurons are active, further detailed in \citeauthor{sharma2019new_activation_func}\cite{sharma2019new_activation_func}. 
         
         Another activation function is the logistic sigmoid that transforms all input values to values in the range [0…1].\cite{sharma2019new_activation_func}. It could be applied to the output layer to solve binary classification problems, as the values can be treated as probabilities. The formula for logistic sigmoid is:
             \begin{equation} \label{sigmoid_eq}
-                \sigma(x) = \dfrac{1}{1 + e^{-x}} 
+                g(x) = \dfrac{1}{1 + e^{-x}} 
             \end{equation}
             
             \begin{figure}[H]
@@ -209,10 +209,10 @@
     \subsubsection{The Softmax Function}
         The \textit{softmax} can be viewed as a multivariate version of the logistic sigmoid activation function, which allows the softmax to be applied to problems containing multiple classes\cite{sharma2019new_activation_func}. For all data points, it calculates the probability of every class and can be expressed as:
         \begin{equation}
-            \sigma(\textbf{x})_{j} = \dfrac{e^{x_{j}}}{\sum^{K}_{k=1}e^{x_{k}}} \textrm{ for j = 1,...,K.}
+            g(\textbf{x})_{j} = \dfrac{e^{x_{j}}}{\sum^{K}_{k=1}e^{x_{k}}} \textrm{ for j = 1,...,K.}
         \end{equation}
         
-        where K is the number of classes, and the output summarizes to 1 over all classes. For a network solving multiclass classification, the output layer will have size equal to K. This corresponds to 3 classes in figure \ref{Perceptron / MLP}. The \textit{softmax} would then be used as the last transformation ($\sigma^{(3)}$ in equation \ref{mlp outputlayer eq}) and output the probability of an input belonging to each of the three classes.
+        where K is the number of classes, and the output summarizes to 1 over all classes. For a network solving multiclass classification, the output layer will have size equal to K. This corresponds to 3 classes in figure \ref{Perceptron / MLP}. The \textit{softmax} would then be used as the last transformation ($g^{(3)}$ in equation \ref{mlp outputlayer eq}) and output the probability of an input belonging to each of the three classes.
         
 \subsection{Convolutional Neural Network} \label{cnn}
     The \gls{cnn} is a type of \gls{ann}s primarily used in machine learning tasks concerning images\cite{o2015introduction_convolutions}. One of the reasons why the \gls{cnn} emerged was because images input to a regular \gls{ann} produces a large number of learnable parameters. For example, a low-resolution image with $512\times512$ pixels passed to an hidden layer containing only one neuron would have $1\times512\times512 = 262144$ weights alone.  To solve this issue and have fewer learnable parameters, the modern \gls{cnn} is built around three main components\cite{o2015introduction_convolutions}; a \textit{convolutional layer}, a \textit{pooling layer}, and a \textit{fully-connected layer}. An example \gls{cnn} is illustrated in figure \ref{convolutional_neural_network_fig}, and each main component will be explained later in this section.
