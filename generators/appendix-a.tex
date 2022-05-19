@@ -1,4 +1,19 @@
-\chapter{Tools used}
+\chapter{Tools used} \label{appendix:tools used}
+
+%    \section{The CRIMAC-Pipeline}
+%        Based on the work performed by \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic}, a pipeline for classifying the acoustic backscatter was created under \gls{imr}s project \gls{crimac}\cite{crimac_pipeline} and could process the data (.raw) and annotations from the operators (.work) into a format able to be used by Python libraries. The pipeline could be run as one whole module to get the predictions from the .raw data directly, or submodules of the pipeline (illustrated in figure \ref{Module_overview_fig}) could be accessed and run separately. Most of the outputs from modules in the pipeline are of the \textit{zarr} format. This format stems from the Python Zarr package (described in appendix \ref{Zarr}), which facilitates NumPy array loading and operations on data that is too large to be loaded completely in computer memory. This section will describe the function of each module used in this thesis.
+        
+
+
+%            \begin{description}
+%             \item[$\bullet$ CRIMAC/Preprocessor:] Preprocesses the \textit{.raw} and \textit{.work} to respectively \textit{.zarr} and \textit{.parquet} files. The output \textit{.zarr} file contained several measurements from the trawl missions, like location, echograms (\gls{sv}), and temperature. The data extracted for this thesis was the \gls{sv} data and was represented as a multidimensional array of size $frequency \times ping \times range$ in the  \textit{.zarr} format (Range is equivalent to depth in the water from the transducer).  The .parquet file acts as bitmaps for each class, but the current version of this module was incompatible with .zarr, and could not produce this file. The solution to this problem is described in section \ref{Pseudo label}. The output \gls{sv} file is illustrated in figure \ref{Module_outputs_illustration_fig}:
+                %As the ping rate was set to 1Hz\cite{choi2021semi}, with a pulse duration of 1.024 milliseconds, the length of each pixel is 1 second horizontally and 19.2 centimeters vertically.
+                
+%              \item[$\bullet$ Pretrained CRIMAC/U-Net:] Using a pretrained U-Net model, it produces a segmentation map of spatial size $class \times ping \times range$ (\textit{The pixel maps are illustrated in figure \ref{Module_outputs_illustration_fig}}). Output classes were \textit{sandeel}, \textit{other}, and \textit{background}. The \textit{ignore} class is excluded. By changing the settings, we have the option to train a new U-Net model with the same scheme setup in \citeauthor{brautaset2020acoustic}, but it was incompatible with the \textit{.zarr} format and could not be used.
+              
+%              \item[$\bullet$ CRIMAC/Bottom detection:] Identifies the bottom and generates a binary pixel-based map stored as \textit{.zarr}. This is a 2D array of size $ping \times range$. The output is shown in figure \ref{Module_outputs_illustration_fig}:
+
+%            \end{description}
 
     \section{Windows Azure} \label{Windows Azure}
         Windows Azure \cite{azure} is a platform owned by Microsoft that provides cloud solutions for several services. It was used to access the remote storage provided by the \gls{imr} and mount this to a local computer. Thus enabling the downloading of the data for this thesis from \gls{imr}s server. 
