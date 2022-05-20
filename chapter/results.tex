@@ -21,10 +21,10 @@ This chapter will first describe the monitoring and evaluation of the training p
         
         \begin{figure}[H]
             \centering
-            \subfloat[\centering The logged loss. loss.]{{\includesvg[inkscapelatex=false,width=6cm]{figures/Loss_val_train.svg} }}%
+            \subfloat[\centering The logged loss.]{{\includesvg[inkscapelatex=false,width=6cm]{figures/Loss_val_train.svg} }}%
             \qquad
             \subfloat[\centering The logged F1-score.]{{\includesvg[inkscapelatex=false,width=6cm]{figures/F1_score_per_5.svg} }}%
-            \caption[Loss and F1 score during training]{The F1-score and loss for both training and validation. The validation loss was calculated less often, resulting in more significant jumps in value. The training and validation F1-score on the final validation data were respectively 0.63 and 0.64.}%
+            \caption[Loss and F1 score during training]{The F1-score and loss for both training and validation. The validation loss was calculated less often and instanciated as 0, resulting in more significant jumps in value and its low initial value. The training and validation F1-score on the final validation data were respectively 0.63 and 0.64.}%
             \label{loss_f1_duo_plot_fig}%
         \end{figure}
             %\includegraphics[width=5cm]{figures/Loss_val_train.png} 
@@ -83,7 +83,7 @@ Figure \ref{increasing_freq_f1_score_fig} illustrate the exact frequencies contr
             \label{increasing_freq_f1_score_fig}
         \end{figure}
 
-    The exact frequencies contributing to the max performing subsets are visualized for precision in figure \ref{increasing_freq_precision_score_fig}. It follows the same trend as seen in figure \ref{increasing_freq_f1_score_fig} for F1-score.
+    The exact frequencies contributing to the max performing subsets are visualized for precision in figure \ref{increasing_freq_precision_score_fig}. It follows the same trend as seen in figure \ref{increasing_freq_f1_score_fig} for F1-score but with lower scores.
 
         % Precision
         \begin{figure}[H]
@@ -97,7 +97,7 @@ Figure \ref{increasing_freq_f1_score_fig} illustrate the exact frequencies contr
             \label{increasing_freq_precision_score_fig}
         \end{figure}
         
-    The exact frequencies contributing to the max performing subsets are visualized for recall in figure \ref{increasing_freq_recall_score_fig}. It reaches high values of recall at a subsets size of two, which faster than both F1-score and recall. Recall is also always higher than precision for all subsets sizes, showing that recall plays the most significant role in the F1-score.
+    The exact frequencies contributing to the max performing subsets are visualized for recall in figure \ref{increasing_freq_recall_score_fig}. It reaches high values of recall at a subsets size of two. Recall is also always higher than precision for all subsets sizes, showing that recall plays the most significant role in the F1-score.
     
     
         %\clearpage
@@ -121,12 +121,12 @@ Figure \ref{increasing_freq_f1_score_fig} illustrate the exact frequencies contr
             %\includesvg[inkscapelatex=false,width=1\textwidth,keepaspectratio]{figures/all_combinations.svg}
             %\hspace*{-2.0cm}
             \input{figures/all_combinations.pgf}            
-            \caption[Error bars per combination]{Each colored error bar represents a frequency subset. The error bars color in this figure are purely meant to distinguish the error bars from each other. The error bar's highest y-value is the max value achieved for this subset from all ten tests, and the bottom is the lowest. Blue vertical lines group the error bars by the size of the subset and the black dots are the mean performance of the subset. A red ring encompasses the subsets 18kHz, 38kHz, and 200kHz.}
+            \caption[Error bars per combination]{Each error bar represents a frequency subset. The error bar's highest y-value is the max value achieved for this subset during all ten tests, and the bottom is the lowest. Blue vertical lines group the error bars by the size of the subset and the black dots are the mean performance of the subset. A red ring encompasses the subsets 18kHz, 38kHz, and 200kHz.}
           	\medskip 
             \label{errorbar_fig}
         \end{figure}
     
-        To further analyze the performance of the unique subset \textit{18kHz}, \textit{38kHz}, and \textit{200kHz}, two new subsets of results were created. The first with subsets that, at a minimum, contained the aforementioned frequencies. These subsets were then removed from the initial results, and then the eight best performing from this set were extracted. Both of these subsets are visualized in figure \ref{with_without_figure} and show that all the highest performing subsets include the frequencies \textit{18kHz}, \textit{38kHz}, and \textit{200kHz}.
+        To further analyze the performance of the unique subset \textit{18kHz}, \textit{38kHz}, and \textit{200kHz}, two new subsets based on the results were created. The first with subsets that, at a minimum, contained the aforementioned frequencies (eight in total). These subsets were then removed from the initial results, and then the eight best performing from this set were extracted. Both of these subsets are visualized in figure \ref{with_without_figure} and show that all the highest performing subsets include the frequencies \textit{18kHz}, \textit{38kHz}, and \textit{200kHz}.
         
         \begin{figure}[H]
             \centering
@@ -140,14 +140,16 @@ Figure \ref{increasing_freq_f1_score_fig} illustrate the exact frequencies contr
         
         
     \subsection{Performance Trend per Frequency}
-        In this section, the performance trend for each frequency is visualized. For each frequency, all subsets it was part of were extracted and then sorted in increasing order of mean F1-score, and visualized in figure \ref{performance_trend_fig}. 
+        In this section, the performance trend for each frequency is visualized. For each frequency, all subsets it was part of were extracted and then sorted in increasing order of mean F1-score. Each frequency trend is visualized in figure \ref{performance_trend_fig}. From right to left, the plot shows that \textit{18kHz}, \textit{38kHz}, and \textit{200kHz} all are part of many combinations with high F1-scores. The remaining frequencies quickly fall in performance. Furthermore, of all frequencies, the line associated with 18kHz have the highest overall trend regarding F1-score. Which is the opposite for 120kHz which have the worst performance trend, followed closely by 70kHz.
+        
+        
         
         \begin{figure}[H]
             \centering
             %\includegraphics[scale=0.7]{figures/perfomance_trend.png}
             %\includesvg[inkscapelatex=false,width=0.9\textwidth,keepaspectratio]{figures/perfomance_trend.svg}
             \input{figures/perfomance_trend.pgf}
-            \caption[Performance trend per frequency]{This figure illustrates the performance trend of each frequency. From right to left, the plot shows that \textit{18kHz}, \textit{38kHz}, and \textit{200kHz} all are part of many combinations with high F1-scores, as seen earlier in figure \ref{increasing_freq_f1_score_fig}. The remaining frequencies quickly fall in performance, most likely due to not being paired with the three previously mentioned. Looking further to the left, \textit{18kHz} seems to have participated in many combinations on average, resulting in high F1-scores, followed closely by \textit{200kHz}.}
+            \caption[Performance trend per frequency]{This figure illustrates the performance trend of each frequency. For each frequency (color above), all subsets that contain that frequency were extracted from the results and sorted in increasing order of mean F1-score, then visualized. A total of 32 subsets for each frequency. When lines merge they achieved the same F1-score, but may not represent the same subset.}
           	\medskip 
             \label{performance_trend_fig}
         \end{figure}

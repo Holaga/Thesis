@@ -448,6 +448,8 @@
             \textrm{\textit{F1-score}} = 2 \cdot \dfrac{\textrm{\textit{precision}} \cdot \textrm{\textit{recall}}}{\textrm{\textit{precision}} + \textrm{\textit{recall}}}
         \end{equation}
         
+        
+        
     \subsection{Train-Validation-Test Split}
         When a machine learning model is learning, the goal is to achieve the lowest \textit{generalization error}. This means to not only perform well on data seen during training, but also on new unseen data. To measure this error, it is normal to split our data into three parts: the \textit{training}, \textit{validation}, and \textit{test} dataset, and we measure some error or metric on each. As the name suggests, the training data is used during the training process of the model. The validation dataset is extracted from the training dataset and gives an unbiased estimate of the models' performance and can be used to guide the training process. The last mentioned could be to select the best model from a selection of many. Finally, the test dataset is used to get an unbiased estimate of the final model's \textit{generalization error}\cite{Goodfellow-et-al-2016}.
         %Goodfellow-et-al-2016_generalization
@@ -527,7 +529,7 @@
     
     In the expanding path, the previous stage's output was concatenated with a crop from the output feature map of a stage from the contracting path with the same channel size, the cropping is due to different resolutions. This step allows the following expanding convolutional operation to access both the high-resolution feature map from the contracting path and the upsampled feature map, which in combination helps with the localization of features\cite{unet_ronneberger2015}. 
 
-    At the final layer in the expanding path, a 1×1 convolution maps the 64 feature channels to the two classes. Finally, the softmax was then calculated between these classes, giving each pixel a probability distribution over the classes, with one channel for each class. Hence, giving us a segmentation map\cite{unet_ronneberger2015}.
+    At the final layer in the expanding path, a 1×1 convolution maps the 64 feature channels to the user defined number of classes, which is two classes in figure \ref{unet_fig}. Finally, the softmax was then calculated between these classes, giving each pixel a probability distribution over the classes, with one channel for each class. Hence, giving us a segmentation map\cite{unet_ronneberger2015}.
     
     %Hence, these layers increase the resolution of the output. In order to localize, high resolution features from the contracting path are combined with the upsampled output. A successive convolution layer can then learn to assemble a more precise output based on this information.
     
