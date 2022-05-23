@@ -6,9 +6,9 @@
 \section{Acoustics}\label{acoustics}
     %When fisheries conduct acoustic surveys of fish, they use \textit{echo sounders} to remotely detect and observe targets in the water. Echo sounders are a special variety of \textit{sonar}, where the acoustic beam is directed vertically downwards from the measuring platform. 
     
-    The echo sounder consists of a \textit{transmitter} that produces a burst of electrical energy at some set frequency. Then a \textit{transducer} receives the output from the transmitter and converts it to an acoustic signal that is propagated through the water, which is also called a \textit{ping}. This forms a directional beam akin to the light from a handheld flashlight. Targets in the water \textit{backscatter}/\textit{reflect} parts of the energy back towards the transducer. The transducer detects the backscattered sound or \textit{echo}, and the sound is converted back to electric energy as the received signal and is further amplified. The time when the signal is received determines the range to the target\cite{simmonds2008fisheries}.
+    The echo sounder consists of a \textit{transmitter} that produces a burst of electrical energy at some set frequency. Then a \textit{transducer} receives the output from the transmitter and converts it to an acoustic signal that is propagated through the water, which is also called a \textit{ping}. This forms a directional beam akin to the light from a handheld flashlight. Targets in the water \textit{backscatter}/\textit{reflect} parts of the energy back towards the transducer. The transducer detects the backscattered sound or \textit{echo}, and the sound is converted back to electric energy as the received signal and is further amplified. The time when the signal is received determines the range to the target \cite{simmonds2008fisheries}.
     
-    Pings are usually represented as columns in a 2-dimensional image, also called an \textit{echogram}, with range along the y-axis and time of ping along the x-axis. The columns represent how the acoustic reflections vary for each ping. Any targets detected in the ping will be visualized as a mark in the echogram, usually with different colors depending on the echo strength. In multi-frequency sonars, individual echograms are produced in parallel for each frequency in use, and this is visualized in figure \ref{echogram_example_fig}. Because the echograms are constructed as $\text{time} \times \text{range}$, the vertical magnitude of a mark indicates the height of the target. At the same time,  the horizontal position illustrates changes in \textit{time} if the echosounder is stationary or in \textit{space} if moving. When moving, the echogram thus represents a vertical cross-section of the water column as the transducer is in motion through the water at constant speed in one direction\cite{simmonds2008fisheries}.
+    Pings are usually represented as columns in a 2-dimensional image, also called an \textit{echogram}, with range along the y-axis and time of ping along the x-axis. The columns represent how the acoustic reflections vary for each ping. Any targets detected in the ping will be visualized as a mark in the echogram, usually with different colors depending on the echo strength. In multi-frequency sonars, individual echograms are produced in parallel for each frequency in use, and this is visualized in figure \ref{echogram_example_fig}. Because the echograms are constructed as $\text{time} \times \text{range}$, the vertical magnitude of a mark indicates the height of the target. At the same time,  the horizontal position illustrates changes in \textit{time} if the echosounder is stationary or in \textit{space} if moving. When moving, the echogram thus represents a vertical cross-section of the water column as the transducer is in motion through the water at constant speed in one direction \cite{simmonds2008fisheries}.
     
     %If the echosounder was stationary, the echogram would be a time-series representation of the same volume. Combined with trawl samples and knowledge of species composition, the mark can be assigned to a specific or group of species.
     
@@ -31,17 +31,22 @@
 %\subsection{Acoustic Propagation and Noise}
     
 \subsection{Acoustics and Fish}
-    To measure the force of backscattered sound received from a target, the backscattered cross-section or the \gls{ts} is used. They are defined as:
+    To measure the force of backscattered sound received from a target, the backscattered cross-section $\sigma_{bs}$ or the \gls{ts} is used. They are defined as:
     
-    \begin{equation}
-        \sigma_{bs} = r^{2}\frac{I_{b}}{I_{i}},
-    \end{equation}
+%    \begin{equation}
+%        \sigma_{bs} = %r^{2}\frac{I_{b}10^{\alpha r/ %10}}{I_{i}},
+%    \end{equation}
+    
+      \begin{equation}        
+       \sigma_{bs} = r^{2}\frac{I_{b}}{I_{i}},
+   \end{equation}
     
 
     \begin{equation}
         \textrm{TS} = 10 \log_{10}(\sigma_{bs}),
     \end{equation}
-    where $I_{b}$ is sound intensity backscattered from the target, $I_{i}$ is the intensity of the ping at some arbitrary distance (usually 1m), and \textit{r} is the distance away from the transducer($\sigma_{bs}$ in units $m^{2}$). $\sigma_{bs}$ can vary greatly depending on the frequency used, the composition, angle and shape of the target, and several other factors as described in \citet{simmonds2008fisheries}. 
+    where $I_{b}$ is sound intensity backscattered from the target, $I_{i}$ is the intensity of the ping at some arbitrary distance (usually 1m), and \textit{r} is the distance away from the transducer($\sigma_{bs}$ in units $m^{2}$). $\sigma_{bs}$ can vary greatly depending on the frequency used, the composition, angle and shape of the target, absorption through sound being converted to heat, and several other factors as described in \citet{simmonds2008fisheries}. 
+%$\alpha$ is the acoustic absorption coefficient,
 
 \subsection{The Volume Backscattering Coefficient}
     Individual targets in some sampled volume may be small and plentiful, resulting in their echoes combining and forming a continuous backscattered signal with varying amplitude. Single targets are no longer possible to distinguish, but the signal itself is a measure of the biomass in the water column. This is measured using the \gls{sv}, defined as:
@@ -50,8 +55,8 @@
         s_{v} = \sum \sigma_{bs} / V_{0},
     \end{equation}
     
-    where a sum over all discrete targets returning echoes in the sampled volume ($V_{0}$) is taken. There is a linear relationship between the abundance of fish and \gls{sv} as long as the species or group of species is known. For more details, see \citet{simmonds2008fisheries}.
-
+    where a sum over all discrete targets returning echoes in the sampled volume ($V_{0}$) is taken. There is a linear relationship between the abundance of fish and \gls{sv} as long as the species or group of species is known. Furthermore, it is important to exclude the bottom echo when fish are being surveyed. As some fish like the sandeel may be found in schools close to the bottom, and if the discrimination of the bottom is poor, there will be large errors in the estimated fish density. For more details on \gls{sv} and bottom detection, see \citet{simmonds2008fisheries}.
+    
 %    Hei,
 %Det finnes en del på dette (se under). Vi bruker 200 kHz når vi finner stimer, men vi %ser at 18KHz og 38 KhZ er viktige for klassifiseringen. 
 %
@@ -113,30 +118,30 @@
 
 
 \section{Machine Learning} \label{Machine Learning}
-    Machine learning can be split into four parts; the \textit{algorithm}, \textit{empirical data}, a \textit{task}, and a \textit{performance} measure\cite{Goodfellow-et-al-2016}. A machine learning algorithm is designed to increase performance on a task, given data. During this process, also called \textit{training}, the algorithm is said to be \textit{learning} by fitting a \textit{model} to the data. The two machine learning approaches used in this thesis are supervised learning and unsupervised\cite{Goodfellow-et-al-2016}. 
+    Machine learning can be split into four parts; the \textit{algorithm}, \textit{empirical data}, a \textit{task}, and a \textit{performance} measure \cite{Goodfellow-et-al-2016}. A machine learning algorithm is designed to increase performance on a task, given data. During this process, also called \textit{training}, the algorithm is said to be \textit{learning} by fitting a \textit{model} to the data. The two machine learning approaches used in this thesis are supervised learning and unsupervised\cite{Goodfellow-et-al-2016}. 
     %Goodfellow-et-al-2016_ML
     %Goodfellow-et-al-2016_E
     
     \subsection{Algorithm approaches} \label{Algorithm types}
         \subsection{Supervised learning}
-            Supervised learning  algorithms are defined by the data consisting of an input and the desired output\cite{Goodfellow-et-al-2016}. The algorithm will have to learn a function, mapping from input to correct output. In classification problems, the output would be a class label, for example, classifying pictures of cats from other animals. While in regression problems, the output is a value within a numerical range. For example, predicting the height of a person.
+            Supervised learning  algorithms are defined by the data consisting of an input and the desired output \cite{Goodfellow-et-al-2016}. The algorithm will have to learn a function, mapping from input to correct output. In classification problems, the output would be a class label, for example, classifying pictures of cats from other animals. While in regression problems, the output is a value within a numerical range. For example, predicting the height of a person.
             %Goodfellow-et-al-2016_E
             
         \subsection{Unsupervised Learning}
-            Unlike supervised learning, unsupervised learning algorithms only receive the input and learn properties contained in the data\cite{Goodfellow-et-al-2016}. A practical example is clustering, where the samples in a dataset are divided into clusters of similar properties. 
+            Unlike supervised learning, unsupervised learning algorithms only receive the input and learn properties contained in the data \cite{Goodfellow-et-al-2016}. A practical example is clustering, where the samples in a dataset are divided into clusters of similar properties. 
                 %Goodfellow-et-al-2016_E
         %\subsection{Reinforcement Learning}
             %In reinforcement learning \cite{Goodfellow-et-al-2016_E}, the algorithm does not learn from a given dataset, but acts in an environment. In some cases, this is a feedback loop, giving either a positive or negative reward for performing certain actions. Examples can be seen in the AlphaZero software that beat professional chess players\cite{silver2017mastering}.
     
     \subsection{Data and Features}
-    The quality of the input data to a machine learning algorithm will likely affect its performance\cite{najafabadi2015deep}. Data must be gathered, integrated, cleaned of errors, preprocessed, and features often extracted before being used in learning. Hence, time allocated to prepare and increase the data quality can exceed the time spent learning. The process of extracting features is often referred to as \textit{feature engineering}. It constructs a representation of the data with the most important factors to solve the task. This is often domain specialized and usually requires human involvement. In the next section, \gls{ann} are introduced, which is one avenue within machine learning that can automate the extraction of complicated feature representations during learning.
+    The quality of the input data to a machine learning algorithm will likely affect its performance \cite{najafabadi2015deep}. Data must be gathered, integrated, cleaned of errors, preprocessed, and features often extracted before being used in learning. Hence, time allocated to prepare and increase the data quality can exceed the time spent learning. The process of extracting features is often referred to as \textit{feature engineering}. It constructs a representation of the data with the most important factors to solve the task. This is often domain specialized and usually requires human involvement. In the next section, \gls{ann} are introduced, which is one avenue within machine learning that can automate the extraction of complicated feature representations during learning.
 
 
 \section{Artificial Neural Networks} \label{neural networks}
     This section introduces the basic components of an \gls{ann} and how these are combined to create a \textit{deep learning} network/ model. 
 
     \subsection{Perceptron} \label{perceptron}
-        The \gls{ann}s fundamental building block is called an artificial \textit{neuron} or \textit{perceptron}. It consists of a linear regression with the tunable parameters $w$ and $b$ inside a non-linear activation function, explained later in \ref{activation function}. The perceptron is formulated in the following way\cite{razavi2021deep_exp_per}:
+        The \gls{ann}s fundamental building block is called an artificial \textit{neuron} or \textit{perceptron}. It consists of a linear regression with the tunable parameters $w$ and $b$ inside a non-linear activation function, explained later in section \ref{activation function}. The perceptron is formulated in the following way \cite{razavi2021deep_exp_per}:
             \begin{equation} \label{eq_perceptron}
                 y = g (\sum_{i=1}^{D}w_ix_i + b)
             \end{equation}
@@ -158,11 +163,11 @@
                 
                 \caption[The perceptron and multi-layer perceptron]{Illustration of a single neuron and a fully connected deep learning network of neurons.}
               	\medskip 
-                \hspace*{15pt}\hbox{\scriptsize Credit: \citeauthor{razavi2021deep_exp_per}\cite{razavi2021deep_exp_per}}
+                \hspace*{15pt}\hbox{\scriptsize Credit: \citeauthor{razavi2021deep_exp_per} \cite{razavi2021deep_exp_per}}
                 \label{Perceptron / MLP}
             \end{figure}
         
-        The \textit{architecture} of any \gls{ann} consists of an input layer, a user-defined number of \textit{hidden layers}, and finally, an output layer\cite{razavi2021deep_exp_per}. More hidden layers form a \textit{deeper} network, hence the name deep learning. An \gls{mlp} is a type of network called a \textit{feed-forward} \gls{ann} because the data flow from the input to the output layer, and each layer is a function of the previous layer. During training, the weights between every neuron and the bias are optimized in a process that is  further explained in section \ref{training neural networks}. In the MLP depicted in \ref{Perceptron / MLP}, different neurons will activate with varying strengths depending on the input, resulting in different outputs. The architecture of the \gls{mlp} in figure \ref{Perceptron / MLP} can be expressed as\cite{Goodfellow-et-al-2016}:
+        The \textit{architecture} of any \gls{ann} consists of an input layer, a user-defined number of \textit{hidden layers}, and finally, an output layer \cite{razavi2021deep_exp_per}. More hidden layers form a \textit{deeper} network, hence the name \textit{deep learning}. An \gls{mlp} is a type of network called a \textit{feed-forward} \gls{ann} because the data flow from the input to the output layer, and each layer is a function of the previous layer. During training, the weights between every neuron and the bias are optimized in a process that is  further explained in section \ref{training neural networks}. In the MLP depicted in figure \ref{Perceptron / MLP}, different neurons will activate with varying strengths depending on the input, resulting in different outputs. The architecture of the \gls{mlp} in figure \ref{Perceptron / MLP} can be expressed as \cite{Goodfellow-et-al-2016}:
         %Goodfellow-et-al-2016_architecture
         \begin{align}\label{mlp outputlayer eq}
             \textbf{h}^{(1)} &= g^{(1)}(\textbf{W}^{(1)T}\textbf{x} + \textbf{b}^{(1)})\\
@@ -182,18 +187,18 @@
 %            \hat{\textbf{y}} = \sigma^{(3)}(\textbf{W}^{(3)T}\textbf{h}^{(2)} + %\textbf{b}^{(3)})
 %        \end{equation}
         
-        where for each layer \textbf{h} is a vector of activations, \textbf{W} is a vector of weights, \textbf{b} is a  vector of \textbf{biases}, and $\hat{\textbf{y}}$ is a vector of outputs. %The activation function $\sigma$ can also vary from layer to layer.
+        where for each layer \textbf{h} is a vector of activations, \textbf{W} is a matrix of weights, \textbf{b} is a  vector of \textbf{biases}, $g$ is an activation function applied element-wise, and $\hat{\textbf{y}}$ is a vector of outputs. %The activation function $\sigma$ can also vary from layer to layer.
         
         
     \subsection{Activation Function} \label{activation function}
     %Goodfellow-et-al-2016_out_activation
-        The activation function enables \gls{ann}s to learn non-linear features \cite{razavi2021deep_exp_per}. It is needed because a network consisting of only linear layers will be the same as a single linear layer\cite{razavi2021deep_exp_per}. Hence, it won't be able to capture non-linearities in the data, and therefore an activation function is required in the hidden layers. Some activation functions can also be applied to the network's output to solve the task the network is set to perform and must be suited for the task at hand \cite{Goodfellow-et-al-2016}. The activation function commonly used in the hidden layers is ReLU, which stands for \textit{rectified linear unit}\cite{sharma2019new_activation_func}. ReLU takes a real number as input and outputs this number if it is above zero,  otherwise, it will output zero. Letting $g$ denote the activation function, and $x$ the input, the ReLU activation function can be formulated as follows:
+        The activation function enables \gls{ann}s to learn non-linear features \cite{razavi2021deep_exp_per}. It is needed because a network consisting of only linear layers will be the same as a single linear layer. Hence, it won't be able to capture non-linearities in the data, and therefore an activation function is required in the hidden layers. Some activation functions can also be applied to the network's output to solve the task the network is set to perform and must be suited for the task at hand \cite{Goodfellow-et-al-2016}. The activation function commonly used in the hidden layers is ReLU, which stands for \textit{rectified linear unit} \cite{sharma2019new_activation_func}. ReLU takes a real number as input and outputs this number if it is above zero,  otherwise, it will output zero. Letting $g$ denote the activation function, and $x$ the input, the ReLU activation function can be formulated as follows:
             \begin{equation} \label{relu_eq}
                 g(x) = max(0,x)
             \end{equation}
-        ReLU is also visualized in figure \ref{activation_fig}. ReLU activate some neurons to propagate their input while preventing others from doing so. This can result in greater efficiency and faster training, as not all neurons are active, further detailed in \citeauthor{sharma2019new_activation_func}\cite{sharma2019new_activation_func}. 
+        ReLU is also visualized in figure \ref{activation_fig}. ReLU activate some neurons to propagate their input while preventing others from doing so. This can result in greater efficiency and faster training, as not all neurons are active, further detailed in \citeauthor{sharma2019new_activation_func} \cite{sharma2019new_activation_func}. 
         
-        Another activation function is the logistic sigmoid that transforms all input values to values in the range [0…1].\cite{sharma2019new_activation_func}. It could be applied to the output layer to solve binary classification problems, as the values can be treated as probabilities. The formula for logistic sigmoid is:
+        Another activation function is the logistic sigmoid that transforms all input values to values in the range [0…1] \cite{sharma2019new_activation_func}. It could be applied to the output layer to solve binary classification problems, as the values can be treated as probabilities. The formula for logistic sigmoid is:
             \begin{equation} \label{sigmoid_eq}
                 g(x) = \dfrac{1}{1 + e^{-x}} 
             \end{equation}
@@ -207,15 +212,15 @@
             \end{figure}
 
     \subsubsection{The Softmax Function}
-        The \textit{softmax} can be viewed as a multivariate version of the logistic sigmoid activation function, which allows the softmax to be applied to problems containing multiple classes\cite{sharma2019new_activation_func}. For all data points, it calculates the probability of every class and can be expressed as:
+        The \textit{softmax} can be viewed as a multivariate version of the logistic sigmoid activation function, which allows the softmax to be applied to problems containing multiple classes \cite{sharma2019new_activation_func}. For all data points, it calculates the probability of every class and can be expressed as:
         \begin{equation}
             g(\textbf{x})_{j} = \dfrac{e^{x_{j}}}{\sum^{K}_{k=1}e^{x_{k}}} \textrm{ for j = 1,...,K.}
         \end{equation}
         
-        where K is the number of classes, and the output summarizes to 1 over all classes. For a network solving multiclass classification, the output layer will have size equal to K. This corresponds to 3 classes in figure \ref{Perceptron / MLP}. The \textit{softmax} would then be used as the last transformation ($g^{(3)}$ in equation \ref{mlp outputlayer eq}) and output the probability of an input belonging to each of the three classes.
+        where K is the number of classes, and the output summarizes to 1 over all classes. For a network solving multiclass classification, the output layer will have size equal to K. This corresponds to 3 classes in figure \ref{Perceptron / MLP}. The \textit{softmax} would then be used as the last transformation (\textit{$g^{(3)}$ in equation \ref{mlp outputlayer eq}}) and output the probability of an input belonging to each of the three classes.
         
 \subsection{Convolutional Neural Network} \label{cnn}
-    The \gls{cnn} is a type of \gls{ann}s primarily used in machine learning tasks concerning images\cite{o2015introduction_convolutions}. One of the reasons why the \gls{cnn} emerged was because images input to a regular \gls{ann} produces a large number of learnable parameters. For example, a low-resolution image with $512\times512$ pixels passed to an hidden layer containing only one neuron would have $1\times512\times512 = 262144$ weights alone.  To solve this issue and have fewer learnable parameters, the modern \gls{cnn} is built around three main components\cite{o2015introduction_convolutions}; a \textit{convolutional layer}, a \textit{pooling layer}, and a \textit{fully-connected layer}. An example \gls{cnn} is illustrated in figure \ref{convolutional_neural_network_fig}, and each main component will be explained later in this section.
+    The \gls{cnn} is a type of \gls{ann}s primarily used in machine learning tasks concerning images \cite{o2015introduction_convolutions}. One of the reasons why the \gls{cnn} emerged was because images input to a regular \gls{ann} produces a large number of learnable parameters. For example, a low-resolution image with $512\times512$ pixels passed to an hidden layer containing only one neuron would have $1\times512\times512 = 262144$ weights alone.  To solve this issue and have fewer learnable parameters, the modern \gls{cnn} is built around three main components \cite{o2015introduction_convolutions}; a \textit{convolutional layer}, a \textit{pooling layer}, and a \textit{fully-connected layer}. An example \gls{cnn} is illustrated in figure \ref{convolutional_neural_network_fig}, and each main component will be explained later in this section.
 
     \begin{figure}[H]
         \centering
@@ -231,7 +236,7 @@
     \subsubsection{Convolutional Layer}
     
     
-     \citeauthor{o2015introduction_convolutions}\cite{o2015introduction_convolutions} describe the convolutional layer as consisting of many learnable multidimensional weight matrices that slide over the input. We will refer to such a matrix as a kernel. The kernel's height and width are parameters defined by the user, but the depth will always be equal to the number of channels in the input. This results in kernels being described only by $height \times width$. The kernel slides over the input, and is applied to different locations of the input, also called the current \textit{receptive field}. A single scalar value is computed when applied, which is the weighted sum of the kernel's weights and the corresponding values in the receptive field. If we have a 2-dimensional image $I(i,j)$ as input, a convolutional operation is expressed as\cite{Goodfellow-et-al-2016}:
+     \citeauthor{o2015introduction_convolutions} \cite{o2015introduction_convolutions} describe the convolutional layer as consisting of many learnable multidimensional weight matrices that slide over the input. We will refer to such a matrix as a \textit{kernel}. The kernel's height and width are parameters defined by the user, but the depth will always be equal to the number of channels in the input. This results in kernels being described only by $height \times width$. The kernel slides over the input, and is applied to different locations of the input, also called the current \textit{receptive field}. A single scalar value is computed when applied, which is the weighted sum of the kernel's weights and the corresponding values in the receptive field. If we have a 2-dimensional image $I(i,j)$ as input, a convolutional operation is expressed as \cite{Goodfellow-et-al-2016}:
      %Goodfellow-et-al-2016_convolution
         \begin{equation}
             (I*K)(i,j) = \sum_{height}\sum_{width}I(i-height,j-width)K(height,width)
@@ -239,7 +244,7 @@
      
      where $*$ is the convolutional operation, \textit{I(i,j)} is the image pixel at \textit{(i,j)}, and \textit{K} is the kernel.
      
-    The output scalar value from the convolutional operation is usually fed through non-linear activation functions like ReLU and then called the \textit{activation}. The sliding operation is based on a value called \textit{stride}, which is the number of horizontal positions to move the kernel in the input between each calculation. Suppose we started from the left, and it is impossible to move horizontally to the right and still fit the kernel inside the input. In this case, the kernel will, if possible, move rows down vertically equal to the stride and then continue horizontally, starting afresh from the left. After sliding over the entire input, a complete 2-dimensional activation map has been created, one such map for each kernel applied. The idea is that each applied kernel will learn to identify different features in the input. An example of a horizontal edge detector can be seen in figure \ref{convolutional_fig}\cite{o2015introduction_convolutions}. 
+    The output scalar value from the convolutional operation is usually fed through non-linear activation functions like ReLU and then called the \textit{activation}. The sliding operation is based on a value called \textit{stride}, which is the number of horizontal positions to move the kernel in the input between each calculation. Suppose we started from the left, and it is impossible to move horizontally to the right and still fit the kernel inside the input. In this case, the kernel will, if possible, move rows down vertically equal to the stride and then continue horizontally, starting afresh from the left. After sliding over the entire input, a complete 2-dimensional activation map has been created, one such map for each kernel applied. The idea is that each applied kernel will learn to identify different features in the input. An example of a horizontal edge detector can be seen in figure \ref{convolutional_fig} \cite{o2015introduction_convolutions}. 
     \begin{figure}[H]
         \centering
                 \includesvg[inkscapelatex=false,width=1\textwidth,keepaspectratio]{figures/convolutions.svg}
@@ -248,24 +253,25 @@
         \label{convolutional_fig}
     \end{figure}
     
-    The receptive field will start as small regions, but as we apply additional convolutional layers, it will have access to increasing context in regard to the input\cite{Goodfellow-et-al-2016}. This is illustrated in figure \ref{receptive_field_fig}, and kernels in early layers learn to identify simple features while later combining these to identify complex features. The kernels utilizes \textit{parameter sharing}, as the same weights are repeatedly used across the input. Furthermore, the kernels are often smaller than the input, resulting in \textit{sparse connections} as opposed to fully connected networks. The parameter sharing results in the \gls{cnn} having another useful attribute called \textit{equivariance}, which means that if the input changes, the output changes in the same way.
-    
- 
-    %which is that the location of the feature in the input is not relevant to a convolutional neural network. %Combined, this creates a layer able to detect features in an input with fewer learnable parameters than a normal \gls{ann}. 
-    
+    The receptive field will start as small regions, but as we apply additional convolutional layers, it will have access to increasing context in regard to the input \cite{Goodfellow-et-al-2016}. This is illustrated in figure \ref{receptive_field_fig}, and kernels in early layers learn to identify simple features while later combining these to identify complex features. The kernels utilizes \textit{parameter sharing}, as the same weights are repeatedly used across the input. Furthermore, the kernels are often smaller than the input, resulting in \textit{sparse connections} as opposed to fully connected networks. The parameter sharing results in the \gls{cnn} having another useful attribute called \textit{equivariance}, which means that if the input changes, the output changes in the same way.
     \begin{figure}[H]
         \centering
         \includesvg[inkscapelatex=false,width=0.9\textwidth,keepaspectratio]{figures/receptive_field_clown.svg}
         
         \caption[Receptive field]{The activation maps from two convolutional layers with 3×3 kernels and stride 1. The first convolution's receptive field is marked as red. On its activation map, a new convolutional layer is applied. Its first receptive field is outlined in green, which translates to a larger area in the input.}
       	\medskip 
-        \hspace*{15pt}\hbox{\scriptsize Credit: Original image by Nick Hobgood\cite{clownfish_image}, used as input picture above (Edited with colored grid).}
+        \hspace*{15pt}\hbox{\scriptsize Credit: Original image by Nick Hobgood \cite{clownfish_image}, used as input picture above (Edited with colored grid).}
         \label{receptive_field_fig}
     \end{figure}
+   The application of \gls{cnn}s on acoustic data can be motivated by the echograms being similar to regular images, but the RGB color channels being replaced with the different frequency channels measured. However, the same object will be represented differently in echograms at varying ranges from the transducer, possibly similar to objects of another class \cite{simmonds2008fisheries}. This likely increases the complexity of target classification in acoustic data, as benefits of equivariance is not as applicable.
+ 
+    %which is that the location of the feature in the input is not relevant to a convolutional neural network. %Combined, this creates a layer able to detect features in an input with fewer learnable parameters than a normal \gls{ann}. 
+    
+
 
     %The complete \textit{convolutional operation} performed by a convolutional layer consists of applying this kernel to the entire input. Producing activations for different regions of the input. This reduces the dimension of the input to a 2D activation output, but you may apply several kernels to increase the channels, as each will create a new 2D channel in the activations. A convolutional operation is often followed up with an element wise nonlinear activation function to its activations, like a ReLu. The kernels will through training learn to detect different features in the input, and so in a \gls{cnn} the first layers will often detect simple features like edges. Later layers will then detect more complex features like cars and houses, combining the activations from different earlier layers. The last layer consists of a \textit{fully connected} layer of regular neurons to determine the output, but implementations of networks with only convolutional operations exists like U-Net which will be described\cite{unet_ronneberger2015} in section \ref{unet} utilizing 1x1 convolutions. A more detailed example can be found in figure \ref{convolutional_fig} which looks at how a convolution with a horizontal edge detecting kernel is applied to a single channel or an equivalent 2D input. 
     
-    Reductions in the spatial size will normally occur with the convolutional operation described in this section, and such operations are called \textit{valid convolutions}\cite{o2015introduction_convolutions}. By applying padding with zeros around the input, we can retain the dimensions of the input. The effect is that more convolutional operations fit in the new padded input, hence an equal output size. This is called the \textit{same convolution}, illustrated in figure \ref{same_convolutional_fig}.
+    Reductions in the spatial size will normally occur with the convolutional operation described in this section, and such operations are called \textit{valid convolutions} \cite{o2015introduction_convolutions}. By applying padding with zeros around the input, we can retain the dimensions of the input. The effect is that more convolutional operations fit in the new padded input, hence an equal output size. This is called the \textit{same convolution}, illustrated in figure \ref{same_convolutional_fig}.
     
     \begin{figure}[H]
         \centering
@@ -275,7 +281,7 @@
         \label{same_convolutional_fig}
     \end{figure}
     
-       The application of \gls{cnn}s on acoustic data can be motivated by the echograms being similar to regular images. However, the same object will be represented differently in echograms at varying ranges from the transducer, possibly similar to objects of another class\cite{simmonds2008fisheries}. This likely increases the complexity of target classification in acoustic data, as parameter sharing is not as applicable.
+
     
 \subsubsection{The Max Pool Layer}
 
@@ -286,7 +292,7 @@
       	\medskip 
         \label{maxpool_fig}
     \end{figure}
-    The max pool layer reduces the \textit{height} and \textit{width} of its input\cite{o2015introduction_convolutions}. Like a convolutional operation, the max pool looks at an input region but instead applies a \textit{max} operation. The pooling kernel size is given in $height \times width$ and is applied individually to each channel of the input. This reduces the height and width but preserves the number of channels. The most common max pool layer is a 2×2 with a stride 2, which decreases the resolution to 25\% of the original size. Alone, the max pool has no learnable parameters and is applied to decrease the computational complexity of the \gls{cnn}.
+    The max pool layer reduces the \textit{height} and \textit{width} of its input \cite{o2015introduction_convolutions}. Like a convolutional operation, the max pool looks at an input region but instead applies a \textit{max} operation. The pooling kernel size is given in $height \times width$ and is applied individually to each channel of the input. This reduces the height and width but preserves the number of channels. The most common max pool layer is a 2×2 with a stride 2, which decreases the resolution to 25\% of the original size. Alone, the max pool has no learnable parameters and is applied to decrease the computational complexity of the \gls{cnn}.
 
 
 \subsubsection{Fully Connected Layer}
@@ -298,7 +304,7 @@
       	\medskip 
         \label{1x1_fig}
     \end{figure}
-    \citeauthor{lin2013network_in_network_1x1}\cite{lin2013network_in_network_1x1} proposed the convolutional layer with kernel size 1×1 and stride 1, followed by an activation function. The 1×1 layer will take the weighted sum along a 1×1 slice through all channels of the input, as illustrated in figure \ref{1x1_fig}. This is equivalent to applying a fully connected layer to the same values. As this preserves the \textit{resolution}, it can be used to alter the depth of the output feature maps by specifying the desired number of kernels. In figure \ref{1x1_fig}, we have only one kernel, but if two were applied instead, the output feature map would have a depth of two. In this work, it is used mainly to map high dimensional feature maps to the desired number of classes.
+    \citeauthor{lin2013network_in_network_1x1} \cite{lin2013network_in_network_1x1} proposed the convolutional layer with kernel size 1×1 and stride 1, followed by an activation function. The 1×1 layer will take the weighted sum along a 1×1 slice through all channels of the input, as illustrated in figure \ref{1x1_fig}. This is equivalent to applying a fully connected layer to the same values. As this preserves the \textit{resolution}, it can be used to alter the depth of the output feature maps by specifying the desired number of kernels. In figure \ref{1x1_fig}, we have only one kernel, but if two were applied instead, the output feature map would have a depth of two. In this work, it is used mainly to map high dimensional feature maps to the desired number of classes.
     
     
     %This is equivalent to the regular hidden layer shown earlier in figure \ref{Perceptron / MLP}, but for one pixel across the channels of the input.
@@ -313,7 +319,7 @@
       	\medskip 
         \label{transposed_conv_fig}
     \end{figure}
-    A transposed convolution is an operation taking an input, and with a kernel similar to that described in \ref{cnn}, but now instead map the input to a higher resolution\cite{dumoulin2016guide_transposed_convolution}. In example figure \ref{transposed_conv_fig}, a 2-dimensional 2×2 input is fed to a transposed convolutional layer with kernel size 2×2. The whole kernel is multiplied element-wise with the input and proceeds to produce values in a temporary matrix initialized with zeros, denoted by empty cells in the figure. We do not use the temporary values in practice, but they are used here to illustrate the intermediate computations. The calculated values in the temporary matrix are situated correctly relative to the input. These temporary matrices are then summed over, producing the output. This operation is repeated for all channels, retaining the depth of the input. 
+    A transposed convolution is an operation taking an input, and with a kernel similar to that described in \ref{cnn}, but now instead map the input to a higher resolution \cite{dumoulin2016guide_transposed_convolution}. In example figure \ref{transposed_conv_fig}, a 2-dimensional 2×2 input is fed to a transposed convolutional layer with kernel size 2×2. The whole kernel is multiplied element-wise with the input and proceeds to produce values in a temporary matrix initialized with zeros, denoted by empty cells in the figure. We do not use the temporary values in practice, but they are used here to illustrate the intermediate computations. The calculated values in the temporary matrix are situated correctly relative to the input. These temporary matrices are then summed over, producing the output. This operation is repeated for all channels, retaining the depth of the input. 
             
 
 
@@ -327,7 +333,7 @@
         \label{segmentation_fig}
     \end{figure}
 
-    Segmentation is a task where the objective is to assign one or several classification masks to the input, usually a picture\cite{He_2017_ICCV_segmentation}. This is further split into two different categories: \textit{semantic} and \textit{instance} segmentation. In semantic segmentation, we assign each pixel in the input to predefined classes. The output would have the same resolution as  the input but with channels equal to the number of classes. A softmax would then be calculated for each pixel across the depth, and the pixel would be assigned to the class with the highest probability. Hence, producing a mask for each class. In instance segmentation, we increase the complexity by applying semantic segmentation while simultaneously assigning a bounding box to each object, as visualized in figure \ref{segmentation_fig}.
+    Segmentation is a task where the objective is to assign one or several classification masks to the input, usually a picture \cite{He_2017_ICCV_segmentation}. This is further split into two different categories: \textit{semantic} and \textit{instance} segmentation. In semantic segmentation, we assign each pixel in the input to predefined classes. The output would have the same resolution as  the input but with channels equal to the number of classes. A softmax would then be calculated for each pixel across the depth, and the pixel would be assigned to the class with the highest probability. Hence, producing a mask for each class. In instance segmentation, we increase the complexity by applying semantic segmentation while simultaneously assigning a bounding box to each object, as visualized in figure \ref{segmentation_fig}.
     
 \section{Training Neural Networks} \label{training neural networks}
     This section will describe the main concepts behind how neural networks are trained to perform on various tasks. 
@@ -335,13 +341,13 @@
 \subsection{Forward-Propagation and The Loss Function}
     %    A \gls{ann} can be  described as an unknown function \textit{\^{f}} that maps an input \textbf{x} to an output \textbf{y}\cite{Goodfellow-et-al-2016_NN}. 
 
-    The objective of an \gls{ann} is to approximate some optimal function \textit{f}, and in this thesis, we focus on classifiers, $\textbf{y} = f(\textbf{x})$, which maps an input \textbf{x} to an output category \textbf{y}. The \gls{ann} approximates this function by defining a mapping, $\textbf{\^{y}} = \hat{f}(\textbf{x},\theta)$, and learns the values of the parameters \textit{$\theta$} (weights and biases) through training using examples. In supervised tasks, the labels instruct the output layer exactly how to perform given the input data. However, the data does not inform the individual \textit{hidden layers} how to behave to produce this desired output. When the data flow through the network using the parameters $\theta$, it produces outputs \textbf{\^{y}}, called the \textit{forward-propagation step}. How the parameters are initialized can heavily affect the training process, and different strategies are further described in \citet{Goodfellow-et-al-2016}. Using a \textit{loss function} to compare the true \textbf{y} values to the estimated values \textbf{\^{y}}, we measure the network's \textit{error}, also called \textit{loss}. The network uses this loss to then alter $\theta$ to best approximate \textit{f}, which will be explained later in section \ref{backpropagation}. In classification tasks, the network is trained to output the probability of each class given an input\cite{ho2019real_weighted_cross_entropy}. We can use a loss function called \textit{weighted cross entropy} to train such a model. This function outputs a loss based on the probabilities, weights classification of certain classes differently, and is often used when dealing with data containing class imbalance as more weight can be applied to the minority class. Expressed as:
+    The objective of an \gls{ann} is to approximate some optimal function \textit{f}, and in this thesis, we focus on classifiers, $\textbf{y} = f(\textbf{x})$, which maps an input \textbf{x} to an output category \textbf{y}. The \gls{ann} approximates this function by defining a mapping, $\textbf{\^{y}} = \hat{f}(\textbf{x},\theta)$, and learns the values of the parameters \textit{$\theta$} (weights and biases) through training using examples. In supervised tasks, the labels instruct the output layer exactly how to perform given the input data. However, the data does not inform the individual \textit{hidden layers} how to behave to produce this desired output. When the data flow through the network using the parameters $\theta$, it produces outputs \textbf{\^{y}}, called the \textit{forward-propagation step}. How the parameters are initialized can heavily affect the training process, and different strategies are further described in \citet{Goodfellow-et-al-2016}. Using a \textit{loss function} to compare the true \textbf{y} values to the estimated values \textbf{\^{y}}, we measure the network's \textit{error}, also called \textit{loss}. The network uses this loss to then alter $\theta$ to best approximate \textit{f}, which will be explained later in section \ref{backpropagation}. In classification tasks, the network is trained to output the probability of each class given an input \cite{ho2019real_weighted_cross_entropy}. We can use a loss function called \textit{weighted cross entropy} to train such a model. This function outputs a loss based on the probabilities, weights classification of certain classes differently, and is often used when dealing with data containing class imbalance as more weight can be applied to the minority class. Expressed as:
     %Goodfellow-et-al-2016_param_init
         \begin{equation} \label{cross_entropy}
             loss(x,y) = - \sum^{n}_{i=1} w_{y_{i}}y_{i}\log(\hat{y_{i}}), \quad \hat{y_{i}} = \hat{f}(x_i,\theta)
         \end{equation}
     
-    where \textit{n} is the number of classes, $y_{i}$ is 1 if the $i^{th}$ class is true (\textit{else 0}), $\hat{y_{i}}$ is the output from the softmax for the $i^{th}$ class, and $w_{y_{i}}$ is the weight of the class to which $y_{i}$ belongs. More examples of loss functions can be viewed in \citeauthor{mishra2017deep}\cite{mishra2017deep}.
+    where \textit{n} is the number of classes, $y_{i}$ is 1 if the $i^{th}$ class is true (\textit{else 0}), $\hat{y_{i}}$ is the output from the softmax for the $i^{th}$ class, and $w_{y_{i}}$ is the weight of the class to which $y_{i}$ belongs. More examples of loss functions can be viewed in \citeauthor{mishra2017deep} \cite{mishra2017deep}.
     
 
 
@@ -354,7 +360,7 @@
     
     Calculating the total loss of the whole dataset is often unfeasible, and depending on the hardware, this could lead to a crash or slow learning due to
     heavy memory demands. A solution is to sample a set of examples, called a \textit{mini-batch}, from the entire dataset, with the intent to approximately estimate
-    the true loss using this smaller fraction of the dataset. Then we update the parameters of our network based on this and repeat on a new batch. This is called mini-batch \textit{\gls{sgd}}, a common \textit{optimization} algorithm\cite{Goodfellow-et-al-2016}. The size of this mini-batch can vary from one example (\textit{also called true \gls{sgd}}) to hundreds, and the size chosen can heavily affect training. When we have run this process on all the data, we say that an \textit{epoch} has passed.\cite{wilson2001need_learning_rate}
+    the true loss using this smaller fraction of the dataset. Then we update the parameters of our network based on this and repeat on a new batch. This is called mini-batch \textit{\gls{sgd}}, a common \textit{optimization} algorithm \cite{Goodfellow-et-al-2016}. The size of this mini-batch can vary from one example (\textit{also called true \gls{sgd}}) to hundreds, and the size chosen can heavily affect training. When we have run this process on all the data, we say that an \textit{epoch} has passed \cite{wilson2001need_learning_rate}.
     %Goodfellow-et-al-2016_SGD
     
     
@@ -369,13 +375,13 @@
     
     
 \subsection{Back-Propagation and Gradient-based Learning}\label{backpropagation}
-    To update the network parameters, we use the loss from a mini-batch and iteratively step back through the layers in a process called \textit{back-propagation}\cite{rumelhart1986learning_backprop}. In each step, we calculate the gradient of the loss functions with respect to the parameters of the current layer by using the chain rule. This is to determine how changes to each parameter will affect the \textit{loss}. Using the gradient, \gls{sgd} performs \textit{gradient descent}\cite{Goodfellow-et-al-2016} by updating all parameters in the opposite direction of the gradient to reduce the loss. In what magnitude a parameter is adjusted by the optimizing algorithm is determined by the \textit{learning rate}, usually a value between 0 and 1. The parameter update is expressed as\cite{pmlr-v37-ioffe15_batch_norm}:
+    To update the network parameters, we use the loss from a mini-batch and iteratively step back through the layers in a process called \textit{back-propagation} \cite{rumelhart1986learning_backprop}. In each step, we calculate the gradient of the loss functions with respect to the parameters of the current layer by using the chain rule. This is to determine how changes to each parameter will affect the \textit{loss}. Using the gradient, \gls{sgd} performs \textit{gradient descent} \cite{Goodfellow-et-al-2016} by updating all parameters in the opposite direction of the gradient to reduce the loss. In what magnitude a parameter is adjusted by the optimizing algorithm is determined by the \textit{learning rate}, usually a value between 0 and 1. The parameter update is expressed as \cite{pmlr-v37-ioffe15_batch_norm}:
     %Goodfellow-et-al-2016_gradient_descent
     \begin{equation}
     \theta^{(j)} \leftarrow \theta^{(j)} - \eta \dfrac{1}{m}\sum_{i=1}^{m} \dfrac{\partial loss (x_i,y_i)}{\partial \theta^{(j)}}
     \end{equation}
     
-    where $\theta$ is the parameters of the network, \textit{m} is the batch size, $\eta$ is the learning rate, and \textit{j} is the layer. In figure \ref{learning_rates} an example loss function is illustrated with one global \textit{loss} minima and different learning rates applied with \gls{sgd}. Low learning rate values usually have a long training time and may cause the \gls{sgd} to converge to a local minima instead of the global\cite{farsal2018deep}. However, too high values can overshoot the global minima and diverge. Both can be prevented by applying a method to adapt the learning rate to the \textit{topography} of the loss function. This thesis applied \textit{momentum}, which only acts as a \textit{velocity} to the update step. The \textit{velocity} is based on past steps, and the update will step in the \textit{velocities'} direction, not the current \textit{gradient}. More detail on \textit{momentum} can be found in \citeauthor{pmlr-v28-sutskever13}\cite{pmlr-v28-sutskever13}.
+    where $\theta$ is the parameters of the network, \textit{m} is the batch size, $\eta$ is the learning rate, and \textit{j} is the layer. In figure \ref{learning_rates} an example loss function is illustrated with one global \textit{loss} minima and different learning rates applied with \gls{sgd}. Low learning rate values usually have a long training time and may cause the \gls{sgd} to converge to a local minima instead of the global \cite{farsal2018deep}. However, too high values can overshoot the global minima and diverge. Both can be prevented by applying a method to adapt the learning rate to the \textit{topography} of the loss function. This thesis applied \textit{momentum}, which only acts as a \textit{velocity} to the update step. The \textit{velocity} is based on past steps, and the update will step in the \textit{velocities'} direction, not the current \textit{gradient}. More detail on \textit{momentum} can be found in \citeauthor{pmlr-v28-sutskever13} \cite{pmlr-v28-sutskever13}.
     
     \begin{figure}[H]
         \centering
@@ -386,7 +392,7 @@
         \label{learning_rates}
     \end{figure}
 
-    In summary, the entire training process using \gls{sgd} can be described as the following algorithm\cite{farsal2018deep}:
+    In summary, the entire training process using \gls{sgd} can be described as the following algorithm \cite{farsal2018deep}:
     
     \begin{longtable}{lllllll} \label{sgd algorithm}\\
     \hline
@@ -415,7 +421,7 @@
     To evaluate a machine learning algorithm, we need a performance measure. First, the \textit{performance metric} itself will be described, followed by a technique applied to make unbiased measures of the model by leaving out parts of the data. Finally, two central challenges that appear in machine learning.
     
     \subsection{Performance Metrics} \label{f1_score}
-        This section describes the performance metrics used in this thesis. Consider a binary classification system that classifies samples into either the \textit{positive} or \textit{negative} class. Predictions by the classifier can thus be sorted into the following four categories\cite{powers2020evaluation_f1_recall_precision}:
+        This section describes the performance metrics used in this thesis. Consider a binary classification system that classifies samples into either the \textit{positive} or \textit{negative} class. Predictions by the classifier can thus be sorted into the following four categories \cite{powers2020evaluation_f1_recall_precision}:
         
         \begin{itemize}
             \item \textbf{True positive (TP):} A correct classification of a positive example.
@@ -424,15 +430,15 @@
             \item \textbf{False negative (FN):} A positive example incorrectly classified as negative.
             \end{itemize}
         
-        We can now calculate the performance of the classifier from these values, and the simplest is accuracy\cite{powers2020evaluation_f1_recall_precision}:
+        We can now calculate the performance of the classifier from these values, and the simplest is accuracy \cite{powers2020evaluation_f1_recall_precision}:
         
         \begin{equation}
             accuracy = \dfrac{\textrm{\textit{correct predictions}}}{\textrm{\textit{total number of predictions}}} = \dfrac{TP+TN}{TP+TN+FP+FN} 
         \end{equation}
         
-        This metric does not handle class imbalance well, as it is equivalent to calculating the percentage of correct predictions\cite{powers2020evaluation_f1_recall_precision}. An example is that if 95\% of the data belongs to one class, then always predicting this class will give us an accuracy of 95\%.
+        This metric does not handle class imbalance well, as it is equivalent to calculating the percentage of correct predictions \cite{powers2020evaluation_f1_recall_precision}. An example is that if 95\% of the data belongs to one class, then always predicting this class will give us an accuracy of 95\%.
         
-        We calculate two new metrics to better deal with class imbalance:  \textit{precision} and \textit{recall}\cite{powers2020evaluation_f1_recall_precision}. Precision is the percentage of positive predictions made by the model that are correct. Recall is the percentage of all positive samples the model managed to classify correctly.
+        We calculate two new metrics to better deal with class imbalance:  \textit{precision} and \textit{recall} \cite{powers2020evaluation_f1_recall_precision}. Precision is the percentage of positive predictions made by the model that are correct. Recall is the percentage of all positive samples the model managed to classify correctly.
         
         \begin{equation}
             \textrm{\textit{precision}} = \dfrac{TP}{TP+FP}
@@ -442,7 +448,7 @@
             \textrm{\textit{recall}} = \dfrac{TP}{TP+FN}
         \end{equation}
         
-        Then, by using precision and recall, we calculate the \textit{F1-score}\cite{powers2020evaluation_f1_recall_precision}. It combines these metrics and is designed to work well on imbalanced data. The F1-score formula: %There are of course many other performance metrics, but this section will be limited to describing those used in the thesis. 
+        Then, by using precision and recall, we calculate the \textit{F1-score} \cite{powers2020evaluation_f1_recall_precision}. It combines these metrics and is designed to work well on imbalanced data. The F1-score formula: %There are of course many other performance metrics, but this section will be limited to describing those used in the thesis. 
         
         \begin{equation}
             \textrm{\textit{F1-score}} = 2 \cdot \dfrac{\textrm{\textit{precision}} \cdot \textrm{\textit{recall}}}{\textrm{\textit{precision}} + \textrm{\textit{recall}}}
@@ -451,12 +457,12 @@
         
         
     \subsection{Train-Validation-Test Split}
-        When a machine learning model is learning, the goal is to achieve the lowest \textit{generalization error}. This means to not only perform well on data seen during training, but also on new unseen data. To measure this error, it is normal to split our data into three parts: the \textit{training}, \textit{validation}, and \textit{test} dataset, and we measure some error or metric on each. As the name suggests, the training data is used during the training process of the model. The validation dataset is extracted from the training dataset and gives an unbiased estimate of the models' performance and can be used to guide the training process. The last mentioned could be to select the best model from a selection of many. Finally, the test dataset is used to get an unbiased estimate of the final model's \textit{generalization error}\cite{Goodfellow-et-al-2016}.
+        When a machine learning model is learning, the goal is to achieve the lowest \textit{generalization error}. This means to not only perform well on data seen during training, but also on new unseen data. To measure this error, it is normal to split our data into three parts: the \textit{training}, \textit{validation}, and \textit{test} dataset, and we measure some error or metric on each. As the name suggests, the training data is used during the training process of the model. The validation dataset is extracted from the training dataset and gives an unbiased estimate of the models' performance and can be used to guide the training process. The last mentioned could be to select the best model from a selection of many. Finally, the test dataset is used to get an unbiased estimate of the final model's \textit{generalization error} \cite{Goodfellow-et-al-2016}.
         %Goodfellow-et-al-2016_generalization
         %Goodfellow-et-al-2016_train_val_test_split
     
     \subsection{Overfitting Vs. Underfitting}
-        A model's performance depends on the difference between its \textit{training} and \textit{test} error. \textit{Underfitting} happens when a model fails to achieve a low training error, while \textit{overfitting} happens when the difference between the test error is significantly lower than the training error. To manipulate this behavior, we adjust the model's \textit{capacity}. Capacity represents the variety of functions the model can learn, and by adjusting it, one can increase and decrease the likelihood of underfitting and overfitting. The capacity can be controlled by, for example, changing the number of layers in a neural network, and further details can be seen in \citeauthor{Goodfellow-et-al-2016}\cite{Goodfellow-et-al-2016}. Low \textit{capacity} means that the model may fail to capture patterns in the data. High \textit{capacity} translates to adjusting to the training data to such an extent that the model performance may be worse when given unseen test data. The optimal solution, depicted in the center plot of figure \ref{over/under fit fig}, is to have a model with a balanced capacity that is as close to the true function as possible\cite{Goodfellow-et-al-2016}. 
+        A model's performance depends on the difference between its \textit{training} and \textit{test} error. \textit{Underfitting} happens when a model fails to achieve a low training error, while \textit{overfitting} happens when the difference between the test error is significantly lower than the training error. To manipulate this behavior, we adjust the model's \textit{capacity}. Capacity represents the variety of functions the model can learn, and by adjusting it, one can increase and decrease the likelihood of underfitting and overfitting. The capacity can be controlled by, for example, changing the number of layers in a neural network, and further details can be seen in \citeauthor{Goodfellow-et-al-2016} \cite{Goodfellow-et-al-2016}. Low \textit{capacity} means that the model may fail to capture patterns in the data. High \textit{capacity} translates to adjusting to the training data to such an extent that the model performance may be worse when given unseen test data. The optimal solution, depicted in the center plot of figure \ref{over/under fit fig}, is to have a model with a balanced capacity that is as close to the true function as possible \cite{Goodfellow-et-al-2016}. 
         
        % \citeauthor{Goodfellow-et-al-2016}\cite{Goodfellow-et-al-2016}
         
@@ -474,10 +480,10 @@
         
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\todo{skrive om hyperparameter?}
 \section{Regularization}
-    Regularization, as described by \citeauthor{kukavcka2017_regularization}\cite{kukavcka2017_regularization}, is any supplemental technique with the goal of increasing the model's generalization performance. Two techniques used in this thesis will be described here; \textit{batch normalization} and \textit{data-augmentation}.
+    Regularization, as described by \citeauthor{kukavcka2017_regularization} \cite{kukavcka2017_regularization}, is any supplemental technique with the goal of increasing the model's generalization performance. Two techniques used in this thesis will be described here; \textit{batch normalization} and \textit{data-augmentation}.
     
 \subsection{Batch-Norm}
-    Batch normalization is a technique applied to reduce what is called \textit{internal covariate shift}\cite{pmlr-v37-ioffe15_batch_norm}. This is defined as the change in the distribution of activations in hidden layers caused by the change in the network's parameters when training. During \textit{backpropagation}, the hidden layers depend on the activations of all layers before them. As each layer changes its output distribution, the other layers must adapt to this change. Research has shown that this slows down and destabilizes the training process, and a solution to this problem is the implementation of \textit{batch normalization}. Using the activations from all the neurons in a hidden layer, a \textit{mean} and \textit{variance} are calculated per mini-batch. These values are then used to normalize the activations of the hidden layer. Each hidden layer is given two additional learnable parameters $\gamma$ and $\beta$, that perform a linear transformation of the normalized activations, defined as such:
+    Batch normalization is a technique applied to reduce what is called \textit{internal covariate shift} \cite{pmlr-v37-ioffe15_batch_norm}. This is defined as the change in the distribution of activations in hidden layers caused by the change in the network's parameters when training. During \textit{backpropagation}, the hidden layers depend on the activations of all layers before them. As each layer changes its output distribution, the other layers must adapt to this change. Research has shown that this slows down and destabilizes the training process, and a solution to this problem is the implementation of \textit{batch normalization}. Using the activations from all the neurons in a hidden layer, a \textit{mean} and \textit{variance} are calculated per mini-batch. These values are then used to normalize the activations of the hidden layer. Each hidden layer is given two additional learnable parameters $\gamma$ and $\beta$, that perform a linear transformation of the normalized activations, defined as such:
     
         \begin{equation} \label{batch_normalization}
             \hat{Z}^{(i)} =   \gamma Z^{(i)}_{norm} + \beta
@@ -488,7 +494,7 @@
     Recently, the poor understanding of batch normalization has come into question, and \citet{batch_norm_not_work} have stressed that more investigation should be put into understanding its effectiveness. Their findings show that it might not stem from internal covariate shift but likely other factors. 
 
 \subsection{Data-Augmentation} \label{data-augmentation}
-     \textit{Data-augmentation} is a regularization method directly applied to the training dataset by applying some transformation\cite{kukavcka2017_regularization}. Several methods are available, but the two used in this work are: \textit{adding noise} and \textit{flipping}. One example of applying noise is to add Gaussian values with a mean of 0 and some user-defined variance to each pixel. This adds more randomness to the data, making the model learn more general features instead of specific. The network is less prone to overfit on certain samples, which in turn might increase generalization performance. Other methods of applying noise are described in \citeauthor{kukavcka2017_regularization}\cite{kukavcka2017_regularization}. Flipping is a simple transformation where we flip the input and label along a particular axis. Thus, mapping the data to a new representation. An example of each method mentioned can be seen in figure \ref{data augmentation fig}:
+     \textit{Data-augmentation} is a regularization method directly applied to the training dataset by applying some transformation \cite{kukavcka2017_regularization}. Several methods are available, but the two used in this work are: \textit{adding noise} and \textit{flipping}. One example of applying noise is to add Gaussian values with a mean of 0 and some user-defined variance to each pixel. This adds more randomness to the data, making the model learn more general features instead of specific. The network is less prone to overfit on certain samples, which in turn might increase generalization performance. Other methods of applying noise are described in \citeauthor{kukavcka2017_regularization} \cite{kukavcka2017_regularization}. Flipping is a simple transformation where we flip the input and label along a particular axis. Thus, mapping the data to a new representation. An example of each method mentioned can be seen in figure \ref{data augmentation fig}:
     % This is an important observation when applying data augmentation, as it can't change the meaning of the data. For example, when classifying numbers in images, rotating an image of the number \textit{9} clockwise 180 degrees will change its representation to now be more similar to a \textit{6}, but the label would still claim it belongs to the class \textit{9}.
     \begin{figure}[H]
         \centering
@@ -503,7 +509,7 @@
         
         \caption[Two data augmentation examples]{Two augmentation methods applied to the same image.}
         \medskip 
-        \hspace*{15pt}\hbox{\scriptsize Credit: Original image (\textit{Both left pictures above}) by Nick Hobgood\cite{clownfish_image}}
+        \hspace*{15pt}\hbox{\scriptsize Credit: Original image (\textit{Both left pictures above}) by Nick Hobgood \cite{clownfish_image}}
         \label{data augmentation fig}
         
         \end{figure}
@@ -511,7 +517,7 @@
 
 \section{U-Net} \label{unet}
 
-    In this section, we introduce the architecture of the model that is the backbone of the work in this thesis. U-Net is a fully convolutional, state-of-the-art\cite{rajak2021segmentation} semantic segmentation \gls{cnn} initially developed for biomedical image analysis by \citeauthor{unet_ronneberger2015}\cite{unet_ronneberger2015}. 
+    In this section, we introduce the architecture of the model that is the backbone of the work in this thesis. U-Net is a fully convolutional, state-of-the-art \cite{rajak2021segmentation} semantic segmentation \gls{cnn} initially developed for biomedical image analysis by \citeauthor{unet_ronneberger2015} \cite{unet_ronneberger2015}. 
     
     \begin{figure}[H]
         \centering
@@ -520,21 +526,21 @@
         \caption[U-Net architecture]{U-Net architecture, the downwards facing arrow illustrates the contracting path and the one facing upwards is the expanding path. The color gets darker as the channels increase.}
       	\medskip 
         \label{unet_fig}
-        \hspace*{15pt}\hbox{\scriptsize Credit: \citeauthor{unet_ronneberger2015}\cite{unet_ronneberger2015}}
+        \hspace*{15pt}\hbox{\scriptsize Credit: \citeauthor{unet_ronneberger2015} \cite{unet_ronneberger2015}}
     \end{figure}
     
     %Each stage applied the same operations to its given input.
     
-    U-Net utilized what \citeauthor{unet_ronneberger2015}\cite{unet_ronneberger2015} called a \textit{contracting path} to identify what was in a picture, while an \textit{expanding path} localized where it was. These two branches were symmetrical, and together they formed a U-shape, giving the network its name. The contracting path can be looked at as five different stages of processing, from top to bottom, in figure \ref{unet_fig}. Each stage consisted of two 3×3 valid convolutions with their individual ReLU activation functions. Initially, the feature channels are increased to 64, and the channels were doubled for each contracting stage. The convolutions were followed by a 2×2 max pooling operation with stride 2 to further decrease the resolution of the output from the convolutional operations and then output a feature map to the next stage. After the bottom stage, the max pool operation is replaced with transpose convolutions to now increase the resolution. At each subsequent stage traveling back up the expanding path, the number of feature channels is halved by the convolutional steps down to 64. 
+    U-Net utilized what \citeauthor{unet_ronneberger2015} \cite{unet_ronneberger2015} called a \textit{contracting path} to identify what was in a picture, while an \textit{expanding path} localized where it was. These two branches were symmetrical, and together they formed a U-shape, giving the network its name. The contracting path can be looked at as five different stages of processing, from top to bottom, in figure \ref{unet_fig}. Each stage consisted of two 3×3 valid convolutions with their individual ReLU activation functions. Initially, the feature channels are increased to 64, and the channels were doubled for each contracting stage. The convolutions were followed by a 2×2 max pooling operation with stride 2 to further decrease the resolution of the output from the convolutional operations and then output a feature map to the next stage. After the bottom stage, the max pool operation is replaced with transpose convolutions to now increase the resolution. At each subsequent stage traveling back up the expanding path, the number of feature channels is halved by the convolutional steps down to 64. 
     
-    In the expanding path, the previous stage's output was concatenated with a crop from the output feature map of a stage from the contracting path with the same channel size, the cropping is due to different resolutions. This step allows the following expanding convolutional operation to access both the high-resolution feature map from the contracting path and the upsampled feature map, which in combination helps with the localization of features\cite{unet_ronneberger2015}. 
+    In the expanding path, the previous stage's output was concatenated with a crop from the output feature map of a stage from the contracting path with the same channel size, the cropping is due to different resolutions. This step allows the following expanding convolutional operation to access both the high-resolution feature map from the contracting path and the upsampled feature map, which in combination helps with the localization of features \cite{unet_ronneberger2015}. 
 
-    At the final layer in the expanding path, a 1×1 convolution maps the 64 feature channels to the user defined number of classes, which is two classes in figure \ref{unet_fig}. Finally, the softmax was then calculated between these classes, giving each pixel a probability distribution over the classes, with one channel for each class. Hence, giving us a segmentation map\cite{unet_ronneberger2015}.
+    At the final layer in the expanding path, a 1×1 convolution maps the 64 feature channels to the user defined number of classes, which is two classes in figure \ref{unet_fig}. Finally, the softmax was then calculated between these classes, giving each pixel a probability distribution over the classes, with one channel for each class. Hence, giving us a segmentation map \cite{unet_ronneberger2015}.
     
     %Hence, these layers increase the resolution of the output. In order to localize, high resolution features from the contracting path are combined with the upsampled output. A successive convolution layer can then learn to assemble a more precise output based on this information.
     
     
-    When released, U-Net outperformed other networks in multiple biomedical challenges\cite{unet_ronneberger2015}. Its performance inspired new models that use the U-Net architecture as their backbone, as seen in NAS-Unet\cite{weng2019unet} in \citeyear{weng2019unet}, and Unet++\cite{zhou2018unet} in \citeyear{zhou2018unet}. U-Net has also been applied successfully  to other fields such as road extraction in satellite images by \citeauthor{zhang2018road}\cite{zhang2018road} in \citeyear{zhang2018road}, and on acoustic classification by \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic} in \citeyear{brautaset2020acoustic}, which will be explained in the following chapter.
+    When released, U-Net outperformed other networks in multiple biomedical challenges \cite{unet_ronneberger2015}. Its performance inspired new models that use the U-Net architecture as their backbone, as seen in NAS-Unet \cite{weng2019unet} in \citeyear{weng2019unet}, and Unet++ \cite{zhou2018unet} in \citeyear{zhou2018unet}. U-Net has also been applied successfully  to other fields such as road extraction in satellite images by \citeauthor{zhang2018road} \cite{zhang2018road} in \citeyear{zhang2018road}, and on acoustic classification by \citeauthor{brautaset2020acoustic} \cite{brautaset2020acoustic} in \citeyear{brautaset2020acoustic}, which will be explained in the following chapter.
     
     %In the field of biomedicine, data are scarce and so heavy use of data augmentation was applied, which made the U-Net able to train on very few samples.
     
