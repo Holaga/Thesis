@@ -55,7 +55,9 @@
         s_{v} = \sum \sigma_{bs} / V_{0},
     \end{equation}
     
-    where a sum over all discrete targets returning echoes in the sampled volume ($V_{0}$) is taken. There is a linear relationship between the abundance of fish and \gls{sv} as long as the species or group of species is known. Furthermore, it is important to exclude the bottom echo when fish are being surveyed. As some fish like the sandeel may be found in schools close to the bottom, and if the discrimination of the bottom is poor, there will be large errors in the estimated fish density. For more details on \gls{sv} and bottom detection, see \citet{simmonds2008fisheries}.
+    where a sum over all discrete targets returning echoes in the sampled volume ($V_{0}$) is taken. There is a linear relationship between the abundance of fish and \gls{sv} as long as the species or group of species is known. For more details on \gls{sv}, see \citet{simmonds2008fisheries}
+    
+    Furthermore, it is important to exclude the bottom echo when fish are being surveyed. As some fish like the sandeel may be found in schools close to the bottom, and if the discrimination of the bottom is poor, there will be large errors in the estimated fish density. For more details on bottom detection and implications, see \citet{simmonds2008fisheries}.
     
 %    Hei,
 %Det finnes en del på dette (se under). Vi bruker 200 kHz når vi finner stimer, men vi %ser at 18KHz og 38 KhZ er viktige for klassifiseringen. 
@@ -546,7 +548,18 @@
     
     %At the last stage, a 1×1 convolution was applied instead of increasing the resolution.
 
+\section{Knowledge Distillation} \label{knowledge distillation}
+    \gls{kd} is a method within deep learning which focuses on transferring the knowledge from one \textit{teacher} network with strong capability to a \textit{student} network. The most common use is to train less complex student models suited to resource-limited platforms like mobile devices. However, \gls{kd} has also been applied to train models equal to or even more complex than the teacher network. \gls{kd} can also be applied to train student models with constrained, additional, or limited data and possibly many teacher networks \cite{abbasi2020modeling}. There have been several approaches within this field, which can be approximately divided into two sub-categories: those that only use the teacher's output labels\footnote{The teachers labels can either be binary classes values called \textit{hard} labels or the class probability distribution from the softmax function called \textit{soft} labels.} as true labels to train the student, and those that extract knowledge from the layers of the teacher and use this during training of the student with or without teacher labels. The various approaches show that student models can achieve the same or even better performance than the teacher, as detailed in  \citet{alkhulaifi2021knowledge}. 
+    
+    
+%     - hardcore - offline
 
+
+% - litt lettere, hard labels
+%    \cite{gou2021knowledge}
+%     - masse arbeider -applications
+    
+%https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8053015/
 
 
 
