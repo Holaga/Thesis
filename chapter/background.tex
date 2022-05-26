@@ -547,9 +547,21 @@
     %In the field of biomedicine, data are scarce and so heavy use of data augmentation was applied, which made the U-Net able to train on very few samples.
     
     %At the last stage, a 1×1 convolution was applied instead of increasing the resolution.
-
+\clearpage
 \section{Knowledge Distillation} \label{knowledge distillation}
-    \gls{kd} is a method within deep learning which focuses on transferring the knowledge from one \textit{teacher} network with strong capability to a \textit{student} network. The most common use is to train less complex student models suited to resource-limited platforms like mobile devices. However, \gls{kd} has also been applied to train models equal to or even more complex than the teacher network. \gls{kd} can also be applied to train student models with constrained, additional, or limited data and possibly many teacher networks \cite{abbasi2020modeling}. There have been several approaches within this field, which can be approximately divided into two sub-categories: those that only use the teacher's output labels\footnote{The teachers labels can either be binary classes values called \textit{hard} labels or the class probability distribution from the softmax function called \textit{soft} labels.} as true labels to train the student, and those that extract knowledge from the layers of the teacher and use this during training of the student with or without teacher labels. The various approaches show that student models can achieve the same or even better performance than the teacher, as detailed in  \citet{alkhulaifi2021knowledge}. 
+    \gls{kd} is a method within deep learning which focuses on transferring the knowledge from one \textit{teacher} network with strong capability to a \textit{student} network. One example of \gls{kd} is using a pretrained teacher network with high performance to label the data, and then we train the student using these labels\footnote{The teachers labels can either be binary classes values called \textit{hard} labels or the class probability distribution from the softmax function called \textit{soft} labels.}. Alternatives have been to extract knowledge from the layers of the teacher and use this during training of the student with or without teacher labels. Generally, the methods are applied in three principal situations \cite{abbasi2020modeling}:
+    \begin{itemize}
+        \item Create a new, less complex model for platforms with computation power limitations.
+        \item Enhance the accuracy of an existing model.
+        \item Train a model with limited or constrained data.
+    \end{itemize}
+    
+    In some instances, \gls{kd} has been applied to train student models even more complex than the teacher network, with some methods using an ensemble of teacher models \cite{abbasi2020modeling}. The research field of \gls{kd} has attracted much attention in recent years but is still under development. This causes applications not to follow a strict set of rules but is a creative process adapted to each domain applied. However, recent studies have shown promising results for \gls{kd}, as detailed in  \citet{alkhulaifi2021knowledge}.
+  
+  %The various approaches show that student models can achieve the same or even better performance than the teacher, as detailed in  \citet{alkhulaifi2021knowledge}.
+    
+    
+    %which can be approximately divided into two sub-categories: those that only use the teacher's output labels as true labels to train the student, and those that extract knowledge from the layers of the teacher and use this during training of the student with or without teacher labels. 
     
     
 %     - hardcore - offline
