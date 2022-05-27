@@ -25,7 +25,7 @@
 
         %\subsection{CRIMAC-Pipeline Modules} 
         
-                              \begin{figure}[H]
+            \begin{figure}[H]   
                 \centering
                 \includesvg[inkscapelatex=false,width=0.9\textwidth,keepaspectratio]{figures/module_overveiw.svg}
                 \caption[Module overview]{Module overview and output flowchart. Black represents modules, and other colors represents input/output. The modules' and input/outputs' colors will stay the same for later illustrations.}
@@ -44,10 +44,10 @@
               \item[$\bullet$ CRIMAC/Bottom detection:] Identifies the bottom and generates a binary pixel-based map stored as \textit{.zarr}. This is a 2-dimensional array of size $ping \times range$. The output is shown in figure \ref{Module_outputs_illustration_fig}.
 
             \end{description}
-        
+        \clearpage
 
         
-        \begin{figure}[H]
+        \begin{figure}[H]   
             \centering
             \includesvg[inkscapelatex=false,width=1\textwidth,keepaspectratio]{figures/output_illustration.svg}
             \caption[Module outputs illustration]{Illustrations of the output from the different modules with one enlarged example from each output. This example is a $500\times500$ crop, while the real data contained millions of pings. The \textit{200kHz} has been transformed to the decibel scale to make the data observable. The color scale is set to be purple at 0 and yellow at 1. White denotes missing values.}
@@ -64,7 +64,7 @@
         
         %These labels will contain some noise, as the model they originate from was not perfect. In the next section, I will explain how I handled this. Due to the weighted cross-entropy loss used during training of the model seen in section \ref{unet_paper_acoustic} the background class were usually very noisy, as this class was lowly weighted. This low weight caused the model to care less about classifying the background correctly, and the two samples in figure \ref{data sample fig} illustrates this. As I was to use the same weighting, this did not pose a large problem but explains noise in later illustrations of the background class, and therefore mentioned.
 
-        \begin{figure}[H]
+        \begin{figure}[H]   
         \centering
         %\subfloat[Low noise background label.]{
         	\label{subfig:correct}
@@ -87,7 +87,7 @@
         This section explains the process of preparing the dataset, which was built to enable a sampling scheme during training equal to the one developed by \citeauthor{brautaset2020acoustic} \cite{brautaset2020acoustic}. The data preparation consists of creating samples with corresponding pseudo labels from the input \gls{sv} data and storing the samples in a folder structure dependent on the sample's features.
         
         The entire process is illustrated in figure \ref{data_generation_flowchart_fig} and starts with utilizing the \gls{crimac} preprocessor module as described in \ref{CRIMAC-pipeline}. This takes in the entire \textit{.raw} dataset and outputs the \gls{sv} data in the \textit{.zarr} format. The \gls{sv} dataset was then sent to both the pretrained U-Net and bottom detection modules from the \gls{crimac} pipeline. The pretrained U-Net outputs pseudo labels, and the bottom detection outputs a mask of the seafloor as arrays equal in spatial size to the \gls{sv} data array.
-         %\clearpage
+         \clearpage
         \begin{figure}[H]
             \centering
             \includesvg[inkscapelatex=false,width=0.75\textwidth,keepaspectratio]{figures/flow_data_gen.svg}
@@ -97,7 +97,7 @@
             \label{data_generation_flowchart_fig}
         \end{figure}
         The generated \gls{sv} dataset was then split into non-overlapping crops of size 256x256, ignoring crops of mismatching size at the edges of the array. Each crop was checked for any missing values or the crop being located entirely below the seafloor and then ignored if any of them were true. As visualized in figure \ref{data_bottom_nans_fig} there were instances of discontinuity in both the time series of pings and range. This caused portions of the \gls{sv} dataset to be filled with missing values, hence motivating the previous check as sampling crops at complete random could cause errors.
-                \begin{figure}[H]
+                \begin{figure}[H]   
             \centering
             %\includegraphics[scale=0.5]{figures/crop_extract_illustration.png}
             \includesvg[inkscapelatex=false,width=0.9\textwidth,keepaspectratio]{figures/data_errors_nans.svg}
@@ -108,9 +108,9 @@
         %This was because missing values can be detrimental to the training process, and crops below the seafloor were excluded as done by \citeauthor{brautaset2020acoustic}\cite{brautaset2020acoustic}. An illustration of the missing data is illustrated in figure \ref{data_bottom_nans_fig}. 
         
         Using the vertical and horizontal coordinates for all the \gls{sv} data crops, a corresponding crop from both the seafloor mask and the pseudo labels was extracted. The two new crops were then used together to remove predictions that appeared under the bottom, thus cleaning and preprocessing the pseudo labels. The steps explained in this paragraph are also visualized in figure \ref{crop_extract_fig}.
-
+        \clearpage
         
-        \begin{figure}[H]
+        \begin{figure}[H]   
             \centering
             %\includegraphics[scale=0.5]{figures/crop_extract_illustration.png}
             \includesvg[inkscapelatex=false,width=0.7\textwidth,keepaspectratio]{figures/crop_extract_illustration.svg}
@@ -120,7 +120,7 @@
         \end{figure}
         
         After the crop containing the \gls{sv} data and cleaned pseudo labels were generated, they were both converted to tensors and stored as a single file using Python pickle. The storage folder of the file depend on a set of criteria, which are illustrated in figure \ref{data_hierarchy_fig}. The criteria were checked from top to bottom, and the first triggered set the destination folder, creating a folder structure visualized in figure \ref{data_hierarchy_fig}. This also blocked the same crop from appearing in several folders, potentially causing data leakage between datasets.
-        \begin{figure}[H]
+        \begin{figure}[H]   
             \centering
             %\includegraphics[scale=0.5]{figures/data_hierarki.png}
             \subfloat[The list of criteria.]{

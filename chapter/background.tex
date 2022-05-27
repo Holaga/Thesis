@@ -247,6 +247,7 @@
      where $*$ is the convolutional operation, \textit{I(i,j)} is the image pixel at \textit{(i,j)}, and \textit{K} is the kernel.
      
     The output scalar value from the convolutional operation is usually fed through non-linear activation functions like ReLU and then called the \textit{activation}. The sliding operation is based on a value called \textit{stride}, which is the number of horizontal positions to move the kernel in the input between each calculation. Suppose we started from the left, and it is impossible to move horizontally to the right and still fit the kernel inside the input. In this case, the kernel will, if possible, move rows down vertically equal to the stride and then continue horizontally, starting afresh from the left. After sliding over the entire input, a complete 2-dimensional \textit{activation map}, also called a \textit{feature map}, has been created, one such map for each kernel applied. The idea is that each applied kernel will learn to identify different features in the input. An example of a horizontal edge detector can be seen in figure \ref{convolutional_fig} \cite{o2015introduction_convolutions}. 
+    \clearpage
     \begin{figure}[H]
         \centering
                 \includesvg[inkscapelatex=false,width=1\textwidth,keepaspectratio]{figures/convolutions.svg}
@@ -307,6 +308,8 @@
         \label{1x1_fig}
     \end{figure}
     \citeauthor{lin2013network_in_network_1x1} \cite{lin2013network_in_network_1x1} proposed the convolutional layer with kernel size 1×1 and stride 1, followed by an activation function. The 1×1 layer will take the weighted sum along a 1×1 slice through all channels of the input, as illustrated in figure \ref{1x1_fig}. This is equivalent to applying a fully connected layer to the same values. As this preserves the \textit{resolution}, it can be used to alter the depth of the output feature maps by specifying the desired number of kernels, while also introducing non-linearity. In figure \ref{1x1_fig}, we have only one kernel, but if two were applied instead, the output feature map would have a depth of two. In this work, it is used mainly to map high dimensional feature maps to the desired number of classes.
+    
+    \clearpage
     
     
     %This is equivalent to the regular hidden layer shown earlier in figure \ref{Perceptron / MLP}, but for one pixel across the channels of the input.
@@ -494,7 +497,7 @@
     where $\hat{Z}^{(i)}$ is the batch normalized activations, $Z^{(i)}_{norm}$ is the normalized activations for the $i^{th}$ hidden layer. The learnable parameters make the \gls{ann} able to adjust and shift the distribution through the training process. The result may lead to a faster and more stable training process. 
     
     Recently, the poor understanding of batch normalization has come into question, and \citet{batch_norm_not_work} have stressed that more investigation should be put into understanding its effectiveness. Their findings show that it might not stem from internal covariate shift but likely other factors. 
-
+\clearpage
 \subsection{Data-Augmentation} \label{data-augmentation}
      \textit{Data-augmentation} is a regularization method directly applied to the training dataset by applying some transformation \cite{kukavcka2017_regularization}. Several methods are available, but the two used in this work are: \textit{adding noise} and \textit{flipping}. One example of applying noise is to add Gaussian values with a mean of 0 and some user-defined variance to each pixel. This adds more randomness to the data, making the model learn more general features instead of specific. The network is less prone to overfit on certain samples, which in turn might increase generalization performance. Other methods of applying noise are described in \citeauthor{kukavcka2017_regularization} \cite{kukavcka2017_regularization}. Flipping is a simple transformation where we flip the input and label along a particular axis. Thus, mapping the data to a new representation. An example of each method mentioned can be seen in figure \ref{data augmentation fig}:
     % This is an important observation when applying data augmentation, as it can't change the meaning of the data. For example, when classifying numbers in images, rotating an image of the number \textit{9} clockwise 180 degrees will change its representation to now be more similar to a \textit{6}, but the label would still claim it belongs to the class \textit{9}.
@@ -556,7 +559,7 @@
         \item Train a model with limited or constrained data.
     \end{itemize}
     
-    In some instances, \gls{kd} has been applied to train student models even more complex than the teacher network, with some methods using an ensemble of teacher models \cite{abbasi2020modeling}. The research field of \gls{kd} has attracted much attention in recent years but is still under development. This causes applications not to follow a strict set of rules but is a creative process adapted to each domain applied. However, recent studies have shown promising results for \gls{kd}, as detailed in  \citet{alkhulaifi2021knowledge}.
+    In some instances, \gls{kd} has been applied to train student models even more complex than the teacher network, with some methods using an ensemble of teacher models \cite{abbasi2020modeling}. The research field of \gls{kd} has attracted much attention in recent years but is still under development. This causes applications of \gls{kd} not to follow a strict set of rules but is a creative process adapted to each domain applied. However, recent studies have shown promising results for \gls{kd}, as detailed in  \citet{alkhulaifi2021knowledge}.
   
   %The various approaches show that student models can achieve the same or even better performance than the teacher, as detailed in  \citet{alkhulaifi2021knowledge}.
     

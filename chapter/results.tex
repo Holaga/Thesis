@@ -6,7 +6,7 @@ This chapter will first describe the monitoring and evaluation of the training p
     \subsection{Training}
         %In figure \ref{training_overveiw_fig} an example plot illustrates how the training process was monitored. This example is visually tiny, but the most important features will be described in this section. The example comes from the final logging of the model trained on all frequencies.
         %\clearpage
-        %\begin{figure}[H]
+        %\begin{figure}  
              %scale=0.4,
 
             %\hspace*{-3.2cm}
@@ -19,7 +19,7 @@ This chapter will first describe the monitoring and evaluation of the training p
         
     Figure \ref{loss_f1_duo_plot_fig} illustrates the metrics measured during the training of a model using a subset consisting of all six frequencies. It shows that both the validation and training loss follow the same trend, showing convergence and no issues regarding over-/under-fitting. This is roughly mirrored by the F1-score, as the validation and training F1-scores follows approximately the same values. Finally, the visual inspection suggests satisfactory performance of the classifier on the \textit{sandeel} class, as illustrated in figure \ref{sandeel_threshold_label}.%(add more examples to appendix?) 
         
-        \begin{figure}[H]
+        \begin{figure}  
             \centering
             \subfloat[\centering The logged loss.]{{\includesvg[inkscapelatex=false,width=6cm]{figures/Loss_val_train.svg} }}%
             \qquad
@@ -29,7 +29,7 @@ This chapter will first describe the monitoring and evaluation of the training p
         \end{figure}
             %\includegraphics[width=5cm]{figures/Loss_val_train.png} 
             %\includegraphics[width=5cm]{figures/F1_score_per_5.png}
-        \begin{figure}[H]
+        \begin{figure}  
             \centering
             %\includegraphics[scale=0.7]{figures/SANDEEL_WITH_LABEL.png}
             \includesvg[inkscapelatex=false,width=0.9\textwidth,keepaspectratio]{figures/SANDEEL_WITH_LABEL.svg}
@@ -72,7 +72,7 @@ F1-score (max):   & 0.34 & 0.46 & 0.65 & 0.67 & 0.67 & 0.66 &  \\ \hline
 
 Figure \ref{increasing_freq_f1_score_fig} illustrate the exact frequencies contributing to the max mean F1-score for each subset size. A clear jump in performance can be seen when the subset size increase from one to two, but most significantly when the subsets \textit{18kHz}, \textit{38kHz}, and \textit{200kHz} are used.
 
-        \begin{figure}[H]
+        \begin{figure}[H]  
             \centering
             %\includegraphics[scale=0.7]{figures/increasing_freq_f1.png}
             %\includesvg[inkscapelatex=false,width=0.9\textwidth,keepaspectratio]{figures/increasing_freq_f1.svg}
@@ -86,7 +86,7 @@ Figure \ref{increasing_freq_f1_score_fig} illustrate the exact frequencies contr
     The exact frequencies contributing to the max performing subsets are visualized for precision in figure \ref{increasing_freq_precision_score_fig}. It follows the same trend as seen in figure \ref{increasing_freq_f1_score_fig} for F1-score but with lower scores.
 
         % Precision
-        \begin{figure}[H]
+        \begin{figure}[H] 
             \centering
             %\includegraphics[scale=0.7]{figures/increasing_freq_precision.png}
             %\includesvg[inkscapelatex=false,width=0.9\textwidth,keepaspectratio]{figures/increasing_freq_precision.svg}
@@ -101,7 +101,7 @@ Figure \ref{increasing_freq_f1_score_fig} illustrate the exact frequencies contr
     
     
         %\clearpage
-        \begin{figure}[H]
+        \begin{figure}[H] 
             \centering
             %\includegraphics[scale=0.7]{figures/increasing_freq_recall.png}
             %\includesvg[inkscapelatex=false,width=0.9\textwidth,keepaspectratio]{figures/increasing_freq_recall.svg}
@@ -128,7 +128,7 @@ Figure \ref{increasing_freq_f1_score_fig} illustrate the exact frequencies contr
     
         To further analyze the performance of the unique subset \textit{18kHz}, \textit{38kHz}, and \textit{200kHz}, two new subsets based on the results were created. The first with subsets that, at a minimum, contained the aforementioned frequencies (eight in total). These subsets were then removed from the initial results, and then the eight best performing from this set were extracted. Both of these subsets are visualized in figure \ref{with_without_figure} and show that all the highest performing subsets include the frequencies \textit{18kHz}, \textit{38kHz}, and \textit{200kHz}.
         
-        \begin{figure}[H]
+        \begin{figure}[H] 
             \centering
             %\includegraphics[scale=0.7]{figures/error_bar.png}
             %\includesvg[inkscapelatex=false,width=0.7\textwidth,keepaspectratio]{figures/with_without.svg}
@@ -144,7 +144,7 @@ Figure \ref{increasing_freq_f1_score_fig} illustrate the exact frequencies contr
         \clearpage
         
         
-        \begin{figure}[H]
+        \begin{figure}[H] 
             \centering
             %\includegraphics[scale=0.7]{figures/perfomance_trend.png}
             %\includesvg[inkscapelatex=false,width=0.9\textwidth,keepaspectratio]{figures/perfomance_trend.svg}
