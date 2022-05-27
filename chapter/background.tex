@@ -120,7 +120,7 @@
 
 
 \section{Machine Learning} \label{Machine Learning}
-    Machine learning can be split into four parts; the \textit{algorithm}, \textit{empirical data}, a \textit{task}, and a \textit{performance} measure \cite{Goodfellow-et-al-2016}. A machine learning algorithm is designed to increase performance on a task, given data. During this process, also called \textit{training}, the algorithm is said to be \textit{learning} by fitting a \textit{model} to the data. The two machine learning approaches used in this thesis are supervised learning and unsupervised\cite{Goodfellow-et-al-2016}. 
+    Machine learning can be split into four parts; the \textit{algorithm}, \textit{empirical data}, a \textit{task}, and a \textit{performance} measure. A machine learning algorithm is designed to increase performance on a task, given data. During this process, also called \textit{training}, the algorithm is said to be \textit{learning} by fitting a \textit{model} to the data. The two machine learning approaches used in this thesis are supervised learning and unsupervised \cite{Goodfellow-et-al-2016}. 
     %Goodfellow-et-al-2016_ML
     %Goodfellow-et-al-2016_E
     
@@ -222,7 +222,7 @@
         where K is the number of classes, and the output summarizes to 1 over all classes. For a network solving multiclass classification, the output layer will have size equal to K. This corresponds to 3 classes in figure \ref{Perceptron / MLP}. The \textit{softmax} would then be used as the last transformation (\textit{$g^{(3)}$ in equation \ref{mlp outputlayer eq}}) and output the probability of an input belonging to each of the three classes.
         
 \subsection{Convolutional Neural Network} \label{cnn}
-    The \gls{cnn} is a type of \gls{ann}s primarily used in machine learning tasks concerning images \cite{o2015introduction_convolutions}. One of the reasons why the \gls{cnn} emerged was because images input to a regular \gls{ann} produces a large number of learnable parameters. For example, a low-resolution image with $512\times512$ pixels passed to an hidden layer containing only one neuron would have $1\times512\times512 = 262144$ weights alone.  To solve this issue and have fewer learnable parameters, the modern \gls{cnn} is built around three main components \cite{o2015introduction_convolutions}; a \textit{convolutional layer}, a \textit{pooling layer}, and a \textit{fully-connected layer}. An example \gls{cnn} is illustrated in figure \ref{convolutional_neural_network_fig}, and each main component will be explained later in this section.
+    The \gls{cnn} is a type of \gls{ann}s primarily used in machine learning tasks concerning images \cite{o2015introduction_convolutions}. One of the reasons why the \gls{cnn} emerged was because images input to a regular \gls{ann} produces a large number of learnable parameters. For example, a low-resolution image with $512\times512$ pixels passed to an hidden layer containing only one neuron would have $1\times512\times512 = 262144$ weights alone.  To solve this issue and have fewer learnable parameters, the modern \gls{cnn} is built around three main components; a \textit{convolutional layer}, a \textit{pooling layer}, and a \textit{fully-connected layer}. An example \gls{cnn} is illustrated in figure \ref{convolutional_neural_network_fig}, and each main component will be explained later in this section.
 
     \begin{figure}[H]
         \centering
@@ -356,14 +356,14 @@
 \subsection{Mini-batch Stochastic Gradient Descent} \label{batch learning}
         \begin{quote}
         "\textit{A recurring problem in machine learning is that large training sets are necessary for good generalization, but large training sets are also more computationally
-        expensive."} - (\citeauthor{Goodfellow-et-al-2016}\citeyear{Goodfellow-et-al-2016}, page 152)
+        expensive."} - (\citet{Goodfellow-et-al-2016} \citeyear{Goodfellow-et-al-2016}, page 147)
     \end{quote}
     %Goodfellow-et-al-2016_SGD
     
     Calculating the total loss of the whole dataset is often unfeasible, and depending on the hardware, this could lead to a crash or slow learning due to
     heavy memory demands. A solution is to sample a set of examples, called a \textit{mini-batch}, from the entire dataset, with the intent to approximately estimate
-    the true loss using this smaller fraction of the dataset. Then we update the parameters of our network based on this and repeat on a new mini-batch. This is called mini-batch \textit{\gls{sgd}}, a common \textit{optimization} algorithm \cite{Goodfellow-et-al-2016}. The size of this mini-batch can vary from one example (\textit{also called true \gls{sgd}}) to hundreds, and the size chosen can heavily affect training. When we have run this process on all the data, we say that an \textit{epoch} has passed \cite{wilson2001need_learning_rate}.
-    %Goodfellow-et-al-2016_SGD
+    the true loss using this smaller fraction of the dataset. Then we update the parameters of our network based on this and repeat on a new mini-batch. This is called mini-batch \textit{\gls{sgd}}, a common \textit{optimization} algorithm. The size of this mini-batch can vary from one example to hundreds. When we have run this process on all the data, we say that an \textit{epoch} has passed \cite{Goodfellow-et-al-2016}.
+    %Goodfellow-et-al-2016_SGD \cite{wilson2001need_learning_rate}
     
     
     
